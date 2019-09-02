@@ -7,15 +7,16 @@ import java.util.List;
 
 public class CalendarPage {
 
-    private final List<Date> dates;
     private final PhotoFrame photo;
+    private final DateRangeRenderrer dates;
 
     public CalendarPage(List<Date> dates, PhotoFrame photo) {
-        this.dates = dates;
+        this.dates = new DateRangeRenderrer(dates);
         this.photo = photo;
     }
 
-    public void paint(Graphics2D g) {
-        g.drawImage(photo.getImage(), null, null);
+    public void paint(Graphics2D g, int w, int h) {
+        photo.draw(w / 2, 0, w / 2, h, g);
+        dates.draw(0, 0, w/2, h, g);
     }
 }

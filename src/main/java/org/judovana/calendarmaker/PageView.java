@@ -13,6 +13,6 @@ public class PageView extends JPanel {
 
     @Override
     public void paint(Graphics g) {
-        data.paint((Graphics2D)g);
+        data.paint((Graphics2D)g, this.getWidth(), this.getHeight());
     }
 }

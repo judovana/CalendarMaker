@@ -21,6 +21,11 @@ public class MainFrame extends JFrame {
         for (int x = 0 ; x < 7; x++){
             dates.add(new Date(new Date().getTime()+24*60*60*1000*x));
         }
+
+        dates = new ArrayList<>();
+        for (int x = 0 ; x < 30; x++){
+            dates.add(new Date(new Date().getTime()+24*60*60*1000*x));
+        }
         this.add(new PageView(new CalendarPage(dates, new PhotoFrame(getRandomImage("/usr/share/backgrounds")))));
     }
 
