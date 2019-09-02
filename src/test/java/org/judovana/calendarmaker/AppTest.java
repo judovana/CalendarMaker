@@ -1,4 +1,4 @@
-package org.judovana.callendarmaker;
+package org.judovana.calendarmaker;
 
 import static org.junit.Assert.assertTrue;
 
