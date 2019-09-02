@@ -1,0 +1,50 @@
+#rok	ep-1
+2001	4
+2002	15
+2003	26
+2004	7
+2005	18
+2006	-1
+2007	10
+2008	21
+2009	2
+2010	13
+2011	24
+2012	5
+2013	16
+2014	28
+2015	9
+2016	20
+2017	1
+2018	12
+2019	23
+# restart?
+2020	4
+2021	15
+2022	26
+2023	7
+2024	18
+2025	-1
+2026	10
+2027	21
+2028	2
+2029	13
+2030	24
+# domysleno
+2031	5
+2032	16
+2033	28
+2034	9
+2035	20
+2036	1
+2037	12
+2038	23
+# => jednoduse spocitat
+# Dalsi dopocet:
+#Pokud se spokojíte s přesností ±2 dny, lze vypočítat stáří fáze Měsíce (počet dní od novoluní) i zpaměti. Musíte si však pamatovat epaktu pro daný rok. Její výpočet je na stránce Výpočet Velikonoční neděle. Od epakty nejprve odečteme 1, pak přičteme číslo měsíce a den v měsíci (stáří = E - 1 + M + D). Pokud je výsledné číslo větší jak 30, odečítáme buď 30 nebo 60, tak abychom dostali číslo mezi 0 a 30. Toto číslo vyjadřuje stáří fáze Měsíce:
+# V jaké fázi byl Měsíc dne 1. května 2009? Ve výše uvedené tabulce najdeme pro rok 2009 hodnotu 2 (ta se po celý rok nemění), přičteme číslo měsíce (=5) a den (=1). Tedy 2 + 5 + 1 = 8. V nejvýše uvedené tabulce zjistíme, že Měsíc byl v první čtvrti.
+# V jaké fázi byl Měsíc dne 24. prosince 2014? V tabulce pro rok 2014 nalezneme hodnotu 28, přičteme měsíc (=12) a den (=24). 28 + 12 + 24 = 64. Výsledné číslo je větší jak 60, odečteme tedy 60 a dostaneme číslo 4. Na Štědrý den roku 2014 byl Měsíc stár 4 dny, byl tedy před první čtvrtí.
+#0	Nov	Měsíc je v novu (novoluní)
+#7.5	První čtvrt	Měsíc je v první čtvrti
+#15	Úplněk	Měsíc je v úplňku
+#22.5	Poslední čtvrt
