@@ -15,8 +15,8 @@ public class CalendarPage {
         this.photo = photo;
     }
 
-    public void paint(Graphics2D g, int w, int h) {
-        photo.draw(w / 2, 0, w / 2, h, g);
-        dates.draw(0, 0, w/2, h, g);
+    public void paint(Graphics2D g, int x, int y, int w, int h) {
+        dates.draw(x, y, w/2, h, g);
+        photo.draw(x+w / 2, y, w / 2, h, g);
     }
 }

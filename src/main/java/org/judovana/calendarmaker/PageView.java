@@ -3,7 +3,7 @@ package org.judovana.calendarmaker;
 import javax.swing.*;
 import java.awt.*;
 
-public class PageView extends JPanel {
+public class PageView {
 
     private final CalendarPage data;
 
@@ -11,8 +11,7 @@ public class PageView extends JPanel {
         data = p;
     }
 
-    @Override
-    public void paint(Graphics g) {
-        data.paint((Graphics2D)g, this.getWidth(), this.getHeight());
+    public void paint(Graphics g, int x, int y, int w, int h) {
+        data.paint((Graphics2D) g, x, y, w, h);
     }
 }

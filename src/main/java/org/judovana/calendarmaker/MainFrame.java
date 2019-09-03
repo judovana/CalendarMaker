@@ -1,8 +1,10 @@
 package org.judovana.calendarmaker;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.IOException;
 import java.util.*;
+import java.util.List;
 
 public class MainFrame extends JFrame {
 
@@ -19,7 +21,9 @@ public class MainFrame extends JFrame {
 //        for (int x = 0 ; x < 30; x++){
 //            dates.add(new Date(new Date().getTime()+24*60*60*1000*x));
 //        }
-        this.add(new PageView(new CalendarPage(dates, new PhotoFrame(new PhotoLoader().getRandomImage("/usr/share/backgrounds")))));
+        PhotoLoader pl = new PhotoLoader();
+        AllView all = new AllView(new PageView(new CalendarPage(dates, new PhotoFrame(pl.getRandomImage("/usr/share/backgrounds")))));
+        this.add(all);
     }
 
 
