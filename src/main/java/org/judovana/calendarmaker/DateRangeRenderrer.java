@@ -29,7 +29,7 @@ public class DateRangeRenderrer {
                 int row = (i / 7);
                 int inRow = (i % 7);
                 g.drawRect(border+inRow*ww, border+row*hh, ww, hh);
-                g.drawString(i+"", border+inRow*ww, border+row*hh+hh);
+                g.drawString(i+"", border+inRow*ww, border+row*hh+g.getFontMetrics().getHeight());
             }
         }
     }
