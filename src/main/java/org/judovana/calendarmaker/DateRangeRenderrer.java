@@ -16,11 +16,11 @@ public class DateRangeRenderrer {
         int border = 5;
         if (range.size() == 7) {
             int step = h / range.size();
-            g.drawRect(x + border, +border, w - 2 * border, h - 2 * border);
+            g.drawRect(x + border, y+border, w - 2 * border, h - 2 * border);
             for (int i = 0; i < range.size(); i++) {
                 int hh = border + (i + 1) * step;
-                g.drawString(range.get(i).toString(), 2 * border, hh - (step - g.getFontMetrics().getHeight()));
-                g.drawLine(border, hh, w - border, hh);
+                g.drawString(range.get(i).toString(), 2 * border, y+hh - (step - g.getFontMetrics().getHeight()));
+                g.drawLine(border, y+hh, w - border, y+hh);
             }
         } else {
             int ww = (w-(2*border))/7;
@@ -28,8 +28,8 @@ public class DateRangeRenderrer {
             for (int i = 0; i < range.size(); i++) {
                 int row = (i / 7);
                 int inRow = (i % 7);
-                g.drawRect(border+inRow*ww, border+row*hh, ww, hh);
-                g.drawString(i+"", border+inRow*ww, border+row*hh+g.getFontMetrics().getHeight());
+                g.drawRect(border+inRow*ww, y+border+row*hh, ww, hh);
+                g.drawString(i+"", border+inRow*ww, y+border+row*hh+g.getFontMetrics().getHeight());
             }
         }
     }
