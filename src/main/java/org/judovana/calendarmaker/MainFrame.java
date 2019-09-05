@@ -15,15 +15,15 @@ public class MainFrame extends JFrame {
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         PhotoLoader pl = new PhotoLoader();
 
-        Calendar c1 = new GregorianCalendar();
-        c1.setTime(new Date());
+        int yearOfChoice=2019;
+        boolean week = true;
+
         Calendar c2 = new GregorianCalendar();
-        c2.set(c1.get(Calendar.YEAR), 0, 1);
+        c2.set(yearOfChoice, 0, 1);
         rewindToStartofWeek(c2);
         List<PageView> pages = new ArrayList<>(60);
 
         List<Date> dates = new ArrayList<>(40);
-        boolean week = false;
         if (week) {
             while (true) {
                 Date theDay = c2.getTime();
@@ -34,7 +34,7 @@ public class MainFrame extends JFrame {
                     pages.add(pv);
                     dates = new ArrayList<>(40);
                 }
-                if (c2.get(Calendar.YEAR) > c1.get(Calendar.YEAR)) {
+                if (c2.get(Calendar.YEAR) > yearOfChoice) {
                     while (dates.size() < 7) {
                         Date theTheDay = c2.getTime();
                         dates.add(theTheDay);
@@ -51,7 +51,7 @@ public class MainFrame extends JFrame {
                 Date theDay = c2.getTime();
                 dates.add(theDay);
                 c2.add(Calendar.DAY_OF_YEAR, 1);
-                if (c2.get(Calendar.MONTH)>lastMonth) {
+                if (c2.get(Calendar.MONTH) > lastMonth && (c2.get(Calendar.MONTH) != 11 || lastMonth > 0)) {
                     lastMonth++;
                     while (c2.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
                         Date theTheDay = c2.getTime();
@@ -63,7 +63,7 @@ public class MainFrame extends JFrame {
                     dates = new ArrayList<>(40);
                     rewindToStartofWeek(c2);
                 }
-                if (c2.get(Calendar.YEAR) > c1.get(Calendar.YEAR)) {
+                if (c2.get(Calendar.YEAR) > yearOfChoice) {
                     while (c2.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
                         Date theTheDay = c2.getTime();
                         dates.add(theTheDay);
