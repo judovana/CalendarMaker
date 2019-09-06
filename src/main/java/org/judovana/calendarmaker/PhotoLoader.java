@@ -14,8 +14,14 @@ import java.util.Random;
 
 public class PhotoLoader {
 
-    private List<String> all ;
-    public  String getRandomImage(String... paths) throws IOException {
+    private final String[] paths;
+    private List<String> all;
+
+    public PhotoLoader(String... paths) throws IOException {
+        this.paths = paths;
+    }
+
+    public String getRandomImage() throws IOException {
         if (all == null) {
             all = new ArrayList<>(1000);
             for (String s : paths) {
