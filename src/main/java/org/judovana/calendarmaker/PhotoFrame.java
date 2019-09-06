@@ -13,9 +13,14 @@ public class PhotoFrame {
     private final BufferedImage data;
     private final String src;
     private int scaleType = 1;
+    private static final boolean rangeTesting = false;
 
     public PhotoFrame(String src) throws IOException {
-        this.data = ImageIO.read(new File(src));
+        if (rangeTesting) {
+            this.data = new BufferedImage(100, 100, BufferedImage.TYPE_4BYTE_ABGR);
+        } else {
+            this.data = ImageIO.read(new File(src));
+        }
         this.src = src;
     }
 
