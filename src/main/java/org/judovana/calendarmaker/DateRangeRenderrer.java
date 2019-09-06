@@ -28,19 +28,33 @@ public class DateRangeRenderrer {
             int step = (h - (2 * border)) / range.size();
             g.drawRect(x + border, y + border, w - 2 * border, h - 2 * border);
             for (int i = 0; i < range.size(); i++) {
+                Calendar c2 = new GregorianCalendar();
+                c2.setTime(range.get(i));
                 int hh = y + border + (i) * step;
-                g.drawString(dayThis.format(range.get(i)), 2 * border, hh - (step - g.getFontMetrics().getHeight()));
-                g.setColor(Color.black);
-                if (i < range.size() - 1) {
-                    Calendar c1 = new GregorianCalendar();
-                    c1.setTime(range.get(i + 1));
-                    Calendar c2 = new GregorianCalendar();
-                    c2.setTime(range.get(i));
-                    if (c1.get(Calendar.MONTH) != c2.get(Calendar.MONTH)) {
-                        g.setColor(Color.red);
-                    }
+                if (c2.get(Calendar.DAY_OF_MONTH) == 1) {
+                    g.setColor(Color.red);
+                } else {
+                    g.setColor(Color.black);
                 }
-                g.drawLine(border, hh, w - border, hh);
+                g.drawString(dayThis.format(range.get(i)), 2 * border, hh - (step - g.getFontMetrics().getHeight()));
+                g.drawLine(border, hh - step, w - border, hh - step);
+                String s = NamesLoader.NAMES.getDaysMeaning(c2);
+                if (s.startsWith("má svátek")) {
+                    g.setColor(Color.black);
+                    s = s.replace("má svátek", "").trim();
+                } else {
+                    g.setColor(Color.red);
+                }
+                if (NamesLoader.NAMES.isInterestin(s)) {
+                    g.setColor(Color.blue);
+                }
+                g.drawString(s, 2 * border, hh - (step - 2 * g.getFontMetrics().getHeight()));
+
+                String event = (NamesLoader.NAMES.getDaysEvent(c2));
+                if (event != null && event.trim().length() > 0) {
+                    g.setColor(Color.blue);
+                    g.drawString(event, 2 * border, hh - (step - 3 * g.getFontMetrics().getHeight()));
+                }
             }
         } else {
             int ww = (w - (2 * border)) / 7;
@@ -50,16 +64,37 @@ public class DateRangeRenderrer {
             for (int i = 0; i < range.size(); i++) {
                 Calendar c2 = new GregorianCalendar();
                 c2.setTime(range.get(i));
-                g.setColor(Color.black);
+                int alpha = 255;
                 if (c2.get(Calendar.MONTH) != c1.get(Calendar.MONTH)) {
-                    g.setColor(new Color(0, 0, 0, 125));
+                    alpha=125;
                 }
+                g.setColor(new Color(0, 0, 0, alpha));
                 int row = (i / 7);
                 int inRow = (i % 7);
                 g.drawRect(border + inRow * ww, y + border + row * hh, ww, hh);
                 g.drawString(thisMonth.format(range.get(i)), border + inRow * ww, y + border + row * hh + g.getFontMetrics().getHeight());
+
+                String s = NamesLoader.NAMES.getDaysMeaning(c2);
+                if (s.startsWith("má svátek")) {
+                    g.setColor(new Color(0, 0, 0, alpha));
+                    s = s.replace("má svátek", "").trim();
+                } else {
+                    g.setColor(new Color(255, 0, 0, alpha));
+                }
+                if (NamesLoader.NAMES.isInterestin(s)) {
+                    g.setColor(new Color(0, 0, 255, alpha));
+                }
+                g.drawString(s, border + inRow * ww, y + border + row * hh + 2 * g.getFontMetrics().getHeight());
+
+                String event = (NamesLoader.NAMES.getDaysEvent(c2));
+                if (event != null && event.trim().length() > 0) {
+                    g.setColor(Color.blue);
+                    g.setColor(new Color(0, 0, 255, alpha));
+                    g.drawString(event, border + inRow * ww, y + border + row * hh + 3 * g.getFontMetrics().getHeight());
+                }
             }
         }
+
     }
 
     public String getTitle() {
