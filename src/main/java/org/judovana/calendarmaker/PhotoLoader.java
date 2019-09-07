@@ -22,6 +22,13 @@ public class PhotoLoader {
     }
 
     public String getRandomImage() throws IOException {
+        initData();
+        //we need next/prev feature
+        Collections.sort(all);
+        return all.get(new Random().nextInt(all.size()));
+    }
+
+    private void initData() throws IOException {
         if (all == null) {
             all = new ArrayList<>(1000);
             for (String s : paths) {
@@ -55,8 +62,33 @@ public class PhotoLoader {
                 });
             }
         }
+    }
+
+    public String getPrev(String src) throws IOException {
+        initData();
         //we need next/prev feature
         Collections.sort(all);
-        return all.get(new Random().nextInt(all.size()));
+        File thisOne= new File(src);
+        for (int i = 1; i < all.size(); i++) {
+            File current= new File(all.get(i));
+            if (current.equals(thisOne)){
+                return  all.get(i-1);
+            }
+        }
+        return src;
+    }
+
+    public String getNext(String src) throws IOException {
+        initData();
+        //we need next/prev feature
+        Collections.sort(all);
+        File thisOne= new File(src);
+        for (int i = 0; i < all.size()-1; i++) {
+            File current= new File(all.get(i));
+            if (current.equals(thisOne)){
+                return  all.get(i+1);
+            }
+        }
+        return src;
     }
 }

@@ -10,20 +10,30 @@ import java.util.Date;
 
 public class PhotoFrame {
 
-    private final BufferedImage data;
-    private final String src;
+    private BufferedImage data;
+    private String src;
     private int scaleType = 1;
     private static final boolean rangeTesting = false;
 
     public PhotoFrame(String src) throws IOException {
+        setData(src);
+    }
+
+    public void setData(String src) throws IOException {
         if (rangeTesting) {
             this.data = new BufferedImage(100, 100, BufferedImage.TYPE_4BYTE_ABGR);
+            Graphics g = data.createGraphics();
+            g.setColor(new Color(Math.abs(src.hashCode()) % 250, Math.abs(new File(src).hashCode()) % 250, Math.abs(src.hashCode() + new File(src).hashCode()) % 250));
+            g.fillRect(0, 0, 100, 100);
         } else {
             this.data = ImageIO.read(new File(src));
         }
         this.src = src;
     }
 
+    public String getSrc() {
+        return src;
+    }
 
     public void draw(int x, int y, int w, int h, Graphics2D g2d) {
         if (scaleType == 1) {

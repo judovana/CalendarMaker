@@ -14,9 +14,9 @@ public class MainFrame extends JFrame {
     public MainFrame() throws IOException {
         this.setSize(800, 600);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        PhotoLoader pl = new PhotoLoader(photoFolders);
+        final PhotoLoader pl = new PhotoLoader(photoFolders);
 
-        RangeProvider rp = new RangeProvider(2019, true);
+        RangeProvider rp = new RangeProvider(2019, false);
         List<List<Date>> ranges = rp.getRanges();
         List<PageView> pages = new ArrayList<>(ranges.size());
         for (List<Date> range : ranges) {
@@ -29,12 +29,12 @@ public class MainFrame extends JFrame {
         all.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                final PageView page = all.get(e.getX(),e.getY());
+                final PageView page = all.get(e.getX(), e.getY());
                 final String s;
-                if (page!=null){
-                    s = page.getData().getDates().getTitle()+" ||| "+page.getData().getPhoto().getFooter();
+                if (page != null) {
+                    s = page.getData().getDates().getTitle() + " ||| " + page.getData().getPhoto().getFooter();
                 } else {
-                    s="???";
+                    s = "???";
                 }
                 if (e.getButton() == MouseEvent.BUTTON3) {
                     JPopupMenu menu = new JPopupMenu();
@@ -42,10 +42,52 @@ public class MainFrame extends JFrame {
                     title.setEnabled(false);
                     menu.add(title);
                     menu.add(new JMenuItem("Select")); //from its curerent photodir!
-                    menu.add(new JMenuItem("previous"));
-                    menu.add(new JMenuItem("next"));
-                    menu.add(new JMenuItem("random again"));
-                    menu.add(new JMenuItem("rotate"));
+                    JMenuItem prev = new JMenuItem("previous");
+                    menu.add(prev);
+                    JMenuItem next = new JMenuItem("next");
+                    menu.add(next);
+                    JMenuItem rnd = new JMenuItem("random again");
+                    menu.add(rnd);
+                    JMenuItem rot = new JMenuItem("rotate");
+                    menu.add(rot);
+
+                    rnd.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            try {
+                                page.getData().getPhoto().setData(pl.getRandomImage());
+                                all.repaint();
+                            }catch(Exception ex){
+                                JOptionPane.showMessageDialog(all, ex);
+                                ex.printStackTrace();
+                            }
+                        }
+                    });
+                    prev.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            try {
+                                page.getData().getPhoto().setData(pl.getPrev(page.getData().getPhoto().getSrc()));
+                                all.repaint();
+                            }catch(Exception ex){
+                                JOptionPane.showMessageDialog(all, ex);
+                                ex.printStackTrace();
+                            }
+                        }
+                    });
+
+                    next.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            try {
+                                page.getData().getPhoto().setData(pl.getNext(page.getData().getPhoto().getSrc()));
+                                all.repaint();
+                            }catch(Exception ex){
+                                JOptionPane.showMessageDialog(all, ex);
+                                ex.printStackTrace();
+                            }
+                        }
+                    });
                     menu.show(all, e.getX(), e.getY());
                 }
             }
