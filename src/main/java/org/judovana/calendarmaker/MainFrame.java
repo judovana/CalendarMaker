@@ -29,14 +29,15 @@ public class MainFrame extends JFrame {
         all.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                JPopupMenu menu = new JPopupMenu();
-                menu.add(new JMenuItem("Select"));
-                menu.add(new JMenuItem("previous"));
-                menu.add(new JMenuItem("next"));
-                menu.add(new JMenuItem("random again"));
-                menu.add(new JMenuItem("rotate"));
-                menu.show(all, e.getX(), e.getY());
-
+                if (e.getButton() == MouseEvent.BUTTON3) {
+                    JPopupMenu menu = new JPopupMenu();
+                    menu.add(new JMenuItem("Select"));
+                    menu.add(new JMenuItem("previous"));
+                    menu.add(new JMenuItem("next"));
+                    menu.add(new JMenuItem("random again"));
+                    menu.add(new JMenuItem("rotate"));
+                    menu.show(all, e.getX(), e.getY());
+                }
             }
         });
         this.add(all);
@@ -65,6 +66,12 @@ public class MainFrame extends JFrame {
                 }
                 if (keyEvent.getKeyCode() == KeyEvent.VK_DOWN) {
                     all.adjsutOffset(-1);
+                }
+                if (keyEvent.getKeyCode() == KeyEvent.VK_HOME) {
+                    all.resetOffset();
+                }
+                if (keyEvent.getKeyCode() == KeyEvent.VK_END) {
+                    all.upsetOffset();
                 }
             }
 

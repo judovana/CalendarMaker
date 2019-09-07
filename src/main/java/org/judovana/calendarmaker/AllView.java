@@ -9,8 +9,8 @@ public class AllView extends JPanel {
     private final PageView[] data;
     private int offset = 0;
 
-    private AllView(){
-        data=null;
+    private AllView() {
+        data = null;
     }
 
     public AllView(PageView... pages) {
@@ -28,10 +28,24 @@ public class AllView extends JPanel {
 
     public void adjsutOffset(int by) {
         offset += by;
+        setOfset(offset);
+    }
+
+    private void setOfset(int off) {
+        offset = off;
         if (offset > 0) {
             offset = 0;
         }
         repaint();
+    }
+
+    public void resetOffset() {
+        offset = 0;
+        setOfset(offset);
+    }
+
+    public void upsetOffset() {
+        setOfset(-data.length * this.getHeight() + this.getHeight());
     }
 
     @Override
