@@ -96,7 +96,7 @@ public class MainFrame extends JFrame {
         this.addMouseWheelListener(new MouseWheelListener() {
             @Override
             public void mouseWheelMoved(MouseWheelEvent e) {
-                all.adjsutOffset(e.getUnitsToScroll() * 20);
+                all.adjsutOffset(-e.getUnitsToScroll() * 20);
             }
         });
         this.addKeyListener(new KeyListener() {
