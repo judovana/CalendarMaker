@@ -3,6 +3,7 @@ package org.judovana.calendarmaker;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
@@ -41,7 +42,8 @@ public class MainFrame extends JFrame {
                     JMenuItem title = new JMenuItem(s);
                     title.setEnabled(false);
                     menu.add(title);
-                    menu.add(new JMenuItem("Select")); //from its curerent photodir!
+                    JMenuItem sel = new JMenuItem("select");
+                    menu.add(sel); //from its curerent photodir!
                     JMenuItem prev = new JMenuItem("previous");
                     menu.add(prev);
                     JMenuItem next = new JMenuItem("next");
@@ -51,13 +53,35 @@ public class MainFrame extends JFrame {
                     JMenuItem rot = new JMenuItem("rotate");
                     menu.add(rot);
 
+                    sel.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            try {
+                                JFileChooser chooser = new JFileChooser();
+                                chooser.setCurrentDirectory(new File(page.getData().getPhoto().getSrc()).getParentFile());
+                                chooser.setSelectedFile(new File(page.getData().getPhoto().getSrc()));
+                                int r = chooser.showOpenDialog(all);
+                                if (r == JFileChooser.APPROVE_OPTION) {
+                                    File f = chooser.getSelectedFile();
+                                    if (f != null) {
+                                        page.getData().getPhoto().setData(f.getAbsolutePath());
+                                        all.repaint();
+                                    }
+                                }
+                            } catch (Exception ex) {
+                                JOptionPane.showMessageDialog(all, ex);
+                                ex.printStackTrace();
+                            }
+                        }
+                    });
+
                     rnd.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             try {
                                 page.getData().getPhoto().setData(pl.getRandomImage());
                                 all.repaint();
-                            }catch(Exception ex){
+                            } catch (Exception ex) {
                                 JOptionPane.showMessageDialog(all, ex);
                                 ex.printStackTrace();
                             }
@@ -69,7 +93,7 @@ public class MainFrame extends JFrame {
                             try {
                                 page.getData().getPhoto().setData(pl.getPrev(page.getData().getPhoto().getSrc()));
                                 all.repaint();
-                            }catch(Exception ex){
+                            } catch (Exception ex) {
                                 JOptionPane.showMessageDialog(all, ex);
                                 ex.printStackTrace();
                             }
@@ -82,7 +106,7 @@ public class MainFrame extends JFrame {
                             try {
                                 page.getData().getPhoto().setData(pl.getNext(page.getData().getPhoto().getSrc()));
                                 all.repaint();
-                            }catch(Exception ex){
+                            } catch (Exception ex) {
                                 JOptionPane.showMessageDialog(all, ex);
                                 ex.printStackTrace();
                             }
