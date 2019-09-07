@@ -2,6 +2,7 @@ package org.judovana.calendarmaker;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -12,6 +13,7 @@ public class PhotoFrame {
 
     private BufferedImage data;
     private String src;
+    private double rotate = 0;
     private int scaleType = 1;
     private static final boolean rangeTesting = false;
 
@@ -28,6 +30,7 @@ public class PhotoFrame {
         } else {
             this.data = ImageIO.read(new File(src));
         }
+        this.rotate = 0;
         this.src = src;
     }
 
@@ -62,6 +65,52 @@ public class PhotoFrame {
     public String getFooter() {
         File f = new File(src);
         return f.getParentFile().getName() + "/" + f.getName() + " " + dayThis.format(new Date(f.lastModified()));
+
+    }
+
+    public void rotateImgClock() {
+        rotate =  + (Math.PI / 2d);
+        BufferedImage bi = new BufferedImage(data.getHeight(), data.getWidth(), data.getType());
+
+        AffineTransform aff = new AffineTransform();
+        aff.translate(data.getHeight() / 2, data.getWidth() / 2);
+        aff.rotate(rotate);
+        aff.translate(-data.getWidth() / 2, -data.getHeight() / 2);
+
+        bi.createGraphics().drawImage(data, aff, null);
+
+        data = bi;
+
+    }
+
+
+    public void rotateImgAntiClock() {
+        rotate = - (Math.PI / 2d);
+        BufferedImage bi = new BufferedImage(data.getHeight(), data.getWidth(), data.getType());
+
+        AffineTransform aff = new AffineTransform();
+        aff.translate(data.getHeight() / 2, data.getWidth() / 2);
+        aff.rotate(rotate);
+        aff.translate(-data.getWidth() / 2, -data.getHeight() / 2);
+
+        bi.createGraphics().drawImage(data, aff, null);
+
+        data = bi;
+
+    }
+
+    public void rotateImg180() {
+        rotate =  + Math.PI;
+        BufferedImage bi = new BufferedImage(data.getWidth(), data.getHeight(), data.getType());
+
+        AffineTransform aff = new AffineTransform();
+        aff.translate(data.getWidth() / 2, data.getHeight() / 2);
+        aff.rotate(rotate);
+        aff.translate(-data.getWidth() / 2, -data.getHeight() / 2);
+
+        bi.createGraphics().drawImage(data, aff, null);
+
+        data = bi;
 
     }
 }

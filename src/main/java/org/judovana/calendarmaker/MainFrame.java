@@ -50,8 +50,34 @@ public class MainFrame extends JFrame {
                     menu.add(next);
                     JMenuItem rnd = new JMenuItem("random again");
                     menu.add(rnd);
-                    JMenuItem rot = new JMenuItem("rotate");
-                    menu.add(rot);
+                    JMenuItem rot1 = new JMenuItem("rotate 90 clock");
+                    menu.add(rot1);
+                    JMenuItem rot2 = new JMenuItem("rotate 90 anti-clock");
+                    menu.add(rot2);
+                    JMenuItem rot3 = new JMenuItem("rotate 180");
+                    menu.add(rot3);
+
+                    rot1.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            page.getData().getPhoto().rotateImgClock();
+                            all.repaint();
+                        }
+                    });
+                    rot2.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            page.getData().getPhoto().rotateImgAntiClock();
+                            all.repaint();
+                        }
+                    });
+                    rot3.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            page.getData().getPhoto().rotateImg180();
+                            all.repaint();
+                        }
+                    });
 
                     sel.addActionListener(new ActionListener() {
                         @Override
