@@ -16,7 +16,7 @@ public class MainFrame extends JFrame {
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         PhotoLoader pl = new PhotoLoader(photoFolders);
 
-        RangeProvider rp = new RangeProvider(2019, false);
+        RangeProvider rp = new RangeProvider(2019, true);
         List<List<Date>> ranges = rp.getRanges();
         List<PageView> pages = new ArrayList<>(ranges.size());
         for (List<Date> range : ranges) {
@@ -29,9 +29,19 @@ public class MainFrame extends JFrame {
         all.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                final PageView page = all.get(e.getX(),e.getY());
+                final String s;
+                if (page!=null){
+                    s = page.getData().getDates().getTitle()+" ||| "+page.getData().getPhoto().getFooter();
+                } else {
+                    s="???";
+                }
                 if (e.getButton() == MouseEvent.BUTTON3) {
                     JPopupMenu menu = new JPopupMenu();
-                    menu.add(new JMenuItem("Select"));
+                    JMenuItem title = new JMenuItem(s);
+                    title.setEnabled(false);
+                    menu.add(title);
+                    menu.add(new JMenuItem("Select")); //from its curerent photodir!
                     menu.add(new JMenuItem("previous"));
                     menu.add(new JMenuItem("next"));
                     menu.add(new JMenuItem("random again"));

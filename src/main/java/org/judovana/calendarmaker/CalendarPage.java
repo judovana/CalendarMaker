@@ -16,6 +16,14 @@ public class CalendarPage {
         this.photo = photo;
     }
 
+    public PhotoFrame getPhoto() {
+        return photo;
+    }
+
+    public DateRangeRenderrer getDates() {
+        return dates;
+    }
+
     public void paint(Graphics2D g, int x, int y, int w, int h) {
         dates.draw(x, y, w / 2, h, g);
         photo.draw(x + w / 2, y, w / 2, h, g);

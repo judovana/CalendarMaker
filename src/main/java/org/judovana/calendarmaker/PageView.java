@@ -14,4 +14,8 @@ public class PageView {
     public void paint(Graphics g, int x, int y, int w, int h) {
         data.paint((Graphics2D) g, x, y, w, h);
     }
+
+    public CalendarPage getData() {
+        return data;
+    }
 }

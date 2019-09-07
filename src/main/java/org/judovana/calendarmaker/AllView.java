@@ -57,4 +57,15 @@ public class AllView extends JPanel {
             data[i].paint((Graphics2D) g, 0, offset + i * this.getHeight(), this.getWidth(), this.getHeight());
         }
     }
+
+    public PageView get(int x, int y) {
+        for (int i = 0; i < data.length; i++) {
+            int h=i*getHeight()+offset;
+            if (y>h && y<h+getHeight()){
+                return data[i];
+            }
+        }
+        return null;
+    }
+
 }
