@@ -50,10 +50,16 @@ public class DateRangeRenderrer {
                 }
                 g.drawString(s, 2 * border, hh - (step - 2 * g.getFontMetrics().getHeight()));
 
-                String event = (NamesLoader.NAMES.getDaysEvent(c2));
-                if (event != null && event.trim().length() > 0) {
-                    g.setColor(Color.blue);
-                    g.drawString(event, 2 * border, hh - (step - 3 * g.getFontMetrics().getHeight()));
+                Object[] event = (NamesLoader.NAMES.getDaysEvent(c2));
+                String eS = (String) event[0];
+                Color eC = (Color) event[1];
+                if (event != null && eS.trim().length() > 0) {
+                    if (eC == null) {
+                        g.setColor(Color.blue);
+                    } else {
+                        g.setColor(eC);
+                    }
+                    g.drawString(eS, 2 * border, hh - (step - 3 * g.getFontMetrics().getHeight()));
                 }
             }
         } else {
@@ -66,7 +72,7 @@ public class DateRangeRenderrer {
                 c2.setTime(range.get(i));
                 int alpha = 255;
                 if (c2.get(Calendar.MONTH) != c1.get(Calendar.MONTH)) {
-                    alpha=125;
+                    alpha = 125;
                 }
                 g.setColor(new Color(0, 0, 0, alpha));
                 int row = (i / 7);
@@ -86,11 +92,16 @@ public class DateRangeRenderrer {
                 }
                 g.drawString(s, border + inRow * ww, y + border + row * hh + 2 * g.getFontMetrics().getHeight());
 
-                String event = (NamesLoader.NAMES.getDaysEvent(c2));
-                if (event != null && event.trim().length() > 0) {
-                    g.setColor(Color.blue);
-                    g.setColor(new Color(0, 0, 255, alpha));
-                    g.drawString(event, border + inRow * ww, y + border + row * hh + 3 * g.getFontMetrics().getHeight());
+                Object[] event = (NamesLoader.NAMES.getDaysEvent(c2));
+                String eS = (String) event[0];
+                Color eC = (Color) event[1];
+                if (event != null && eS.trim().length() > 0) {
+                    if (eC == null) {
+                        g.setColor(new Color(0, 0, 255, alpha));
+                    } else {
+                        g.setColor(new Color(eC.getRed(), eC.getGreen(), eC.getBlue(), alpha));
+                    }
+                    g.drawString(eS, border + inRow * ww, y + border + row * hh + 3 * g.getFontMetrics().getHeight());
                 }
             }
         }
