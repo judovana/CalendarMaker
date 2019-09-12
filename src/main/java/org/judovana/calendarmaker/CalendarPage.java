@@ -50,9 +50,13 @@ public class CalendarPage {
         Rectangle2D rect2 = g.getFontMetrics().getStringBounds(footer, g);
         int fh = g.getFontMetrics().getHeight();
         int fw = (int) rect2.getWidth();
+        int rectX2=(int)(ww*t.labelX);
+        int rectY2=(int)(hh*t.labelY);
+        int rectW2=(int)(ww*t.labelWidht);
+        int rectH2=(int)(hh*t.labelHeight);
         g.setColor(new Color(255, 255, 225, 125));
-        g.fillRect(w / 2 + w / 4 - fw / 2, y + h - 2 * fh, fw, fh);
+        g.fillRect(rectX2+rectW2/2-fw/2, rectY2, fw, fh);
         g.setColor(Color.black);
-        g.drawString(footer, w / 2 + w / 4 - fw / 2, y + h - fh);
+        g.drawString(footer, rectX2+rectW2/2-fw/2, rectY2 + fh);
     }
 }

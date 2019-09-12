@@ -43,7 +43,7 @@ public abstract class Template {
             monthY = 0;
             labelWidht = 0.5;
             labelX = 0.5;
-            labelY = 0.5;
+            labelY = 0.95;
         }
     }
 
@@ -62,7 +62,7 @@ public abstract class Template {
             monthY = 0.5;
             labelWidht = 1;
             labelX = 0;
-            labelY = 1;
+            labelY = 0.95;
         }
     }
 
