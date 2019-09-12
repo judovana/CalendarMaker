@@ -20,6 +20,10 @@ public abstract class Template {
     public int labelHeight = 10;
     public double labelX;
     public double labelY;//on lower half of screen needs adjust by height (or on upper)
+    //font
+    //formaters...
+    //name...
+    //aligns...
 
     private static final String MONTH = "month";
     private static final String WEEK = "week";

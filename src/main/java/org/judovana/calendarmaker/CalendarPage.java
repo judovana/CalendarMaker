@@ -37,10 +37,14 @@ public class CalendarPage {
         Rectangle2D rect1 = g.getFontMetrics().getStringBounds(title, g);
         int th = g.getFontMetrics().getHeight();
         int tw = (int) rect1.getWidth();
+        int rectX1=(int)(ww*t.monthX);
+        int rectY1=(int)(hh*t.monthY);
+        int rectW1=(int)(ww*t.monthWidht);
+        int rectH1=(int)(hh*t.monthHeight);
         g.setColor(new Color(255, 255, 225, 125));
-        g.fillRect(w / 2 + w / 4 - tw / 2, y, tw, th);
+        g.fillRect(rectX1+rectW1/2-tw/2, rectY1, tw, th);
         g.setColor(Color.black);
-        g.drawString(title, w / 2 + w / 4 - tw / 2, y + th);
+        g.drawString(title, rectX1+rectW1/2-tw/2, rectY1 + th);
 
         String footer = photo.getFooter();
         Rectangle2D rect2 = g.getFontMetrics().getStringBounds(footer, g);
