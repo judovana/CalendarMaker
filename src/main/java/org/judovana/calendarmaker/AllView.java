@@ -2,6 +2,8 @@ package org.judovana.calendarmaker;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.util.Collection;
 
 public class AllView extends JPanel {
@@ -11,13 +13,42 @@ public class AllView extends JPanel {
 
     private AllView() {
         data = null;
+        setResize();
+    }
+
+    private void setResize() {
+        this.addComponentListener(new ComponentListener() {
+            @Override
+            public void componentResized(ComponentEvent componentEvent) {
+                for (PageView page : data) {
+                    page.resize();
+                }
+            }
+
+            @Override
+            public void componentMoved(ComponentEvent componentEvent) {
+
+            }
+
+            @Override
+            public void componentShown(ComponentEvent componentEvent) {
+
+            }
+
+            @Override
+            public void componentHidden(ComponentEvent componentEvent) {
+
+            }
+        });
     }
 
     public AllView(PageView... pages) {
+        setResize();
         data = pages;
     }
 
     public AllView(Collection<PageView> pages) {
+        setResize();
         int i = 0;
         data = new PageView[pages.size()];
         for (PageView page : pages) {

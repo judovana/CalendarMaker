@@ -10,6 +10,7 @@ public class CalendarPage {
 
     private final PhotoFrame photo;
     private final DateRangeRenderrer dates;
+    private final Template t = new Template.Horizontal();
 
     public CalendarPage(List<Date> dates, PhotoFrame photo) {
         this.dates = new DateRangeRenderrer(dates);
@@ -24,9 +25,13 @@ public class CalendarPage {
         return dates;
     }
 
-    public void paint(Graphics2D g, int x, int y, int w, int h) {
-        dates.draw(x, y, w / 2, h, g);
-        photo.draw(x + w / 2, y, w / 2, h, g);
+    public void paint(Graphics2D g, double xx, double yy, double ww, double hh) {
+        int x = (int) xx;
+        int y = (int) yy;
+        int w = (int) ww;
+        int h = (int) hh;
+        dates.draw(x, y, w / 2, h, g,t.calBorder);
+        photo.draw(x + w / 2, y, w / 2, h, g, t.imgBorder);
 
 
         String title = dates.getTitle();

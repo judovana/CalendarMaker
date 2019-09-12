@@ -1,30 +1,30 @@
 package org.judovana.calendarmaker;
 
 public abstract class Template {
-    private int calBorder = 5;
-    private int imgBorder = 5;
-    private double calWidth;
-    private double calHeight;
-    private double imgWidth;
-    private double imgHeight;
-    private double calX;
-    private double calY;
-    private double imgX;
-    private double imgY;
-    private String type = MONTH;
-    private double monthWidht;
-    private int monthHeight = 15;
-    private double monthX;
-    private double monthY;//on lower half of screen needs adjust by height (or on upper)
-    private double labelWidht;
-    private int labelHeight = 10;
-    private double labelX;
-    private double labelY;//on lower half of screen needs adjust by height (or on upper)
+    public int calBorder = 5;
+    public int imgBorder = 5;
+    public double calWidth;
+    public double calHeight;
+    public double imgWidth;
+    public double imgHeight;
+    public double calX;
+    public double calY;
+    public double imgX;
+    public double imgY;
+    public String type = MONTH;
+    public double monthWidht;
+    public int monthHeight = 15;
+    public double monthX;
+    public double monthY;//on lower half of screen needs adjust by height (or on upper)
+    public double labelWidht;
+    public int labelHeight = 10;
+    public double labelX;
+    public double labelY;//on lower half of screen needs adjust by height (or on upper)
 
     private static final String MONTH = "month";
     private static final String WEEK = "week";
 
-    public class Horizontal extends Template {
+    public static class Horizontal extends Template {
         public Horizontal() {
             calWidth = 0.5;
             calHeight = 1;
@@ -43,7 +43,7 @@ public abstract class Template {
         }
     }
 
-    public class Vertical extends Template {
+    public static class Vertical extends Template {
         public Vertical() {
             calWidth = 1;
             calHeight = 0.5;

@@ -38,7 +38,11 @@ public class PhotoFrame {
         return src;
     }
 
-    public void draw(int x, int y, int w, int h, Graphics2D g2d) {
+    public void draw(int x, int y, int w, int h, Graphics2D g2d, int border) {
+        x = x + border;
+        y = y + border;
+        w = w - 2 * border;
+        h = h - 2 * border;
         if (scaleType == 1) {
             double spaceRatio = (double) w / (double) h;
             double imgRatio = (double) data.getWidth() / (double) data.getHeight();
@@ -69,7 +73,7 @@ public class PhotoFrame {
     }
 
     public void rotateImgClock() {
-        rotate =  + (Math.PI / 2d);
+        rotate = +(Math.PI / 2d);
         BufferedImage bi = new BufferedImage(data.getHeight(), data.getWidth(), data.getType());
 
         AffineTransform aff = new AffineTransform();
@@ -85,7 +89,7 @@ public class PhotoFrame {
 
 
     public void rotateImgAntiClock() {
-        rotate = - (Math.PI / 2d);
+        rotate = -(Math.PI / 2d);
         BufferedImage bi = new BufferedImage(data.getHeight(), data.getWidth(), data.getType());
 
         AffineTransform aff = new AffineTransform();
@@ -100,7 +104,7 @@ public class PhotoFrame {
     }
 
     public void rotateImg180() {
-        rotate =  + Math.PI;
+        rotate = +Math.PI;
         BufferedImage bi = new BufferedImage(data.getWidth(), data.getHeight(), data.getType());
 
         AffineTransform aff = new AffineTransform();
