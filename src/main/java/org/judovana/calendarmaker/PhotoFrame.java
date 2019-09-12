@@ -38,6 +38,10 @@ public class PhotoFrame {
         return src;
     }
 
+    public void draw(double x, double y, double w, double h, Graphics2D g, int border) {
+        draw((int) x, (int) y, (int) w, (int) h, g, border);
+    }
+
     public void draw(int x, int y, int w, int h, Graphics2D g2d, int border) {
         x = x + border;
         y = y + border;

@@ -21,6 +21,10 @@ public class DateRangeRenderrer {
     public static final SimpleDateFormat monthName = new SimpleDateFormat("MMMMMMMM yyyy");
     public static final SimpleDateFormat dayThis = new SimpleDateFormat("EEEEEEEE dd.MM");
 
+    public void draw(double x, double y, double w, double h, Graphics2D g, int border) {
+        draw((int) x, (int) y, (int) w, (int) h, g, border);
+    }
+
     public void draw(int x, int y, int w, int h, Graphics2D g, int border) {
         g.setColor(Color.black);
         if (range.size() == 7) {

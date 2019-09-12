@@ -2,7 +2,6 @@ package org.judovana.calendarmaker;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
 import java.util.Date;
 import java.util.List;
 
@@ -30,8 +29,8 @@ public class CalendarPage {
         int y = (int) yy;
         int w = (int) ww;
         int h = (int) hh;
-        dates.draw(x, y, w / 2, h, g,t.calBorder);
-        photo.draw(x + w / 2, y, w / 2, h, g, t.imgBorder);
+        dates.draw(ww*t.calX, hh*t.calY, ww*t.calWidth, hh*t.calHeight, g,t.calBorder);
+        photo.draw(ww*t.imgX, hh*t.imgY, ww*t.imgWidth, hh*t.imgHeight, g,t.imgBorder);
 
 
         String title = dates.getTitle();
