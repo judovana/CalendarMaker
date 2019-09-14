@@ -88,7 +88,7 @@ public class MoonPhases {
     }
 
     public static boolean isDarkFirstInLeft(int year, int month, int day) {
-        return isDarkFirstInLeft(getDarkPercent(year, month, day));
+        return isDarkFirstInLeft(getMoonPhase(year, month, day));
 
     }
 
