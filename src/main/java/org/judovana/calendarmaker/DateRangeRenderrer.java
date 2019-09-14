@@ -66,6 +66,8 @@ public class DateRangeRenderrer {
                     }
                     g.drawString(eS, 2 * border, hh - (step - 3 * g.getFontMetrics().getHeight()));
                 }
+                BufferedImage bi = MoonPhaseRenderer.getMoonRectGauge(c2.get(Calendar.YEAR), c2.get(Calendar.MONTH) + 1, c2.get(Calendar.DAY_OF_MONTH), step, step, 255);
+                g.drawImage(bi, w-step-2*border, hh-step, null);
             }
         } else {
             int ww = (w - (2 * border)) / 7;

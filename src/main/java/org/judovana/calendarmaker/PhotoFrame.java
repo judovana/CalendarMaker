@@ -15,7 +15,7 @@ public class PhotoFrame {
     private String src;
     private double rotate = 0;
     private int scaleType = 1;
-    private static final boolean rangeTesting = false;
+    private static final boolean rangeTesting = true;
 
     public PhotoFrame(String src) throws IOException {
         setData(src);

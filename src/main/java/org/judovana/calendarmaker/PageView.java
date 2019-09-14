@@ -25,7 +25,7 @@ public class PageView {
         }
         Graphics g = cache.createGraphics();
         g.setColor(Color.white);
-        g.fillRect(0, 0, w, h);
+        g.fillRect(0, 0, w, h );
         data.paint((Graphics2D) cache.createGraphics(), 0, 0, w, h);
         return cache;
     }
