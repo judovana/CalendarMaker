@@ -3,8 +3,15 @@ package org.judovana.calendarmaker;
 public class MoonPhases {
 
     public static void main(String... args) {
-        System.out.println("" + +getMoonPhase(2019, 11, 26));
-
+        int y = 2019;
+        int m = 8;
+        for (int d = 1; d <= 31; d++) {
+            System.out.println(d + "." + m + "." + y);
+            System.out.println("id " + getMoonPhase(y, m, d));
+            System.out.println("d  " + getDarkPercent(y, m, d));
+            System.out.println("w  " + getWhitePercent(y, m, d));
+            System.out.println("   " + isDarkFirstInLeft(y, m, d));
+        }
     }
 
     /**
@@ -23,6 +30,8 @@ public class MoonPhases {
         int phase = (base + month + day) % 30;
         return phase;
     }
+
+    //
 //0   : ############################
 //    : #####################0000000
 //7.5 : ##############00000000000000
@@ -31,6 +40,73 @@ public class MoonPhases {
 //    : 000000000000000000000#######
 //22.5: 00000000000000##############
 //    : 0000000#####################
+//0   : ############################
+//    : #####################0000000
+//7.5 : ##############00000000000000
+//    : #######000000000000000000000
+//15  : 0000000000000000000000000000
+
+    /*
+    0=>0
+    1 0.1
+    2 0.2
+    3 0.24
+    4 0.26
+    5 0.3
+    6 0.4
+    7=>0.5
+    8=>0.5
+    9 0.6
+    10 0.7
+    11 0.74
+    12 0.76
+    13 0.8
+    14 0.9
+    15=>1
+    16 0.9
+    17 0.8
+    180.76
+    19 0.74
+    20 0.7
+    12 0.6
+    22=0.5
+    23=0.5
+    24 0.4
+    25 0.3
+    26 0.25
+    27 0.2
+    28 0.1
+    29=0
+     */
+    public static double getWhite(int year, int month, int day) {
+        int mp = getMoonPhase(year, month, day);
+        if (!isDarkFirstInLeft(mp)) {
+            return (double) ((mp % 15)) / 15d;
+        } else {
+            return 1d - ((double) ((mp % 15)) / 15d);
+        }
+    }
+
+    public static boolean isDarkFirstInLeft(int year, int month, int day) {
+        return isDarkFirstInLeft(getDarkPercent(year, month, day));
+
+    }
+
+    private static boolean isDarkFirstInLeft(int moonPhase) {
+        return !(moonPhase < 15);
+    }
+
+    public static double getDark(int year, int month, int day) {
+        return 1d - getWhite(year, month, day);
+    }
+
+    public static int getWhitePercent(int year, int month, int day) {
+        return (int) (getWhite(year, month, day) * 100d);
+    }
+
+    public static int getDarkPercent(int year, int month, int day) {
+        return (int) (getDark(year, month, day) * 100d);
+    }
 
     private static int getMoonBase(int year) {
         int base = ((year - 5) % 19);
