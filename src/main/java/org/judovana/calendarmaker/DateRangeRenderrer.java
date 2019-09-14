@@ -1,6 +1,7 @@
 package org.judovana.calendarmaker;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -30,6 +31,7 @@ public class DateRangeRenderrer {
         if (range.size() == 7) {
             int step = (h - (2 * border)) / range.size();
             g.drawRect(x + border, y + border, w - 2 * border, h - 2 * border);
+            //todo, x is likely used only above
             for (int i = 0; i < range.size(); i++) {
                 Calendar c2 = new GregorianCalendar();
                 c2.setTime(range.get(i));
@@ -80,6 +82,7 @@ public class DateRangeRenderrer {
                 g.setColor(new Color(0, 0, 0, alpha));
                 int row = (i / 7);
                 int inRow = (i % 7);
+                //todo, broken x. is not used here
                 g.drawRect(border + inRow * ww, y + border + row * hh, ww, hh);
                 g.drawString(thisMonth.format(range.get(i)), border + inRow * ww, y + border + row * hh + g.getFontMetrics().getHeight());
 
@@ -106,6 +109,9 @@ public class DateRangeRenderrer {
                     }
                     g.drawString(eS, border + inRow * ww, y + border + row * hh + 3 * g.getFontMetrics().getHeight());
                 }
+                BufferedImage bi = MoonPhaseRenderer.getMoonRectGauge(c2.get(Calendar.YEAR), c2.get(Calendar.MONTH) + 1, c2.get(Calendar.DAY_OF_MONTH), ww / 2, hh / 4, alpha);
+                g.drawImage(bi, border + inRow * ww + ww / 2, y + border + row * hh + (2 * hh) / 3, null);
+
             }
         }
 

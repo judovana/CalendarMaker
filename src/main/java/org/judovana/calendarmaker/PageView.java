@@ -23,6 +23,9 @@ public class PageView {
         if (cache == null){
             cache = new BufferedImage(w, h, BufferedImage.TYPE_4BYTE_ABGR);
         }
+        Graphics g = cache.createGraphics();
+        g.setColor(Color.white);
+        g.fillRect(0, 0, w, h);
         data.paint((Graphics2D) cache.createGraphics(), 0, 0, w, h);
         return cache;
     }
