@@ -18,9 +18,6 @@ public class RangeProvider {
         Calendar c2 = new GregorianCalendar();
         c2.set(yearOfChoice, 0, 1);
         rewindToStartofWeek(c2);
-        //we are on monday
-        c2.add(Calendar.DAY_OF_YEAR, -1);
-        //so we canadd in loop
 
         List<Date> dates = new ArrayList<>(40);
         if (week) {
@@ -43,6 +40,9 @@ public class RangeProvider {
                 }
             }
         } else {
+            //we are on monday
+            c2.add(Calendar.DAY_OF_YEAR, -1);
+            //so we canadd in loop
             int lastMonth = 0;
             while (true) {
                 Date theDay = c2.getTime();
