@@ -11,6 +11,7 @@ import java.util.List;
 public class DateRangeRenderrer {
 
     private final List<Date> range;
+    private static final boolean clipMoon = true;
 
     public DateRangeRenderrer(List<Date> dates) {
         this.range = dates;
@@ -66,7 +67,7 @@ public class DateRangeRenderrer {
                     }
                     g.drawString(eS, 2 * border, hh + (3 * g.getFontMetrics().getHeight()));
                 }
-                BufferedImage bi = MoonPhaseRenderer.getMoonRectGauge(c2.get(Calendar.YEAR), c2.get(Calendar.MONTH) + 1, c2.get(Calendar.DAY_OF_MONTH), step, step, 255);
+                BufferedImage bi = MoonPhaseRenderer.getMoonGauge(c2.get(Calendar.YEAR), c2.get(Calendar.MONTH) + 1, c2.get(Calendar.DAY_OF_MONTH), step, step, 255, clipMoon);
                 g.drawImage(bi, w - step - 2 * border, hh, null);
             }
             {
@@ -75,7 +76,11 @@ public class DateRangeRenderrer {
                 if (c2.getActualMaximum(Calendar.DAY_OF_MONTH) == c2.get(Calendar.DAY_OF_MONTH)) {
                 g.setColor(Color.red);
                 int hh = y + border + (range.size()) * step;
-                g.drawLine(border, hh, w - 2*border-step/*width of moon*/, hh);
+                if (!clipMoon) {
+                    g.drawLine(border, hh, w - 2 * border - step/*width of moon*/, hh);
+                } else {
+                    g.drawLine(border, hh, w - 2 * border, hh);
+                }
             }
             }
         } else {
@@ -120,7 +125,7 @@ public class DateRangeRenderrer {
                     }
                     g.drawString(eS, border + inRow * ww, y + border + row * hh + 3 * g.getFontMetrics().getHeight());
                 }
-                BufferedImage bi = MoonPhaseRenderer.getMoonRectGauge(c2.get(Calendar.YEAR), c2.get(Calendar.MONTH) + 1, c2.get(Calendar.DAY_OF_MONTH), ww / 2, hh / 4, alpha);
+                BufferedImage bi = MoonPhaseRenderer.getMoonGauge(c2.get(Calendar.YEAR), c2.get(Calendar.MONTH) + 1, c2.get(Calendar.DAY_OF_MONTH), ww / 2, hh / 4, alpha, clipMoon);
                 g.drawImage(bi, border + inRow * ww + ww / 2, y + border + row * hh + (2 * hh) / 3, null);
 
             }

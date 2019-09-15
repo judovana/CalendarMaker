@@ -16,7 +16,7 @@ public class MainFrame extends JFrame {
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         final PhotoLoader pl = new PhotoLoader(photoFolders);
 
-        RangeProvider rp = new RangeProvider(2020, true);
+        RangeProvider rp = new RangeProvider(2020, false);
         List<List<Date>> ranges = rp.getRanges();
         List<PageView> pages = new ArrayList<>(ranges.size());
         for (List<Date> range : ranges) {

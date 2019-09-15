@@ -2,15 +2,21 @@ package org.judovana.calendarmaker;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 
 public class MoonPhaseRenderer {
 
-    public static BufferedImage getMoonRectGauge(int y, int m, /*1-12!*/int d, int w, int h, int alpha) {
+    public static BufferedImage getMoonGauge(int y, int m, /*1-12!*/int d, int w, int h, int alpha, boolean clip) {
         BufferedImage bi =  new BufferedImage(w, h, BufferedImage.TYPE_4BYTE_ABGR);
         Graphics2D g = bi.createGraphics();
+        Ellipse2D e = new Ellipse2D.Double();
+        e.setFrame(1, 1, w-2, h-2);
+        if (clip) {
+            g.setClip(e);
+        }
         g.setColor(new Color(0,0,0 ,alpha));
-        g.fillRect(0, 0, w-1, h-1);
+        g.fillRect(0, 0, w, h);
         if (!MoonPhases.isDarkFirstInLeft(y, m, d)) {
             int delimiter = (int) ((double) w * MoonPhases.getDark(y, m, d));
             g.setColor(new Color(255,255,255 ,alpha));
@@ -21,9 +27,10 @@ public class MoonPhaseRenderer {
             g.fillRect(0,0, delimiter, h);
         }
         g.setColor(new Color(0,0,0 ,alpha));
-        g.drawRect(0, 0, w-1, h-1
-
-        );
+        g.drawRect(0, 0, w-1, h-1);
+        if (clip) {
+            g.draw(e);
+        }
         return bi;
     }
 
@@ -31,7 +38,7 @@ public class MoonPhaseRenderer {
         int y = 2019;
         int m = 8;
         int d = 22;
-        final BufferedImage bi = MoonPhaseRenderer.getMoonRectGauge(y, m, d, 150, 80, 255);
+        final BufferedImage bi = MoonPhaseRenderer.getMoonGauge(y, m, d, 150, 80, 255, true);
         //for (int d = 1; d <= 1; d++)
         {
             JFrame jf = new JFrame();
