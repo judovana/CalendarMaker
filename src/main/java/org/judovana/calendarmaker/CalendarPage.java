@@ -9,7 +9,7 @@ public class CalendarPage {
 
     private final PhotoFrame photo;
     private final DateRangeRenderrer dates;
-    private final Template t = new Template.Vertical();
+    private final Template t = new Template.VerticalImageUp();
 
     public CalendarPage(List<Date> dates, PhotoFrame photo) {
         this.dates = new DateRangeRenderrer(dates);

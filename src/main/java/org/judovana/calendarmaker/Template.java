@@ -48,8 +48,8 @@ public abstract class Template {
         }
     }
 
-    public static class Vertical extends Template {
-        public Vertical() {
+    public static class VerticalImageDown extends Template {
+        public VerticalImageDown() {
             calWidth = 1;
             calHeight = 0.5;
             imgWidth = 1;
@@ -64,6 +64,25 @@ public abstract class Template {
             labelWidht = 1;
             labelX = 0;
             labelY = 0.95;
+        }
+    }
+
+    public static class VerticalImageUp extends Template {
+        public VerticalImageUp() {
+            calWidth = 1;
+            calHeight = 0.5;
+            imgWidth = 1;
+            imgHeight = 0.5;
+            calX = 0;
+            calY = 0.5;
+            imgX = 0;
+            imgY = 0;
+            monthWidht = 1;
+            monthX = 0;
+            monthY = 0;
+            labelWidht = 1;
+            labelX = 0;
+            labelY = 0.45;
         }
     }
 
