@@ -1,9 +1,22 @@
 package org.judovana.calendarmaker;
 
+import com.itextpdf.io.image.ImageData;
+import com.itextpdf.io.image.ImageDataFactory;
+import com.itextpdf.kernel.geom.PageSize;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.AreaBreak;
+import com.itextpdf.layout.element.Image;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.Collection;
 
 public class AllView extends JPanel {
@@ -91,12 +104,34 @@ public class AllView extends JPanel {
 
     public PageView get(int x, int y) {
         for (int i = 0; i < data.length; i++) {
-            int h=i*getHeight()+offset;
-            if (y>h && y<h+getHeight()){
+            int h = i * getHeight() + offset;
+            if (y > h && y < h + getHeight()) {
                 return data[i];
             }
         }
         return null;
     }
 
+    public void exportOnePageOnePage(final String s) throws IOException {
+        float margins = 20;
+        PdfWriter writer = new PdfWriter(s);
+        PdfDocument pdfDoc = new PdfDocument(writer);
+        Document d = new Document(pdfDoc, PageSize.A4);
+        for (int i = 0; i < data.length; i++) {
+            BufferedImage bi = data[i].getImage(getWidth(), getHeight());
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            ImageIO.write(bi, "png", os);
+            ImageData id = ImageDataFactory.createPng(os.toByteArray());
+            Image im = new Image(id);
+            im.setFixedPosition(margins, margins);
+            im.scaleAbsolute(PageSize.A4.getWidth() - 2f * margins, PageSize.A4.getHeight() - 2f * margins);
+            d.add(im);
+            if (i < data.length - 1) {
+                d.add(new AreaBreak());
+            }
+        }
+        d.close();
+        writer.flush();
+        writer.close();
+    }
 }

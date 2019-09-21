@@ -16,8 +16,8 @@ public class MainFrame extends JFrame {
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         final PhotoLoader pl = new PhotoLoader(photoFolders);
 
-        RangeProvider rp = new RangeProvider(2020, false);
-        List<List<Date>> ranges = rp.getRanges();
+        final RangeProvider rp = new RangeProvider(2020, false);
+        final List<List<Date>> ranges = rp.getRanges();
         List<PageView> pages = new ArrayList<>(ranges.size());
         for (List<Date> range : ranges) {
             CalendarPage cp = new CalendarPage(range, new PhotoFrame(pl.getRandomImage()));
@@ -55,6 +55,20 @@ public class MainFrame extends JFrame {
                     menu.add(rot2);
                     JMenuItem rot3 = new JMenuItem("rotate 180");
                     menu.add(rot3);
+                    JMenuItem export = new JMenuItem("print pdf");
+                    menu.add(export);
+
+                    export.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent actionEvent) {
+                            try {
+                                all.exportOnePageOnePage(System.getProperty("user.home") + "/Desktop/calendar" + rp.getYearOfChoice() + ".pdf");
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
+                                JOptionPane.showMessageDialog(null, ex);
+                            }
+                        }
+                    });
 
                     rot1.addActionListener(new ActionListener() {
                         @Override
