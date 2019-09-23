@@ -10,6 +10,9 @@ private String namesFile; //file with "dateTABnames or titles" default is ~/.con
     private String interestingNames; //file with name per line
     private String interestingDates ; //file with dd,mm.(yyyy)tabEVENTtabOPTIONALWEBCOLOR
     private boolean week; //weeK or month? FLSE,MONT IS default
-    private List<String> images;
+    private List<String> images;//or embed images?
+    private List<Double> rotations;
+    private List<String> dirs;
+    //what to do with it? wizard on beginning? save as defaults? save in calendar?
 
 }
