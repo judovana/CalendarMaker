@@ -42,8 +42,8 @@ public class DateRangeRenderrer {
                 } else {
                     g.setColor(Color.black);
                 }
-                g.drawString(dayThis.format(range.get(i)), 2 * border, hh + (g.getFontMetrics().getHeight()));
-                g.drawLine(border, hh, w - border, hh);
+                g.drawString(dayThis.format(range.get(i)), x + 2 * border, hh + (g.getFontMetrics().getHeight()));
+                g.drawLine(x + border, hh, x + w - border, hh);
                 String s = NamesLoader.NAMES.getDaysMeaning(c2);
                 if (s.startsWith("má svátek")) {
                     g.setColor(Color.black);
@@ -54,7 +54,7 @@ public class DateRangeRenderrer {
                 if (NamesLoader.NAMES.isInterestin(s)) {
                     g.setColor(Color.blue);
                 }
-                g.drawString(s, 2 * border, hh + (2 * g.getFontMetrics().getHeight()));
+                g.drawString(s, x + 2 * border, hh + (2 * g.getFontMetrics().getHeight()));
 
                 Object[] event = (NamesLoader.NAMES.getDaysEvent(c2));
                 String eS = (String) event[0];
@@ -65,23 +65,23 @@ public class DateRangeRenderrer {
                     } else {
                         g.setColor(eC);
                     }
-                    g.drawString(eS, 2 * border, hh + (3 * g.getFontMetrics().getHeight()));
+                    g.drawString(eS, x + 2 * border, hh + (3 * g.getFontMetrics().getHeight()));
                 }
                 BufferedImage bi = MoonPhaseRenderer.getMoonGauge(c2.get(Calendar.YEAR), c2.get(Calendar.MONTH) + 1, c2.get(Calendar.DAY_OF_MONTH), step, step, 255, clipMoon);
-                g.drawImage(bi, w - step - 2 * border, hh, null);
+                g.drawImage(bi, x + w - step - 2 * border, hh, null);
             }
             {
                 Calendar c2 = new GregorianCalendar();
                 c2.setTime(range.get(range.size() - 1));
                 if (c2.getActualMaximum(Calendar.DAY_OF_MONTH) == c2.get(Calendar.DAY_OF_MONTH)) {
-                g.setColor(Color.red);
-                int hh = y + border + (range.size()) * step;
-                if (!clipMoon) {
-                    g.drawLine(border, hh, w - 2 * border - step/*width of moon*/, hh);
-                } else {
-                    g.drawLine(border, hh, w - 2 * border, hh);
+                    g.setColor(Color.red);
+                    int hh = y + border + (range.size()) * step;
+                    if (!clipMoon) {
+                        g.drawLine(x + border, hh, x + w - 2 * border - step/*width of moon*/, hh);
+                    } else {
+                        g.drawLine(x + border, hh, x + w - 2 * border, hh);
+                    }
                 }
-            }
             }
         } else {
             int ww = (w - (2 * border)) / 7;
@@ -99,8 +99,8 @@ public class DateRangeRenderrer {
                 int row = (i / 7);
                 int inRow = (i % 7);
                 //todo, broken x. is not used here
-                g.drawRect(border + inRow * ww, y + border + row * hh, ww, hh);
-                g.drawString(thisMonth.format(range.get(i)), border + inRow * ww, y + border + row * hh + g.getFontMetrics().getHeight());
+                g.drawRect(x + border + inRow * ww, y + border + row * hh, ww, hh);
+                g.drawString(thisMonth.format(range.get(i)), x + border + inRow * ww, y + border + row * hh + g.getFontMetrics().getHeight());
 
                 String s = NamesLoader.NAMES.getDaysMeaning(c2);
                 if (s.startsWith("má svátek")) {
@@ -112,7 +112,7 @@ public class DateRangeRenderrer {
                 if (NamesLoader.NAMES.isInterestin(s)) {
                     g.setColor(new Color(0, 0, 255, alpha));
                 }
-                g.drawString(s, border + inRow * ww, y + border + row * hh + 2 * g.getFontMetrics().getHeight());
+                g.drawString(s, x + border + inRow * ww, y + border + row * hh + 2 * g.getFontMetrics().getHeight());
 
                 Object[] event = (NamesLoader.NAMES.getDaysEvent(c2));
                 String eS = (String) event[0];
@@ -123,10 +123,10 @@ public class DateRangeRenderrer {
                     } else {
                         g.setColor(new Color(eC.getRed(), eC.getGreen(), eC.getBlue(), alpha));
                     }
-                    g.drawString(eS, border + inRow * ww, y + border + row * hh + 3 * g.getFontMetrics().getHeight());
+                    g.drawString(eS, x + border + inRow * ww, y + border + row * hh + 3 * g.getFontMetrics().getHeight());
                 }
                 BufferedImage bi = MoonPhaseRenderer.getMoonGauge(c2.get(Calendar.YEAR), c2.get(Calendar.MONTH) + 1, c2.get(Calendar.DAY_OF_MONTH), ww / 2, hh / 4, alpha, clipMoon);
-                g.drawImage(bi, border + inRow * ww + ww / 2, y + border + row * hh + (2 * hh) / 3, null);
+                g.drawImage(bi, x + border + inRow * ww + ww / 2, y + border + row * hh + (2 * hh) / 3, null);
 
             }
         }

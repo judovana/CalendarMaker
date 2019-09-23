@@ -29,8 +29,8 @@ public abstract class Template {
     private static final String MONTH = "month";
     private static final String WEEK = "week";
 
-    public static class Horizontal extends Template {
-        public Horizontal() {
+    public static class HorizontalImageRight extends Template {
+        public HorizontalImageRight() {
             calWidth = 0.5;
             calHeight = 1;
             imgWidth = 0.5;
@@ -44,6 +44,25 @@ public abstract class Template {
             monthY = 0;
             labelWidht = 0.5;
             labelX = 0.5;
+            labelY = 0.95;
+        }
+    }
+
+    public static class HorizontalImageLeft extends Template {
+        public HorizontalImageLeft() {
+            calWidth = 0.5;
+            calHeight = 1;
+            imgWidth = 0.5;
+            imgHeight = 1;
+            calX = 0.5;
+            calY = 0;
+            imgX = 0;
+            imgY = 0;
+            monthWidht = 0.5;
+            monthX = 0;
+            monthY = 0;
+            labelWidht = 0.5;
+            labelX = 0;
             labelY = 0.95;
         }
     }
