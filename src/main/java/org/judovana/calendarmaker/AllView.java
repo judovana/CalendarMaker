@@ -98,7 +98,11 @@ public class AllView extends JPanel {
         g.fillRect(0, 0, this.getWidth(), this.getHeight());
         g.setColor(Color.black);
         for (int i = 0; i < data.length; i++) {
-            data[i].paint((Graphics2D) g, 0, offset + i * this.getHeight(), this.getWidth(), this.getHeight());
+            Integer week = null;
+            if (isWeekCal()) {
+                week = i;
+            }
+            data[i].paint((Graphics2D) g, 0, offset + i * this.getHeight(), this.getWidth(), this.getHeight(), week);
         }
     }
 
@@ -112,13 +116,17 @@ public class AllView extends JPanel {
         return null;
     }
 
-    public void exportOnePageOnePage(final String s) throws IOException {
+    public void exportOnePageOnePage_month(final String s) throws IOException {
         float margins = 20;
         PdfWriter writer = new PdfWriter(s);
         PdfDocument pdfDoc = new PdfDocument(writer);
         Document d = new Document(pdfDoc, PageSize.A4);
         for (int i = 0; i < data.length; i++) {
-            BufferedImage bi = data[i].getImage(getWidth(), getHeight());
+            Integer week = null;
+            if (isWeekCal()) {
+                week = i;
+            }
+            BufferedImage bi = data[i].getImage(getWidth(), getHeight(), week);
             ByteArrayOutputStream os = new ByteArrayOutputStream();
             ImageIO.write(bi, "png", os);
             ImageData id = ImageDataFactory.createPng(os.toByteArray());
@@ -133,5 +141,55 @@ public class AllView extends JPanel {
         d.close();
         writer.flush();
         writer.close();
+    }
+
+    public void exportOnePageOnePage_week(final String s) throws IOException {
+        float margins = 20;
+        PdfWriter writer = new PdfWriter(s);
+        PdfDocument pdfDoc = new PdfDocument(writer);
+        Document d = new Document(pdfDoc, PageSize.A4);
+        int half = data.length / 2;
+        if (data.length % 2 != 0) {
+            half++;
+        }
+        for (int i = 0; i < half; i++) {
+            Integer week = null;
+            if (isWeekCal()) {
+                week = i;
+            }
+            BufferedImage bi1 = PhotoFrame.rotate180(data[i].getImage(getWidth(), getHeight(), week), Math.PI);
+            ByteArrayOutputStream os1 = new ByteArrayOutputStream();
+            ImageIO.write(bi1, "png", os1);
+            ImageData id1 = ImageDataFactory.createPng(os1.toByteArray());
+            Image im1 = new Image(id1);
+            im1.setFixedPosition(margins, PageSize.A4.getHeight() / 2f + margins);
+            im1.scaleAbsolute(PageSize.A4.getWidth() - 2f * margins, (PageSize.A4.getHeight() - 2f * margins) / 2);
+            d.add(im1);
+
+            int ii = data.length - 1 - i;
+            week = null;
+            if (isWeekCal()) {
+                week = ii;
+            }
+            BufferedImage bi2 = data[ii].getImage(getWidth(), getHeight(), week);
+            ByteArrayOutputStream os2 = new ByteArrayOutputStream();
+            ImageIO.write(bi2, "png", os2);
+            ImageData id2 = ImageDataFactory.createPng(os2.toByteArray());
+            Image im2 = new Image(id2);
+            im2.setFixedPosition(margins, margins);
+            im2.scaleAbsolute(PageSize.A4.getWidth() - 2f * margins, (PageSize.A4.getHeight() - 2f * margins) / 2);
+            d.add(im2);
+
+            if (i < half- 1) {
+                d.add(new AreaBreak());
+            }
+        }
+        d.close();
+        writer.flush();
+        writer.close();
+    }
+
+    private boolean isWeekCal() {
+        return data.length > 12;
     }
 }

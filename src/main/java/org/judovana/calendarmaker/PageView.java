@@ -14,19 +14,19 @@ public class PageView {
 
     private BufferedImage cache = null;
 
-    public void paint(Graphics g, int x, int y, int w, int h) {
-        getImage(w, h);
+    public void paint(Graphics g, int x, int y, int w, int h, Integer week) {
+        getImage(w, h, week);
         g.drawImage(cache, x , y, null);
     }
 
-    public BufferedImage getImage(int w, int h) {
+    public BufferedImage getImage(int w, int h, Integer week) {
         if (cache == null){
             cache = new BufferedImage(w, h, BufferedImage.TYPE_4BYTE_ABGR);
         }
         Graphics g = cache.createGraphics();
         g.setColor(Color.white);
         g.fillRect(0, 0, w, h );
-        data.paint((Graphics2D) cache.createGraphics(), 0, 0, w, h);
+        data.paint((Graphics2D) cache.createGraphics(), 0, 0, w, h, week);
         return cache;
     }
 

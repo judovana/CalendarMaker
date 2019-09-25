@@ -76,49 +76,43 @@ public class PhotoFrame {
 
     }
 
+    public  static BufferedImage rotate90(BufferedImage src, double angleRad){
+        BufferedImage bi = new BufferedImage(src.getHeight(), src.getWidth(), src.getType());
+        AffineTransform aff = new AffineTransform();
+        aff.translate(src.getHeight() / 2, src.getWidth() / 2);
+        aff.rotate(angleRad);
+        aff.translate(-src.getWidth() / 2, -src.getHeight() / 2);
+        bi.createGraphics().drawImage(src, aff, null);
+
+        return bi;
+    }
+
     public void rotateImgClock() {
         rotate = +(Math.PI / 2d);
-        BufferedImage bi = new BufferedImage(data.getHeight(), data.getWidth(), data.getType());
-
-        AffineTransform aff = new AffineTransform();
-        aff.translate(data.getHeight() / 2, data.getWidth() / 2);
-        aff.rotate(rotate);
-        aff.translate(-data.getWidth() / 2, -data.getHeight() / 2);
-
-        bi.createGraphics().drawImage(data, aff, null);
-
-        data = bi;
-
+        data = rotate90(data, rotate);
     }
 
 
     public void rotateImgAntiClock() {
         rotate = -(Math.PI / 2d);
-        BufferedImage bi = new BufferedImage(data.getHeight(), data.getWidth(), data.getType());
+        data = rotate90(data, rotate);
 
+    }
+
+
+    public static BufferedImage rotate180(BufferedImage src, double angleRad){
+        BufferedImage bi = new BufferedImage(src.getWidth(), src.getHeight(), src.getType());
         AffineTransform aff = new AffineTransform();
-        aff.translate(data.getHeight() / 2, data.getWidth() / 2);
-        aff.rotate(rotate);
-        aff.translate(-data.getWidth() / 2, -data.getHeight() / 2);
-
-        bi.createGraphics().drawImage(data, aff, null);
-
-        data = bi;
-
+        aff.translate(src.getWidth() / 2, src.getHeight() / 2);
+        aff.rotate(angleRad);
+        aff.translate(-src.getWidth() / 2, -src.getHeight() / 2);
+        bi.createGraphics().drawImage(src, aff, null);
+        return bi;
     }
 
     public void rotateImg180() {
         rotate = +Math.PI;
-        BufferedImage bi = new BufferedImage(data.getWidth(), data.getHeight(), data.getType());
-
-        AffineTransform aff = new AffineTransform();
-        aff.translate(data.getWidth() / 2, data.getHeight() / 2);
-        aff.rotate(rotate);
-        aff.translate(-data.getWidth() / 2, -data.getHeight() / 2);
-
-        bi.createGraphics().drawImage(data, aff, null);
-
-        data = bi;
+        data = rotate180(data, rotate);
 
     }
 }

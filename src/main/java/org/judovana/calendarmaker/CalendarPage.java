@@ -9,7 +9,7 @@ public class CalendarPage {
 
     private final PhotoFrame photo;
     private final DateRangeRenderrer dates;
-    private final Template t = new Template.VerticalImageUp();
+    private final Template t = new Template.HorizontalImageRight();
 
     public CalendarPage(List<Date> dates, PhotoFrame photo) {
         this.dates = new DateRangeRenderrer(dates);
@@ -24,7 +24,7 @@ public class CalendarPage {
         return dates;
     }
 
-    public void paint(Graphics2D g, double xx, double yy, double ww, double hh) {
+    public void paint(Graphics2D g, double xx, double yy, double ww, double hh, Integer week) {
         int x = (int) xx;
         int y = (int) yy;
         int w = (int) ww;
@@ -34,6 +34,9 @@ public class CalendarPage {
 
 
         String title = dates.getTitle();
+        if (week !=null){
+            title=title+" "+(week+1)+"/"+53;
+        }
         Rectangle2D rect1 = g.getFontMetrics().getStringBounds(title, g);
         int th = g.getFontMetrics().getHeight();
         int tw = (int) rect1.getWidth();

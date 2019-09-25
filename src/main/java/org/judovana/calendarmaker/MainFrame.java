@@ -55,14 +55,27 @@ public class MainFrame extends JFrame {
                     menu.add(rot2);
                     JMenuItem rot3 = new JMenuItem("rotate 180");
                     menu.add(rot3);
-                    JMenuItem export = new JMenuItem("print pdf");
-                    menu.add(export);
+                    JMenuItem export1 = new JMenuItem("print pdf WALL");
+                    menu.add(export1);
+                    JMenuItem export2 = new JMenuItem("print pdf TABLE");
+                    menu.add(export2);
 
-                    export.addActionListener(new ActionListener() {
+                    export1.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent actionEvent) {
                             try {
-                                all.exportOnePageOnePage(System.getProperty("user.home") + "/Desktop/calendar" + rp.getYearOfChoice() + ".pdf");
+                                all.exportOnePageOnePage_month(System.getProperty("user.home") + "/Desktop/calendar-" + rp.getYearOfChoice() + "-wall.pdf");
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
+                                JOptionPane.showMessageDialog(null, ex);
+                            }
+                        }
+                    });
+                    export2.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent actionEvent) {
+                            try {
+                                all.exportOnePageOnePage_week(System.getProperty("user.home") + "/Desktop/calendar-" + rp.getYearOfChoice() + "-table.pdf");
                             } catch (Exception ex) {
                                 ex.printStackTrace();
                                 JOptionPane.showMessageDialog(null, ex);
