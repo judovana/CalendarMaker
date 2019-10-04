@@ -201,7 +201,7 @@ public class AllView extends JPanel {
     public void save(String s) throws IOException {
         List<String> l = new ArrayList<>(data.length);
         for (PageView p : data) {
-            l.add(p.getData().getPhoto().getSrc()+"|"+p.getData().getPhoto().getRotate());
+            l.add(p.getData().getPhoto().getSrc() + "|" + p.getData().getPhoto().getRotate());
         }
         Files.write(new File(s).toPath(), l, Charset.forName("utf-8"));
     }
@@ -212,6 +212,28 @@ public class AllView extends JPanel {
             String[] imgRotate = lines.get(i).split("\\|");
             data[i].getData().getPhoto().setData(imgRotate[0]);
             data[i].getData().getPhoto().setRotate(imgRotate[1]);
+        }
+    }
+
+    public void moveUp(PageView page) {
+        for (int i = 1/*first can not go up*/; i < data.length; i++) {
+            if (page == data[i]) {
+                PageView swap = data[i - 1];
+                data[i - 1] = page;
+                data[i] = swap;
+                break;
+            }
+        }
+    }
+
+    public void moveDown(PageView page) {
+        for (int i = 0; i < data.length-1/*last can not go down*/; i++) {
+            if (page == data[i]) {
+                PageView swap = data[i + 1];
+                data[i + 1] = page;
+                data[i] = swap;
+                break;
+            }
         }
     }
 }

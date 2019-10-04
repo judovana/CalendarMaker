@@ -26,6 +26,57 @@ public class MainFrame extends JFrame {
         }
 
         final AllView all = new AllView(pages);
+        this.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                final PageView page = all.get(MainFrame.this.getWidth() / 2, MainFrame.this.getHeight() / 2);
+                if (e.getKeyCode() == KeyEvent.VK_R) {
+                    try {
+                        page.getData().getPhoto().setData(pl.getRandomImage());
+                        all.repaint();
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(all, ex);
+                        ex.printStackTrace();
+                    }
+                }
+                if (e.getKeyCode() == KeyEvent.VK_N) {
+                    try {
+                        page.getData().getPhoto().setData(pl.getNext(page.getData().getPhoto().getSrc()));
+                        all.repaint();
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(all, ex);
+                        ex.printStackTrace();
+                    }
+                }
+                if (e.getKeyCode() == KeyEvent.VK_P) {
+                    try {
+                        page.getData().getPhoto().setData(pl.getPrev(page.getData().getPhoto().getSrc()));
+                        all.repaint();
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(all, ex);
+                        ex.printStackTrace();
+                    }
+                }
+                if (e.getKeyCode() == KeyEvent.VK_S) {
+                    try {
+                        JFileChooser chooser = new JFileChooser();
+                        chooser.setCurrentDirectory(new File(page.getData().getPhoto().getSrc()).getParentFile());
+                        chooser.setSelectedFile(new File(page.getData().getPhoto().getSrc()));
+                        int r = chooser.showOpenDialog(all);
+                        if (r == JFileChooser.APPROVE_OPTION) {
+                            File f = chooser.getSelectedFile();
+                            if (f != null) {
+                                page.getData().getPhoto().setData(f.getAbsolutePath());
+                                all.repaint();
+                            }
+                        }
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(all, ex);
+                        ex.printStackTrace();
+                    }
+                }
+            }
+        });
         all.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -41,13 +92,13 @@ public class MainFrame extends JFrame {
                     JMenuItem title = new JMenuItem(s);
                     title.setEnabled(false);
                     menu.add(title);
-                    JMenuItem sel = new JMenuItem("select");
-                    menu.add(sel); //from its curerent photodir!
-                    JMenuItem prev = new JMenuItem("previous");
+                    JMenuItem prev = new JMenuItem("P - previous");
                     menu.add(prev);
-                    JMenuItem next = new JMenuItem("next");
+                    JMenuItem next = new JMenuItem("N - next");
                     menu.add(next);
-                    JMenuItem rnd = new JMenuItem("random again");
+                    JMenuItem sel = new JMenuItem("S - select");
+                    menu.add(sel); //from its curerent photodir!
+                    JMenuItem rnd = new JMenuItem("R - random again");
                     menu.add(rnd);
                     JMenuItem rot1 = new JMenuItem("rotate 90 clock");
                     menu.add(rot1);
@@ -55,6 +106,13 @@ public class MainFrame extends JFrame {
                     menu.add(rot2);
                     JMenuItem rot3 = new JMenuItem("rotate 180");
                     menu.add(rot3);
+                    JMenuItem more = new JMenuItem("------- more -------");
+                    more.setEnabled(false);
+                    menu.add(more);
+                    JMenuItem up = new JMenuItem("up");
+                    menu.add(up);
+                    JMenuItem down = new JMenuItem("down");
+                    menu.add(down);
                     JMenuItem footer = new JMenuItem("------- global -------");
                     footer.setEnabled(false);
                     menu.add(footer);
@@ -66,6 +124,24 @@ public class MainFrame extends JFrame {
                     menu.add(save);
                     JMenuItem load = new JMenuItem("load");
                     menu.add(load);
+
+                    up.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            all.moveUp(page);
+                            all.repaint();
+
+                        }
+                    });
+                    down.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            all.moveDown(page);
+                            all.repaint();
+
+                        }
+                    });
+
 
                     save.addActionListener(new ActionListener() {
                         @Override
