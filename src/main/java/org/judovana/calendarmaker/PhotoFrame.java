@@ -6,6 +6,8 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -37,6 +39,23 @@ public class PhotoFrame {
     public String getSrc() {
         return src;
     }
+
+    public BigDecimal getRotate() {
+        BigDecimal bd = BigDecimal.valueOf(rotate);
+        bd = bd.setScale(2, RoundingMode.HALF_UP);
+        return bd;
+    }
+
+    public void setRotate(String src) {
+        if (src.equals("3.14") || src.equals("-3.14")) {
+            rotateImg180();
+        } else if (src.equals("1.57")) {
+            rotateImgClock();
+        } else if (src.equals("-1.57")) {
+            rotateImgAntiClock();
+        }
+    }
+
 
     public void draw(double x, double y, double w, double h, Graphics2D g, int border) {
         draw((int) x, (int) y, (int) w, (int) h, g, border);
@@ -76,7 +95,7 @@ public class PhotoFrame {
 
     }
 
-    public  static BufferedImage rotate90(BufferedImage src, double angleRad){
+    public static BufferedImage rotate90(BufferedImage src, double angleRad) {
         BufferedImage bi = new BufferedImage(src.getHeight(), src.getWidth(), src.getType());
         AffineTransform aff = new AffineTransform();
         aff.translate(src.getHeight() / 2, src.getWidth() / 2);
@@ -100,7 +119,7 @@ public class PhotoFrame {
     }
 
 
-    public static BufferedImage rotate180(BufferedImage src, double angleRad){
+    public static BufferedImage rotate180(BufferedImage src, double angleRad) {
         BufferedImage bi = new BufferedImage(src.getWidth(), src.getHeight(), src.getType());
         AffineTransform aff = new AffineTransform();
         aff.translate(src.getWidth() / 2, src.getHeight() / 2);

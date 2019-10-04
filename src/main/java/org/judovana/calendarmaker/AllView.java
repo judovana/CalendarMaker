@@ -16,8 +16,13 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class AllView extends JPanel {
 
@@ -180,7 +185,7 @@ public class AllView extends JPanel {
             im2.scaleAbsolute(PageSize.A4.getWidth() - 2f * margins, (PageSize.A4.getHeight() - 2f * margins) / 2);
             d.add(im2);
 
-            if (i < half- 1) {
+            if (i < half - 1) {
                 d.add(new AreaBreak());
             }
         }
@@ -191,5 +196,22 @@ public class AllView extends JPanel {
 
     private boolean isWeekCal() {
         return data.length > 12;
+    }
+
+    public void save(String s) throws IOException {
+        List<String> l = new ArrayList<>(data.length);
+        for (PageView p : data) {
+            l.add(p.getData().getPhoto().getSrc()+"|"+p.getData().getPhoto().getRotate());
+        }
+        Files.write(new File(s).toPath(), l, Charset.forName("utf-8"));
+    }
+
+    public void load(String s) throws IOException {
+        List<String> lines = Files.readAllLines(new File(s).toPath(), Charset.forName("utf-8"));
+        for (int i = 0; i < Math.min(lines.size(), data.length); i++) {
+            String[] imgRotate = lines.get(i).split("\\|");
+            data[i].getData().getPhoto().setData(imgRotate[0]);
+            data[i].getData().getPhoto().setRotate(imgRotate[1]);
+        }
     }
 }

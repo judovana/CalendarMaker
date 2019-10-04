@@ -55,10 +55,42 @@ public class MainFrame extends JFrame {
                     menu.add(rot2);
                     JMenuItem rot3 = new JMenuItem("rotate 180");
                     menu.add(rot3);
+                    JMenuItem footer = new JMenuItem("------- global -------");
+                    footer.setEnabled(false);
+                    menu.add(footer);
                     JMenuItem export1 = new JMenuItem("print pdf WALL");
                     menu.add(export1);
                     JMenuItem export2 = new JMenuItem("print pdf TABLE");
                     menu.add(export2);
+                    JMenuItem save = new JMenuItem("save");
+                    menu.add(save);
+                    JMenuItem load = new JMenuItem("load");
+                    menu.add(load);
+
+                    save.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent actionEvent) {
+                            try {
+                                all.save(System.getProperty("user.home") + "/Desktop/calendar.save");
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
+                                JOptionPane.showMessageDialog(null, ex);
+                            }
+                        }
+                    });
+
+                    load.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent actionEvent) {
+                            try {
+                                all.load(System.getProperty("user.home") + "/Desktop/calendar.save");
+                                all.repaint();
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
+                                JOptionPane.showMessageDialog(null, ex);
+                            }
+                        }
+                    });
 
                     export1.addActionListener(new ActionListener() {
                         @Override
