@@ -7,7 +7,7 @@ import java.util.List;
 
 public class CalendarPage {
 
-    private final PhotoFrame photo;
+    private PhotoFrame photo;
     private final DateRangeRenderrer dates;
     private final Template t = new Template.HorizontalImageRight();
 
@@ -61,5 +61,9 @@ public class CalendarPage {
         g.fillRect(rectX2+rectW2/2-fw/2, rectY2, fw, fh);
         g.setColor(Color.black);
         g.drawString(footer, rectX2+rectW2/2-fw/2, rectY2 + fh);
+    }
+
+    public void setPhoto(PhotoFrame page) {
+            this.photo = page;
     }
 }

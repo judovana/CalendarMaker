@@ -218,9 +218,9 @@ public class AllView extends JPanel {
     public void moveUp(PageView page) {
         for (int i = 1/*first can not go up*/; i < data.length; i++) {
             if (page == data[i]) {
-                PageView swap = data[i - 1];
-                data[i - 1] = page;
-                data[i] = swap;
+                PhotoFrame swap = data[i - 1].getData().getPhoto();
+                data[i - 1].getData().setPhoto(page.getData().getPhoto());
+                data[i].getData().setPhoto(swap);
                 break;
             }
         }
@@ -229,9 +229,9 @@ public class AllView extends JPanel {
     public void moveDown(PageView page) {
         for (int i = 0; i < data.length-1/*last can not go down*/; i++) {
             if (page == data[i]) {
-                PageView swap = data[i + 1];
-                data[i + 1] = page;
-                data[i] = swap;
+                PhotoFrame swap = data[i + 1].getData().getPhoto();
+                data[i + 1].getData().setPhoto(page.getData().getPhoto());
+                data[i].getData().setPhoto(swap);
                 break;
             }
         }
