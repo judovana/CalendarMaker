@@ -22,10 +22,31 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 
 public class AllView extends JPanel {
 
+    private static class HistoryItem {
+        private final String img;
+        private final double rotation;
+
+        public HistoryItem(String img, double rotation) {
+            this.img = img;
+            this.rotation = rotation;
+        }
+    }
+
+    private  static class HistoryMoment {
+        private final List<HistoryItem>  state;
+
+        public HistoryMoment(PageView[] data) {
+            this.state = new ArrayList<>(data.length);
+        }
+    }
+
+    private final List<HistoryMoment> toUndo = new LinkedList<>();
+    private final List<HistoryMoment> toRedo = new LinkedList<>();
     private final PageView[] data;
     private int offset = 0;
 
