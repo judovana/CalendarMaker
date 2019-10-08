@@ -9,7 +9,7 @@ import java.util.List;
 
 public class MainFrame extends JFrame {
 
-    public static String[] photoFolders = new String[]{"/home/jvanek/tripshare/Context/Data/Fotky", "/usr/share/backgrounds"};
+    public static String[] photoFolders = new String[]{"/home/jvanek/tripshare/Context/Data/Fotky", "/usr/share/backgrounds", "/usr/share/icons/"};
 
     public MainFrame() throws IOException {
         this.setSize(800, 600);
@@ -37,6 +37,15 @@ public class MainFrame extends JFrame {
                     } catch (Exception ex) {
                         JOptionPane.showMessageDialog(all, ex);
                         ex.printStackTrace();
+                    }
+                }
+                if (e.getKeyCode() == KeyEvent.VK_F) {
+                    try {
+                        page.getData().getPhoto().setData(new PhotoLoader(new File(page.getData().getPhoto().getSrc()).getParent()).getRandomImage());
+                        all.repaint();
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                        JOptionPane.showMessageDialog(null, ex);
                     }
                 }
                 if (e.getKeyCode() == KeyEvent.VK_N) {
@@ -75,6 +84,29 @@ public class MainFrame extends JFrame {
                         ex.printStackTrace();
                     }
                 }
+
+                if (e.getKeyCode() == KeyEvent.VK_U) {
+                    all.moveUp(page);
+                    all.repaint();
+
+                }
+                if (e.getKeyCode() == KeyEvent.VK_D) {
+                    all.moveDown(page);
+                    all.repaint();
+
+                }
+                if (e.getKeyCode() == KeyEvent.VK_9 || e.getKeyCode() == KeyEvent.VK_NUMPAD9) {
+                    page.getData().getPhoto().rotateImgClock();
+                    all.repaint();
+                }
+                if (e.getKeyCode() == KeyEvent.VK_7 || e.getKeyCode() == KeyEvent.VK_NUMPAD7) {
+                    page.getData().getPhoto().rotateImgAntiClock();
+                    all.repaint();
+                }
+                if (e.getKeyCode() == KeyEvent.VK_8 || e.getKeyCode() == KeyEvent.VK_NUMPAD8) {
+                    page.getData().getPhoto().rotateImg180();
+                    all.repaint();
+                }
             }
         });
         all.addMouseListener(new MouseAdapter() {
@@ -100,18 +132,20 @@ public class MainFrame extends JFrame {
                     menu.add(sel); //from its curerent photodir!
                     JMenuItem rnd = new JMenuItem("R - random again");
                     menu.add(rnd);
-                    JMenuItem rot1 = new JMenuItem("rotate 90 clock");
+                    JMenuItem rndLocal = new JMenuItem("F - random from this folder");
+                    menu.add(rndLocal);
+                    JMenuItem rot1 = new JMenuItem("9 - rotate 90 clock");
                     menu.add(rot1);
-                    JMenuItem rot2 = new JMenuItem("rotate 90 anti-clock");
+                    JMenuItem rot2 = new JMenuItem("7 - rotate 90 anti-clock");
                     menu.add(rot2);
-                    JMenuItem rot3 = new JMenuItem("rotate 180");
+                    JMenuItem rot3 = new JMenuItem("8 - rotate 180");
                     menu.add(rot3);
                     JMenuItem more = new JMenuItem("------- more -------");
                     more.setEnabled(false);
                     menu.add(more);
-                    JMenuItem up = new JMenuItem("up");
+                    JMenuItem up = new JMenuItem("U - up");
                     menu.add(up);
-                    JMenuItem down = new JMenuItem("down");
+                    JMenuItem down = new JMenuItem("D - down");
                     menu.add(down);
                     JMenuItem footer = new JMenuItem("------- global -------");
                     footer.setEnabled(false);
@@ -124,6 +158,20 @@ public class MainFrame extends JFrame {
                     menu.add(save);
                     JMenuItem load = new JMenuItem("load");
                     menu.add(load);
+
+                    rndLocal.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            try {
+                                page.getData().getPhoto().setData(new PhotoLoader(new File(page.getData().getPhoto().getSrc()).getParent()).getRandomImage());
+                                all.repaint();
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
+                                JOptionPane.showMessageDialog(null, ex);
+                            }
+
+                        }
+                    });
 
                     up.addActionListener(new ActionListener() {
                         @Override
