@@ -8,6 +8,7 @@ import java.util.*;
 import java.util.List;
 
 public class MainFrame extends JFrame {
+    private static File lastDir = new File(System.getProperty("user.home"));
 
     public static String[] photoFolders = new String[]{"/home/jvanek/tripshare/Context/Data/Fotky", "/usr/share/backgrounds", "/usr/share/icons/"};
 
@@ -195,7 +196,16 @@ public class MainFrame extends JFrame {
                         @Override
                         public void actionPerformed(ActionEvent actionEvent) {
                             try {
-                                all.save(System.getProperty("user.home") + "/Desktop/calendar.save");
+                                JFileChooser jf = new JFileChooser(lastDir);
+                                jf.setSelectedFile(new File("calendar.save"));
+                                if (jf.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+                                    File f = jf.getSelectedFile();
+                                    if (f != null) {
+                                        lastDir = f.getParentFile();
+                                        String ex = f.getAbsolutePath();
+                                        all.save(ex);
+                                    }
+                                }
                             } catch (Exception ex) {
                                 ex.printStackTrace();
                                 JOptionPane.showMessageDialog(null, ex);
@@ -207,8 +217,17 @@ public class MainFrame extends JFrame {
                         @Override
                         public void actionPerformed(ActionEvent actionEvent) {
                             try {
-                                all.load(System.getProperty("user.home") + "/Desktop/calendar.save");
-                                all.repaint();
+                                JFileChooser jf = new JFileChooser(lastDir);
+                                jf.setSelectedFile(new File("calendar.save"));
+                                if (jf.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+                                    File f = jf.getSelectedFile();
+                                    if (f != null) {
+                                        lastDir = f.getParentFile();
+                                        String ex = f.getAbsolutePath();
+                                        all.load(ex);
+                                        all.repaint();
+                                    }
+                                }
                             } catch (Exception ex) {
                                 ex.printStackTrace();
                                 JOptionPane.showMessageDialog(null, ex);
@@ -220,7 +239,19 @@ public class MainFrame extends JFrame {
                         @Override
                         public void actionPerformed(ActionEvent actionEvent) {
                             try {
-                                all.exportOnePageOnePage_month(System.getProperty("user.home") + "/Desktop/calendar-" + rp.getYearOfChoice() + "-wall.pdf");
+                                JFileChooser jf = new JFileChooser(lastDir);
+                                jf.setSelectedFile(new File("calendar-" + rp.getYearOfChoice() + "-wall.pdf"));
+                                if (jf.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+                                    File f = jf.getSelectedFile();
+                                    if (f != null) {
+                                        lastDir = f.getParentFile();
+                                        String ex = f.getAbsolutePath();
+                                        if (!ex.endsWith(".pdf")) {
+                                            ex = ex + "-wall.pdf";
+                                        }
+                                        all.exportOnePageOnePage_month(ex);
+                                    }
+                                }
                             } catch (Exception ex) {
                                 ex.printStackTrace();
                                 JOptionPane.showMessageDialog(null, ex);
@@ -231,7 +262,19 @@ public class MainFrame extends JFrame {
                         @Override
                         public void actionPerformed(ActionEvent actionEvent) {
                             try {
-                                all.exportOnePageOnePage_week(System.getProperty("user.home") + "/Desktop/calendar-" + rp.getYearOfChoice() + "-table.pdf");
+                                JFileChooser jf = new JFileChooser(lastDir);
+                                jf.setSelectedFile(new File("calendar-" + rp.getYearOfChoice() + "-table.pdf"));
+                                if (jf.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+                                    File f = jf.getSelectedFile();
+                                    if (f != null) {
+                                        lastDir = f.getParentFile();
+                                        String ex = f.getAbsolutePath();
+                                        if (!ex.endsWith(".pdf")) {
+                                            ex = ex + "-table.pdf";
+                                        }
+                                        all.exportOnePageOnePage_week(ex);
+                                    }
+                                }
                             } catch (Exception ex) {
                                 ex.printStackTrace();
                                 JOptionPane.showMessageDialog(null, ex);
