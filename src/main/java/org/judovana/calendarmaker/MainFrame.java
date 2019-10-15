@@ -12,12 +12,11 @@ public class MainFrame extends JFrame {
 
     public static String[] photoFolders = new String[]{"/home/jvanek/tripshare/Context/Data/Fotky", "/usr/share/backgrounds", "/usr/share/icons/"};
 
-    public MainFrame() throws IOException {
+    public MainFrame(boolean  week, Integer year) throws IOException {
         this.setSize(800, 600);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         final PhotoLoader pl = new PhotoLoader(photoFolders);
-
-        final RangeProvider rp = new RangeProvider(2020, false);
+        final RangeProvider rp = getYearOfCal(week, year);
         final List<List<Date>> ranges = rp.getRanges();
         List<PageView> pages = new ArrayList<>(ranges.size());
         for (List<Date> range : ranges) {
@@ -409,6 +408,20 @@ public class MainFrame extends JFrame {
         });
         this.setFocusable(true);
         this.setFocusTraversalKeysEnabled(false);
+    }
+
+    private RangeProvider getYearOfCal(boolean week, Integer year) {
+        if (year == null) {
+            Calendar now = Calendar.getInstance();
+            now.setTime(new Date());
+            if (now.get(Calendar.MONTH)==0) {
+                return new RangeProvider(now.get(Calendar.YEAR), week);
+            }else {
+                return new RangeProvider(now.get(Calendar.YEAR) + 1, week);
+            }
+        } else {
+            return new RangeProvider(year, week);
+        }
     }
 
 
