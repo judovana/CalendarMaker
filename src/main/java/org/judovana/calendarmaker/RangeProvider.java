@@ -16,6 +16,11 @@ public class RangeProvider {
         return yearOfChoice;
     }
 
+    public boolean isWeek() {
+        return week;
+    }
+
+
     public List<List<Date>> getRanges() {
 
         List<List<Date>> pages = new ArrayList<>(60);

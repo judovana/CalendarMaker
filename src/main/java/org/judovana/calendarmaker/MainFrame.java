@@ -165,7 +165,11 @@ public class MainFrame extends JFrame {
                         public void actionPerformed(ActionEvent actionEvent) {
                             try {
                                 JFileChooser jf = new JFileChooser(lastDir);
-                                jf.setSelectedFile(new File("calendar.save"));
+                                String sf = "calendar"+rp.getYearOfChoice()+"-month.save";
+                                if (rp.isWeek()){
+                                    sf = "calendar"+rp.getYearOfChoice()+"-week.save";
+                                }
+                                jf.setSelectedFile(new File(sf));
                                 if (jf.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
                                     File f = jf.getSelectedFile();
                                     if (f != null) {
@@ -186,8 +190,12 @@ public class MainFrame extends JFrame {
                         public void actionPerformed(ActionEvent actionEvent) {
                             try {
                                 JFileChooser jf = new JFileChooser(lastDir);
-                                jf.setSelectedFile(new File("calendar.save"));
-                                if (jf.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+                                String sf = "calendar"+rp.getYearOfChoice()+"-month.save";
+                                if (rp.isWeek()){
+                                    sf = "calendar"+rp.getYearOfChoice()+"-week.save";
+                                }
+                                jf.setSelectedFile(new File(sf));
+                                if (jf.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
                                     File f = jf.getSelectedFile();
                                     if (f != null) {
                                         lastDir = f.getParentFile();
