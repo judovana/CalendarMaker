@@ -30,59 +30,26 @@ public class MainFrame extends JFrame {
             @Override
             public void keyPressed(KeyEvent e) {
                 final PageView page = all.get(MainFrame.this.getWidth() / 2, MainFrame.this.getHeight() / 2);
+                if (e.getKeyCode() == KeyEvent.VK_Z) {
+                    undo(all);
+                }
+                if (e.getKeyCode() == KeyEvent.VK_Y) {
+                    redo(all);
+                }
                 if (e.getKeyCode() == KeyEvent.VK_R) {
-                    try {
-                        page.getData().getPhoto().setData(pl.getRandomImage());
-                        all.repaint();
-                    } catch (Exception ex) {
-                        JOptionPane.showMessageDialog(all, ex);
-                        ex.printStackTrace();
-                    }
+                    randomzieOne(page, pl, all);
                 }
                 if (e.getKeyCode() == KeyEvent.VK_F) {
-                    try {
-                        page.getData().getPhoto().setData(new PhotoLoader(new File(page.getData().getPhoto().getSrc()).getParent()).getRandomImage());
-                        all.repaint();
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                        JOptionPane.showMessageDialog(null, ex);
-                    }
+                    randomizeSameFolder(page, all);
                 }
                 if (e.getKeyCode() == KeyEvent.VK_N) {
-                    try {
-                        page.getData().getPhoto().setData(pl.getNext(page.getData().getPhoto().getSrc()));
-                        all.repaint();
-                    } catch (Exception ex) {
-                        JOptionPane.showMessageDialog(all, ex);
-                        ex.printStackTrace();
-                    }
+                    selectNext(page, pl, all);
                 }
                 if (e.getKeyCode() == KeyEvent.VK_P) {
-                    try {
-                        page.getData().getPhoto().setData(pl.getPrev(page.getData().getPhoto().getSrc()));
-                        all.repaint();
-                    } catch (Exception ex) {
-                        JOptionPane.showMessageDialog(all, ex);
-                        ex.printStackTrace();
-                    }
+                    selectPrev(page, pl, all);
                 }
                 if (e.getKeyCode() == KeyEvent.VK_S) {
-                    try {
-                        JFileChooser chooser = new JFileChooser();
-                        chooser.setCurrentDirectory(new File(page.getData().getPhoto().getSrc()).getParentFile());
-                        chooser.setSelectedFile(new File(page.getData().getPhoto().getSrc()));
-                        int r = chooser.showOpenDialog(all);
-                        if (r == JFileChooser.APPROVE_OPTION) {
-                            File f = chooser.getSelectedFile();
-                            if (f != null) {
-                                page.getData().getPhoto().setData(f.getAbsolutePath());
-                                all.repaint();
-                            }
-                        }
-                    } catch (Exception ex) {
-                        JOptionPane.showMessageDialog(all, ex);
-                        ex.printStackTrace();
-                    }
+                    select(page, all);
                 }
 
                 if (e.getKeyCode() == KeyEvent.VK_U) {
@@ -96,16 +63,13 @@ public class MainFrame extends JFrame {
 
                 }
                 if (e.getKeyCode() == KeyEvent.VK_9 || e.getKeyCode() == KeyEvent.VK_NUMPAD9) {
-                    page.getData().getPhoto().rotateImgClock();
-                    all.repaint();
+                    rotateClock(page, all);
                 }
                 if (e.getKeyCode() == KeyEvent.VK_7 || e.getKeyCode() == KeyEvent.VK_NUMPAD7) {
-                    page.getData().getPhoto().rotateImgAntiClock();
-                    all.repaint();
+                    rotateAntiClock(page, all);
                 }
                 if (e.getKeyCode() == KeyEvent.VK_8 || e.getKeyCode() == KeyEvent.VK_NUMPAD8) {
-                    page.getData().getPhoto().rotateImg180();
-                    all.repaint();
+                    rotate180(page, all);
                 }
             }
         });
@@ -147,6 +111,10 @@ public class MainFrame extends JFrame {
                     menu.add(up);
                     JMenuItem down = new JMenuItem("D - down");
                     menu.add(down);
+                    JMenuItem undo = new JMenuItem("Z - undo");
+                    menu.add(undo);
+                    JMenuItem redo = new JMenuItem("Y - redo");
+                    menu.add(redo);
                     JMenuItem footer = new JMenuItem("------- global -------");
                     footer.setEnabled(false);
                     menu.add(footer);
@@ -159,16 +127,17 @@ public class MainFrame extends JFrame {
                     JMenuItem load = new JMenuItem("load");
                     menu.add(load);
 
+                    undo.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            undo(all);
+                        }
+                    });
+
                     rndLocal.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            try {
-                                page.getData().getPhoto().setData(new PhotoLoader(new File(page.getData().getPhoto().getSrc()).getParent()).getRandomImage());
-                                all.repaint();
-                            } catch (Exception ex) {
-                                ex.printStackTrace();
-                                JOptionPane.showMessageDialog(null, ex);
-                            }
+                            randomizeSameFolder(page, all);
 
                         }
                     });
@@ -284,82 +253,46 @@ public class MainFrame extends JFrame {
                     rot1.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            page.getData().getPhoto().rotateImgClock();
-                            all.repaint();
+                            rotateClock(page, all);
                         }
                     });
                     rot2.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            page.getData().getPhoto().rotateImgAntiClock();
-                            all.repaint();
+                            rotateAntiClock(page, all);
                         }
                     });
                     rot3.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            page.getData().getPhoto().rotateImg180();
-                            all.repaint();
+                            rotate180(page, all);
                         }
                     });
 
                     sel.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            try {
-                                JFileChooser chooser = new JFileChooser();
-                                chooser.setCurrentDirectory(new File(page.getData().getPhoto().getSrc()).getParentFile());
-                                chooser.setSelectedFile(new File(page.getData().getPhoto().getSrc()));
-                                int r = chooser.showOpenDialog(all);
-                                if (r == JFileChooser.APPROVE_OPTION) {
-                                    File f = chooser.getSelectedFile();
-                                    if (f != null) {
-                                        page.getData().getPhoto().setData(f.getAbsolutePath());
-                                        all.repaint();
-                                    }
-                                }
-                            } catch (Exception ex) {
-                                JOptionPane.showMessageDialog(all, ex);
-                                ex.printStackTrace();
-                            }
+                            select(page, all);
                         }
                     });
 
                     rnd.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            try {
-                                page.getData().getPhoto().setData(pl.getRandomImage());
-                                all.repaint();
-                            } catch (Exception ex) {
-                                JOptionPane.showMessageDialog(all, ex);
-                                ex.printStackTrace();
-                            }
+                            randomzieOne(page, pl, all);
                         }
                     });
                     prev.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            try {
-                                page.getData().getPhoto().setData(pl.getPrev(page.getData().getPhoto().getSrc()));
-                                all.repaint();
-                            } catch (Exception ex) {
-                                JOptionPane.showMessageDialog(all, ex);
-                                ex.printStackTrace();
-                            }
+                            selectPrev(page, pl, all);
                         }
                     });
 
                     next.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            try {
-                                page.getData().getPhoto().setData(pl.getNext(page.getData().getPhoto().getSrc()));
-                                all.repaint();
-                            } catch (Exception ex) {
-                                JOptionPane.showMessageDialog(all, ex);
-                                ex.printStackTrace();
-                            }
+                            selectNext(page, pl, all);
                         }
                     });
                     menu.show(all, e.getX(), e.getY());
@@ -408,6 +341,102 @@ public class MainFrame extends JFrame {
         });
         this.setFocusable(true);
         this.setFocusTraversalKeysEnabled(false);
+    }
+
+    private void undo(AllView all) {
+        try{
+            all.undo();
+            all.repaint();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, ex);
+        }
+    }
+
+    private void redo(AllView all) {
+        try{
+            all.redo();
+            all.repaint();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, ex);
+        }
+    }
+
+    private void rotate180(PageView page, AllView all) {
+        page.getData().getPhoto().rotateImg180();
+        all.repaint();
+        all.addHistory();
+    }
+
+    private void rotateClock(PageView page, AllView all) {
+        page.getData().getPhoto().rotateImgClock();
+        all.repaint();
+        all.addHistory();
+    }
+    private void rotateAntiClock(PageView page, AllView all) {
+        page.getData().getPhoto().rotateImgAntiClock();
+        all.repaint();
+        all.addHistory();
+    }
+
+    private void select(PageView page, AllView all) {
+        try {
+            JFileChooser chooser = new JFileChooser();
+            chooser.setCurrentDirectory(new File(page.getData().getPhoto().getSrc()).getParentFile());
+            chooser.setSelectedFile(new File(page.getData().getPhoto().getSrc()));
+            int r = chooser.showOpenDialog(all);
+            if (r == JFileChooser.APPROVE_OPTION) {
+                File f = chooser.getSelectedFile();
+                if (f != null) {
+                    all.reData(page, f.getAbsolutePath());
+                    all.repaint();
+                }
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(all, ex);
+            ex.printStackTrace();
+        }
+    }
+
+    private void selectPrev(PageView page, PhotoLoader pl, AllView all) {
+        try {
+            all.reData(page, pl.getPrev(page.getData().getPhoto().getSrc()));
+            all.repaint();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(all, ex);
+            ex.printStackTrace();
+        }
+    }
+
+    private void selectNext(PageView page, PhotoLoader pl, AllView all) {
+        try {
+            all.reData(page, pl.getNext(page.getData().getPhoto().getSrc()));
+            all.repaint();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(all, ex);
+            ex.printStackTrace();
+        }
+    }
+
+    private void randomizeSameFolder(PageView page, AllView all) {
+        try {
+            all.reData(page, new PhotoLoader(new File(page.getData().getPhoto().getSrc()).getParent()).getRandomImage());
+            all.repaint();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, ex);
+        }
+    }
+
+    private void randomzieOne(PageView page, PhotoLoader pl, AllView all) {
+        try {
+            all.reData(page, pl.getRandomImage());
+            all.repaint();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(all, ex);
+            ex.printStackTrace();
+        }
     }
 
     private RangeProvider getYearOfCal(boolean week, Integer year) {

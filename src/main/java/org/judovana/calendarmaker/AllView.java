@@ -18,6 +18,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -27,26 +28,65 @@ import java.util.List;
 
 public class AllView extends JPanel {
 
+
     private static class HistoryItem {
         private final String img;
-        private final double rotation;
+        private final BigDecimal rotation;
 
-        public HistoryItem(String img, double rotation) {
+        public HistoryItem(String img, BigDecimal rotation) {
             this.img = img;
             this.rotation = rotation;
         }
     }
 
-    private  static class HistoryMoment {
-        private final List<HistoryItem>  state;
+    private static class HistoryMoment {
+        private final List<HistoryItem> state;
 
         public HistoryMoment(PageView[] data) {
             this.state = new ArrayList<>(data.length);
+            for (int i = 0; i < data.length; i++) {
+                state.add(new HistoryItem(data[i].getData().getPhoto().getSrc(), data[i].getData().getPhoto().getRotate()));
+            }
+        }
+
+        public void apply(PageView[] data) throws IOException {
+            for (int i = 0; i < data.length; i++) {
+                state.add(new HistoryItem(data[i].getData().getPhoto().getSrc(), data[i].getData().getPhoto().getRotate()));
+                if (!data[i].getData().getPhoto().getSrc().equals(state.get(i).img)){
+                    data[i].getData().getPhoto().setData(state.get(i).img);
+                }
+                if (!data[i].getData().getPhoto().getRotate().equals(state.get(i).rotation)){
+                    data[i].getData().getPhoto().setRotate(state.get(i).rotation.toString());
+                }
+            }
         }
     }
 
     private final List<HistoryMoment> toUndo = new LinkedList<>();
     private final List<HistoryMoment> toRedo = new LinkedList<>();
+
+    public void undo() throws IOException {
+        if (toUndo.size()<2){
+            return;
+        }
+        HistoryMoment now = toUndo.get(toUndo.size()-1);
+        HistoryMoment last = toUndo.get(toUndo.size()-2);
+        toUndo.remove(now);
+        toRedo.add(now);
+        last.apply(data);
+    }
+
+    public void redo() throws IOException {
+        if (toRedo.size()<1){
+            return;
+        }
+        HistoryMoment last = toRedo.get(toRedo.size()-1);
+        toRedo.remove(last);
+        toUndo.add(last);
+        last.apply(data);
+    }
+
+
     private final PageView[] data;
     private int offset = 0;
 
@@ -94,6 +134,11 @@ public class AllView extends JPanel {
             data[i] = page;
             i++;
         }
+        addHistory();
+    }
+
+    void addHistory() {
+        toUndo.add(new HistoryMoment(data));
     }
 
     public void adjsutOffset(int by) {
@@ -235,6 +280,7 @@ public class AllView extends JPanel {
             data[i].getData().getPhoto().setData(imgRotate[0]);
             data[i].getData().getPhoto().setRotate(imgRotate[1]);
         }
+        addHistory();
     }
 
     public void moveUp(PageView page) {
@@ -246,10 +292,11 @@ public class AllView extends JPanel {
                 break;
             }
         }
+        addHistory();
     }
 
     public void moveDown(PageView page) {
-        for (int i = 0; i < data.length-1/*last can not go down*/; i++) {
+        for (int i = 0; i < data.length - 1/*last can not go down*/; i++) {
             if (page == data[i]) {
                 PhotoFrame swap = data[i + 1].getData().getPhoto();
                 data[i + 1].getData().setPhoto(page.getData().getPhoto());
@@ -257,5 +304,11 @@ public class AllView extends JPanel {
                 break;
             }
         }
+        addHistory();
+    }
+
+    public void reData(PageView page, String f) throws IOException {
+        page.getData().getPhoto().setData(f);
+        addHistory();
     }
 }

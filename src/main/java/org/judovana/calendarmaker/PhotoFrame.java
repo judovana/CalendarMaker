@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -47,13 +48,7 @@ public class PhotoFrame {
     }
 
     public void setRotate(String src) {
-        if (src.equals("3.14") || src.equals("-3.14")) {
-            rotateImg180();
-        } else if (src.equals("1.57")) {
-            rotateImgClock();
-        } else if (src.equals("-1.57")) {
-            rotateImgAntiClock();
-        }
+        rotate = Double.valueOf(src);
     }
 
 
@@ -75,15 +70,15 @@ public class PhotoFrame {
                 double ratio = (double) data.getWidth() / (double) w;
                 nW = (int) (1d / ratio * (double) data.getWidth());
                 nH = (int) (1d / ratio * (double) data.getHeight());
-                g2d.drawImage(data, x, y + (h - nH) / 2, nW, nH, null);
+                g2d.drawImage(rotatedImg(), x, y + (h - nH) / 2, nW, nH, null);
             } else {
                 double ratio = (double) data.getHeight() / (double) h;
                 nW = (int) (1d / ratio * (double) data.getWidth());
                 nH = (int) (1d / ratio * (double) data.getHeight());
-                g2d.drawImage(data, x + (w - nW) / 2, y, nW, nH, null);
+                g2d.drawImage(rotatedImg(), x + (w - nW) / 2, y, nW, nH, null);
             }
         } else {
-            g2d.drawImage(data, x, y, w, h, null);
+            g2d.drawImage(rotatedImg(), x, y, w, h, null);
         }
     }
 
@@ -107,14 +102,12 @@ public class PhotoFrame {
     }
 
     public void rotateImgClock() {
-        rotate = +(Math.PI / 2d);
-        data = rotate90(data, rotate);
+        rotate = round(rotate + (Math.PI / 2d));
     }
 
 
     public void rotateImgAntiClock() {
-        rotate = -(Math.PI / 2d);
-        data = rotate90(data, rotate);
+        rotate = round(rotate - (Math.PI / 2d));
 
     }
 
@@ -130,8 +123,43 @@ public class PhotoFrame {
     }
 
     public void rotateImg180() {
-        rotate = +Math.PI;
-        data = rotate180(data, rotate);
+        rotate = round(rotate + Math.PI);
 
+    }
+
+    private double round(double v) {
+        int rounded = ((int) (v * 100d)) + 628/*to keep in positives*/;
+        rounded = rounded % 628;
+        double vv =  ((double) rounded) / 100d;
+        if (vv < 0.2) {
+            return 0;
+        }
+        if (vv > 0.2 && vv < 1.7) {
+            return 1.57;
+        }
+        if (vv > 1.7 && vv < 3.5) {
+            return 3.14;
+        }
+        if (vv > 3.5 && vv < 5) {
+            return 4.71;
+        }
+        if (vv > 5) {
+            return 0;
+        }
+        return vv;
+    }
+
+
+    private BufferedImage rotatedImg() {
+        String niceRot = getRotate().toString();
+        if (niceRot.equals("3.14") || niceRot.equals("-3.14")) {
+            return rotate180(data, Math.PI);
+        } else if (niceRot.equals("1.57") || niceRot.equals("-4.71")) {
+            return rotate90(data, Math.PI / 2d);
+        } else if (niceRot.equals("-1.57") || niceRot.equals("4.71")) {
+            return rotate90(data, -Math.PI / 2d);
+        } else {
+            return data;
+        }
     }
 }
