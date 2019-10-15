@@ -197,15 +197,16 @@ public class AllView extends JPanel {
             if (isWeekCal()) {
                 week = ii;
             }
-            BufferedImage bi2 = data[ii].getImage(getWidth(), getHeight(), week);
-            ByteArrayOutputStream os2 = new ByteArrayOutputStream();
-            ImageIO.write(bi2, "png", os2);
-            ImageData id2 = ImageDataFactory.createPng(os2.toByteArray());
-            Image im2 = new Image(id2);
-            im2.setFixedPosition(margins, margins);
-            im2.scaleAbsolute(PageSize.A4.getWidth() - 2f * margins, (PageSize.A4.getHeight() - 2f * margins) / 2);
-            d.add(im2);
-
+            if (i != ii) {
+                BufferedImage bi2 = data[ii].getImage(getWidth(), getHeight(), week);
+                ByteArrayOutputStream os2 = new ByteArrayOutputStream();
+                ImageIO.write(bi2, "png", os2);
+                ImageData id2 = ImageDataFactory.createPng(os2.toByteArray());
+                Image im2 = new Image(id2);
+                im2.setFixedPosition(margins, margins);
+                im2.scaleAbsolute(PageSize.A4.getWidth() - 2f * margins, (PageSize.A4.getHeight() - 2f * margins) / 2);
+                d.add(im2);
+            }
             if (i < half - 1) {
                 d.add(new AreaBreak());
             }
