@@ -120,8 +120,10 @@ public class MainFrame extends JFrame {
                     menu.add(footer);
                     JMenuItem export1 = new JMenuItem("print pdf WALL");
                     menu.add(export1);
-                    JMenuItem export2 = new JMenuItem("print pdf TABLE");
+                    JMenuItem export2 = new JMenuItem("print pdf TABLE - single side");
                     menu.add(export2);
+                    JMenuItem export3 = new JMenuItem("print pdf TABLE - two sided page");
+                    menu.add(export3);
                     JMenuItem save = new JMenuItem("save");
                     menu.add(save);
                     JMenuItem load = new JMenuItem("load");
@@ -239,16 +241,39 @@ public class MainFrame extends JFrame {
                         public void actionPerformed(ActionEvent actionEvent) {
                             try {
                                 JFileChooser jf = new JFileChooser(lastDir);
-                                jf.setSelectedFile(new File("calendar-" + rp.getYearOfChoice() + "-table.pdf"));
+                                jf.setSelectedFile(new File("calendar-" + rp.getYearOfChoice() + "-single_side-table.pdf"));
                                 if (jf.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
                                     File f = jf.getSelectedFile();
                                     if (f != null) {
                                         lastDir = f.getParentFile();
                                         String ex = f.getAbsolutePath();
                                         if (!ex.endsWith(".pdf")) {
-                                            ex = ex + "-table.pdf";
+                                            ex = ex + "single_side-table.pdf";
                                         }
-                                        all.exportOnePageOnePage_week(ex);
+                                        all.exportOnePageOnePage_weekSingleSide(ex);
+                                    }
+                                }
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
+                                JOptionPane.showMessageDialog(null, ex);
+                            }
+                        }
+                    });
+                    export3.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent actionEvent) {
+                            try {
+                                JFileChooser jf = new JFileChooser(lastDir);
+                                jf.setSelectedFile(new File("calendar-" + rp.getYearOfChoice() + "-two_side-table.pdf"));
+                                if (jf.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+                                    File f = jf.getSelectedFile();
+                                    if (f != null) {
+                                        lastDir = f.getParentFile();
+                                        String ex = f.getAbsolutePath();
+                                        if (!ex.endsWith(".pdf")) {
+                                            ex = ex + "-two_sidetable.pdf";
+                                        }
+                                        throw  new RuntimeException(ex+" not yet supported");
                                     }
                                 }
                             } catch (Exception ex) {

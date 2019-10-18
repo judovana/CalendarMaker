@@ -214,7 +214,7 @@ public class AllView extends JPanel {
         writer.close();
     }
 
-    public void exportOnePageOnePage_week(final String s) throws IOException {
+    public void exportOnePageOnePage_weekSingleSide(final String s) throws IOException {
         float margins = 20;
         PdfWriter writer = new PdfWriter(s);
         PdfDocument pdfDoc = new PdfDocument(writer);
