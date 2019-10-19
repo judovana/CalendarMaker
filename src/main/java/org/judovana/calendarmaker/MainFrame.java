@@ -10,12 +10,12 @@ import java.util.List;
 public class MainFrame extends JFrame {
     private static File lastDir = new File(System.getProperty("user.home"));
 
-    public static String[] photoFolders = new String[]{"/home/jvanek/tripshare/Context/Data/Fotky", "/usr/share/backgrounds", "/usr/share/icons/"};
+    public static String[] photoFolders = new String[]{"/usr/share/backgrounds", "/usr/share/icons/"};
 
-    public MainFrame(boolean  week, Integer year) throws IOException {
+    public MainFrame(boolean week, Integer year, List<String> dirs) throws IOException {
         this.setSize(800, 600);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        final PhotoLoader pl = new PhotoLoader(photoFolders);
+        final PhotoLoader pl = createDefaultLoader(dirs);
         final RangeProvider rp = getYearOfCal(week, year);
         final List<List<Date>> ranges = rp.getRanges();
         List<PageView> pages = new ArrayList<>(ranges.size());
@@ -167,9 +167,9 @@ public class MainFrame extends JFrame {
                         public void actionPerformed(ActionEvent actionEvent) {
                             try {
                                 JFileChooser jf = new JFileChooser(lastDir);
-                                String sf = "calendar"+rp.getYearOfChoice()+"-month.save";
-                                if (rp.isWeek()){
-                                    sf = "calendar"+rp.getYearOfChoice()+"-week.save";
+                                String sf = "calendar" + rp.getYearOfChoice() + "-month.save";
+                                if (rp.isWeek()) {
+                                    sf = "calendar" + rp.getYearOfChoice() + "-week.save";
                                 }
                                 jf.setSelectedFile(new File(sf));
                                 if (jf.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
@@ -192,9 +192,9 @@ public class MainFrame extends JFrame {
                         public void actionPerformed(ActionEvent actionEvent) {
                             try {
                                 JFileChooser jf = new JFileChooser(lastDir);
-                                String sf = "calendar"+rp.getYearOfChoice()+"-month.save";
-                                if (rp.isWeek()){
-                                    sf = "calendar"+rp.getYearOfChoice()+"-week.save";
+                                String sf = "calendar" + rp.getYearOfChoice() + "-month.save";
+                                if (rp.isWeek()) {
+                                    sf = "calendar" + rp.getYearOfChoice() + "-week.save";
                                 }
                                 jf.setSelectedFile(new File(sf));
                                 if (jf.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
@@ -273,7 +273,7 @@ public class MainFrame extends JFrame {
                                         if (!ex.endsWith(".pdf")) {
                                             ex = ex + "-two_sidetable.pdf";
                                         }
-                                        throw  new RuntimeException(ex+" not yet supported");
+                                        throw new RuntimeException(ex + " not yet supported");
                                     }
                                 }
                             } catch (Exception ex) {
@@ -376,8 +376,16 @@ public class MainFrame extends JFrame {
         this.setFocusTraversalKeysEnabled(false);
     }
 
+    private PhotoLoader createDefaultLoader(List<String> dirs) throws IOException {
+        if (dirs == null || dirs.isEmpty()) {
+            return new PhotoLoader(photoFolders);
+        } else {
+            return new PhotoLoader(dirs);
+        }
+    }
+
     private void undo(AllView all) {
-        try{
+        try {
             all.undo();
             all.repaint();
         } catch (Exception ex) {
@@ -387,7 +395,7 @@ public class MainFrame extends JFrame {
     }
 
     private void redo(AllView all) {
-        try{
+        try {
             all.redo();
             all.repaint();
         } catch (Exception ex) {
@@ -407,6 +415,7 @@ public class MainFrame extends JFrame {
         all.repaint();
         all.addHistory();
     }
+
     private void rotateAntiClock(PageView page, AllView all) {
         page.getData().getPhoto().rotateImgAntiClock();
         all.repaint();
@@ -476,9 +485,9 @@ public class MainFrame extends JFrame {
         if (year == null) {
             Calendar now = Calendar.getInstance();
             now.setTime(new Date());
-            if (now.get(Calendar.MONTH)==0) {
+            if (now.get(Calendar.MONTH) == 0) {
                 return new RangeProvider(now.get(Calendar.YEAR), week);
-            }else {
+            } else {
                 return new RangeProvider(now.get(Calendar.YEAR) + 1, week);
             }
         } else {

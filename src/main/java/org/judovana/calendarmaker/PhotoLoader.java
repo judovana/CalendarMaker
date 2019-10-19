@@ -17,8 +17,12 @@ public class PhotoLoader {
     private final String[] paths;
     private List<String> all;
 
-    public PhotoLoader(String... paths) throws IOException {
+    public PhotoLoader(String... paths) {
         this.paths = paths;
+    }
+
+    public PhotoLoader(List<String> l) {
+        this(l.toArray(new String[l.size()]));
     }
 
     public String getRandomImage() throws IOException {
@@ -68,11 +72,11 @@ public class PhotoLoader {
         initData();
         //we need next/prev feature
         Collections.sort(all);
-        File thisOne= new File(src);
+        File thisOne = new File(src);
         for (int i = 1; i < all.size(); i++) {
-            File current= new File(all.get(i));
-            if (current.equals(thisOne)){
-                return  all.get(i-1);
+            File current = new File(all.get(i));
+            if (current.equals(thisOne)) {
+                return all.get(i - 1);
             }
         }
         return src;
@@ -82,11 +86,11 @@ public class PhotoLoader {
         initData();
         //we need next/prev feature
         Collections.sort(all);
-        File thisOne= new File(src);
-        for (int i = 0; i < all.size()-1; i++) {
-            File current= new File(all.get(i));
-            if (current.equals(thisOne)){
-                return  all.get(i+1);
+        File thisOne = new File(src);
+        for (int i = 0; i < all.size() - 1; i++) {
+            File current = new File(all.get(i));
+            if (current.equals(thisOne)) {
+                return all.get(i + 1);
             }
         }
         return src;
