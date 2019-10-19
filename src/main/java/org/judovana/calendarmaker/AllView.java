@@ -52,10 +52,10 @@ public class AllView extends JPanel {
         public void apply(PageView[] data) throws IOException {
             for (int i = 0; i < data.length; i++) {
                 state.add(new HistoryItem(data[i].getData().getPhoto().getSrc(), data[i].getData().getPhoto().getRotate()));
-                if (!data[i].getData().getPhoto().getSrc().equals(state.get(i).img)){
+                if (!data[i].getData().getPhoto().getSrc().equals(state.get(i).img)) {
                     data[i].getData().getPhoto().setData(state.get(i).img);
                 }
-                if (!data[i].getData().getPhoto().getRotate().equals(state.get(i).rotation)){
+                if (!data[i].getData().getPhoto().getRotate().equals(state.get(i).rotation)) {
                     data[i].getData().getPhoto().setRotate(state.get(i).rotation.toString());
                 }
             }
@@ -66,21 +66,21 @@ public class AllView extends JPanel {
     private final List<HistoryMoment> toRedo = new LinkedList<>();
 
     public void undo() throws IOException {
-        if (toUndo.size()<2){
+        if (toUndo.size() < 2) {
             return;
         }
-        HistoryMoment now = toUndo.get(toUndo.size()-1);
-        HistoryMoment last = toUndo.get(toUndo.size()-2);
+        HistoryMoment now = toUndo.get(toUndo.size() - 1);
+        HistoryMoment last = toUndo.get(toUndo.size() - 2);
         toUndo.remove(now);
         toRedo.add(now);
         last.apply(data);
     }
 
     public void redo() throws IOException {
-        if (toRedo.size()<1){
+        if (toRedo.size() < 1) {
             return;
         }
-        HistoryMoment last = toRedo.get(toRedo.size()-1);
+        HistoryMoment last = toRedo.get(toRedo.size() - 1);
         toRedo.remove(last);
         toUndo.add(last);
         last.apply(data);
@@ -224,10 +224,56 @@ public class AllView extends JPanel {
             half++;
         }
         for (int i = 0; i < half; i++) {
-            Integer week = null;
-            if (isWeekCal()) {
-                week = i;
+            addDualPage(i, data.length - 1 - i, d, margins);
+            if (i < half - 1) {
+                d.add(new AreaBreak());
             }
+        }
+        d.close();
+        writer.flush();
+        writer.close();
+    }
+
+    public void exportOnePageOnePage_weekDoubleSide(final String s) throws IOException {
+        float margins = 20;
+        PdfWriter writer = new PdfWriter(s);
+        PdfDocument pdfDoc = new PdfDocument(writer);
+        Document d = new Document(pdfDoc, PageSize.A4);
+        int half = data.length / 2;
+        if (data.length % 2 != 0) {
+            half++;
+        }
+        int quad = data.length / 4 + data.length % 4;
+        for (int i = 0; i < quad; i++) {
+            int l1 = i;
+            int l2 = (data.length / 2) + (i);
+            addDualPage(l1, l2, d, margins);
+            d.add(new AreaBreak());
+            int rl1=(data.length / 2) - (i);
+            int rl2 = data.length - i;
+            if (rl1 == l1 || rl1==l2){
+                rl1 = -1;
+            }
+            if (rl2 == l1 || rl2==l2){
+                rl2 = -1;
+            }
+            addDualPage(rl1, rl2, d, margins);
+            if (i < half - 1) {
+                d.add(new AreaBreak());
+            }
+        }
+        d.close();
+        writer.flush();
+        writer.close();
+    }
+
+    private void addDualPage(int i, int ii, Document d, float margins) throws IOException {
+        System.out.println(i+"-"+ii+" ["+data.length+"]");
+        Integer week = null;
+        if (isWeekCal()) {
+            week = i;
+        }
+        if (i>=0 && i < data.length) {
             BufferedImage bi1 = PhotoFrame.rotate180(data[i].getImage(getWidth(), getHeight(), week), Math.PI);
             ByteArrayOutputStream os1 = new ByteArrayOutputStream();
             ImageIO.write(bi1, "png", os1);
@@ -236,29 +282,21 @@ public class AllView extends JPanel {
             im1.setFixedPosition(margins, PageSize.A4.getHeight() / 2f + margins);
             im1.scaleAbsolute(PageSize.A4.getWidth() - 2f * margins, (PageSize.A4.getHeight() - 2f * margins) / 2);
             d.add(im1);
-
-            int ii = data.length - 1 - i;
-            week = null;
-            if (isWeekCal()) {
-                week = ii;
-            }
-            if (i != ii) {
-                BufferedImage bi2 = data[ii].getImage(getWidth(), getHeight(), week);
-                ByteArrayOutputStream os2 = new ByteArrayOutputStream();
-                ImageIO.write(bi2, "png", os2);
-                ImageData id2 = ImageDataFactory.createPng(os2.toByteArray());
-                Image im2 = new Image(id2);
-                im2.setFixedPosition(margins, margins);
-                im2.scaleAbsolute(PageSize.A4.getWidth() - 2f * margins, (PageSize.A4.getHeight() - 2f * margins) / 2);
-                d.add(im2);
-            }
-            if (i < half - 1) {
-                d.add(new AreaBreak());
-            }
         }
-        d.close();
-        writer.flush();
-        writer.close();
+        week = null;
+        if (isWeekCal()) {
+            week = ii;
+        }
+        if (i != ii && i >=0 && ii < data.length) {
+            BufferedImage bi2 = data[ii].getImage(getWidth(), getHeight(), week);
+            ByteArrayOutputStream os2 = new ByteArrayOutputStream();
+            ImageIO.write(bi2, "png", os2);
+            ImageData id2 = ImageDataFactory.createPng(os2.toByteArray());
+            Image im2 = new Image(id2);
+            im2.setFixedPosition(margins, margins);
+            im2.scaleAbsolute(PageSize.A4.getWidth() - 2f * margins, (PageSize.A4.getHeight() - 2f * margins) / 2);
+            d.add(im2);
+        }
     }
 
     private boolean isWeekCal() {

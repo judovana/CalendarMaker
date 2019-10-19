@@ -273,7 +273,7 @@ public class MainFrame extends JFrame {
                                         if (!ex.endsWith(".pdf")) {
                                             ex = ex + "-two_sidetable.pdf";
                                         }
-                                        throw new RuntimeException(ex + " not yet supported");
+                                        all.exportOnePageOnePage_weekDoubleSide(ex);
                                     }
                                 }
                             } catch (Exception ex) {
