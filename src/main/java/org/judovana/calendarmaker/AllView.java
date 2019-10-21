@@ -287,7 +287,7 @@ public class AllView extends JPanel {
         if (isWeekCal()) {
             week = ii;
         }
-        if (i != ii && i >=0 && ii < data.length) {
+        if (i != ii && ii >=0 && ii < data.length) {
             BufferedImage bi2 = data[ii].getImage(getWidth(), getHeight(), week);
             ByteArrayOutputStream os2 = new ByteArrayOutputStream();
             ImageIO.write(bi2, "png", os2);
