@@ -175,8 +175,13 @@ public class MainFrame extends JFrame {
                                     File f = jf.getSelectedFile();
                                     if (f != null) {
                                         lastDir = f.getParentFile();
-                                        String ex = f.getAbsolutePath();
-                                        all.save(ex);
+                                        final String ex = f.getAbsolutePath();
+                                        checkExists(f, new Rummable() {
+                                            @Override
+                                            public void rum() throws Exception {
+                                                all.save(ex);
+                                            }
+                                        });
                                     }
                                 }
                             } catch (Exception ex) {
@@ -222,11 +227,18 @@ public class MainFrame extends JFrame {
                                     File f = jf.getSelectedFile();
                                     if (f != null) {
                                         lastDir = f.getParentFile();
-                                        String ex = f.getAbsolutePath();
-                                        if (!ex.endsWith(".pdf")) {
-                                            ex = ex + "-wall.pdf";
+                                        final String ex;
+                                        if (!f.getAbsolutePath().endsWith(".pdf")) {
+                                            ex = f.getAbsolutePath() + "-wall.pdf";
+                                        } else {
+                                            ex = f.getAbsolutePath();
                                         }
-                                        all.exportOnePageOnePage_month(ex);
+                                        checkExists(f, new Rummable() {
+                                            @Override
+                                            public void rum() throws Exception {
+                                                all.exportOnePageOnePage_month(ex);
+                                            }
+                                        });
                                     }
                                 }
                             } catch (Exception ex) {
@@ -245,11 +257,19 @@ public class MainFrame extends JFrame {
                                     File f = jf.getSelectedFile();
                                     if (f != null) {
                                         lastDir = f.getParentFile();
-                                        String ex = f.getAbsolutePath();
-                                        if (!ex.endsWith(".pdf")) {
-                                            ex = ex + "single_side-table.pdf";
+                                        final String ex;
+                                        if (!f.getAbsolutePath().endsWith(".pdf")) {
+                                            ex = f.getAbsolutePath() + "single_side-table.pdf";
+                                        } else {
+                                            ex = f.getAbsolutePath();
                                         }
-                                        all.exportOnePageOnePage_weekSingleSide(ex);
+                                        checkExists(f, new Rummable() {
+                                            @Override
+                                            public void rum() throws Exception {
+                                                all.exportOnePageOnePage_weekSingleSide(ex);
+                                            }
+                                        });
+
                                     }
                                 }
                             } catch (Exception ex) {
@@ -268,11 +288,19 @@ public class MainFrame extends JFrame {
                                     File f = jf.getSelectedFile();
                                     if (f != null) {
                                         lastDir = f.getParentFile();
-                                        String ex = f.getAbsolutePath();
-                                        if (!ex.endsWith(".pdf")) {
-                                            ex = ex + "-two_sidetable.pdf";
+                                        final String ex;
+                                        if (!f.getAbsolutePath().endsWith(".pdf")) {
+                                            ex = f.getAbsolutePath() + "-two_sidetable.pdf";
+                                        } else {
+                                            ex = f.getAbsolutePath();
                                         }
-                                        all.exportOnePageOnePage_weekDoubleSide(ex);
+                                        checkExists(f, new Rummable() {
+                                            @Override
+                                            public void rum() throws Exception {
+                                                all.exportOnePageOnePage_weekDoubleSide(ex);
+                                            }
+                                        });
+
                                     }
                                 }
                             } catch (Exception ex) {
@@ -491,6 +519,19 @@ public class MainFrame extends JFrame {
             }
         } else {
             return new RangeProvider(year, week);
+        }
+    }
+
+    public static void checkExists(File f, Rummable r) throws Exception {
+        if (f.exists()) {
+            int a = JOptionPane.showConfirmDialog(null, f.getName() + " exists, overwrite?");
+            if (a == JOptionPane.OK_OPTION || a == JOptionPane.YES_OPTION) {
+                r.rum();
+                System.out.println("overwritten "+f.getAbsolutePath());
+            }
+        } else {
+            r.rum();
+            System.out.println("saved "+f.getAbsolutePath());
         }
     }
 
