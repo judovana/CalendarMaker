@@ -115,19 +115,18 @@ public class MainFrame extends JFrame {
                     menu.add(undo);
                     JMenuItem redo = new JMenuItem("Y - redo");
                     menu.add(redo);
-                    JMenuItem footer = new JMenuItem("------- global -------");
-                    footer.setEnabled(false);
+                    JMenuItem footer = new JMenu("------- I/O-------");
                     menu.add(footer);
                     JMenuItem export1 = new JMenuItem("print pdf WALL");
-                    menu.add(export1);
+                    footer.add(export1);
                     JMenuItem export2 = new JMenuItem("print pdf TABLE - single side");
-                    menu.add(export2);
+                    footer.add(export2);
                     JMenuItem export3 = new JMenuItem("print pdf TABLE - two sided page");
-                    menu.add(export3);
+                    footer.add(export3);
                     JMenuItem save = new JMenuItem("save");
-                    menu.add(save);
+                    footer.add(save);
                     JMenuItem load = new JMenuItem("load");
-                    menu.add(load);
+                    footer.add(load);
 
                     undo.addActionListener(new ActionListener() {
                         @Override
