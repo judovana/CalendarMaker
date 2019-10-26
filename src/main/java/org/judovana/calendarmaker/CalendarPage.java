@@ -9,11 +9,11 @@ public class CalendarPage {
 
     private PhotoFrame photo;
     private final DateRangeRenderrer dates;
-    private final Template t = new Template.HorizontalImageRight();
-
-    public CalendarPage(List<Date> dates, PhotoFrame photo) {
+    private final Template t;
+    public CalendarPage(List<Date> dates, PhotoFrame photo, Template t) {
         this.dates = new DateRangeRenderrer(dates);
         this.photo = photo;
+        this.t = t;
     }
 
     public PhotoFrame getPhoto() {

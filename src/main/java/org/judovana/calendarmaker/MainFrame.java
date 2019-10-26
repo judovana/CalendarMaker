@@ -12,15 +12,27 @@ public class MainFrame extends JFrame {
 
     public static String[] photoFolders = new String[]{"/usr/share/backgrounds", "/usr/share/icons/"};
 
-    public MainFrame(boolean week, Integer year, List<String> dirs) throws IOException {
+    public MainFrame(boolean week, Integer year, List<String> dirs, String template) throws IOException {
         this.setSize(800, 600);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         final PhotoLoader pl = createDefaultLoader(dirs);
         final RangeProvider rp = getYearOfCal(week, year);
         final List<List<Date>> ranges = rp.getRanges();
+        final Template tmplt;
+        if ("HR".equalsIgnoreCase(template)){
+            tmplt = new Template.HorizontalImageRight();
+        } else if ("HL".equalsIgnoreCase(template)) {
+            tmplt = new Template.HorizontalImageLeft();
+        } else if ("VD".equalsIgnoreCase(template)) {
+            tmplt = new Template.VerticalImageDown();
+        } else if ("VU".equalsIgnoreCase(template)) {
+            tmplt = new Template.VerticalImageUp();
+        } else {
+            tmplt = new Template.HorizontalImageRight();
+        }
         List<PageView> pages = new ArrayList<>(ranges.size());
         for (List<Date> range : ranges) {
-            CalendarPage cp = new CalendarPage(range, new PhotoFrame(pl.getRandomImage()));
+            CalendarPage cp = new CalendarPage(range, new PhotoFrame(pl.getRandomImage()), tmplt);
             PageView p = new PageView(cp);
             pages.add(p);
         }

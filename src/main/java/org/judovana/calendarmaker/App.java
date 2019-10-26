@@ -13,6 +13,7 @@ public class App {
         boolean week = false;
         Integer year = null;
         List<String> dirs = new ArrayList<>();
+        String template;
     }
 
     public static void main(String[] args) {
@@ -22,6 +23,9 @@ public class App {
                 if (arg.split("=")[1].toUpperCase().equals("WEEK")) {
                     a.week = true;
                 }
+            }
+            if (arg.matches("^-+template=.+$")) {
+                a.template = arg.split("=")[1];
             }
             if (arg.matches("^-+year=.+$")) {
                 a.year = Integer.valueOf(arg.split("=")[1]);
@@ -34,7 +38,7 @@ public class App {
             @Override
             public void run() {
                 try {
-                    new MainFrame(a.week, a.year, a.dirs).setVisible(true);
+                    new MainFrame(a.week, a.year, a.dirs, a.template).setVisible(true);
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
