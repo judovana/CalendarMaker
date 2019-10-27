@@ -232,94 +232,35 @@ public class MainFrame extends JFrame {
                     export1.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent actionEvent) {
-                            try {
-                                JFileChooser jf = new JFileChooser(lastDir);
-                                jf.setSelectedFile(new File("calendar-" + rp.getYearOfChoice() + "-wall.pdf"));
-                                if (jf.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
-                                    File f = jf.getSelectedFile();
-                                    if (f != null) {
-                                        lastDir = f.getParentFile();
-                                        final String ex;
-                                        if (!f.getAbsolutePath().endsWith(".pdf")) {
-                                            ex = f.getAbsolutePath() + "-wall.pdf";
-                                        } else {
-                                            ex = f.getAbsolutePath();
-                                        }
-                                        checkExists(f, new Rummable() {
-                                            @Override
-                                            public void rum() throws Exception {
-                                                all.exportOnePageOnePage_month(ex);
-                                            }
-                                        });
-                                    }
+                            exportDialog(rp.getYearOfChoice(), "-wall", ".pdf",  new Rummable() {
+                                @Override
+                                public void rum() throws Exception {
+                                    all.exportOnePageOnePage_month(this.getRum());
                                 }
-                            } catch (Exception ex) {
-                                ex.printStackTrace();
-                                JOptionPane.showMessageDialog(null, ex);
-                            }
+                            });
                         }
                     });
                     export2.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent actionEvent) {
-                            try {
-                                JFileChooser jf = new JFileChooser(lastDir);
-                                jf.setSelectedFile(new File("calendar-" + rp.getYearOfChoice() + "-single_side-table.pdf"));
-                                if (jf.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
-                                    File f = jf.getSelectedFile();
-                                    if (f != null) {
-                                        lastDir = f.getParentFile();
-                                        final String ex;
-                                        if (!f.getAbsolutePath().endsWith(".pdf")) {
-                                            ex = f.getAbsolutePath() + "single_side-table.pdf";
-                                        } else {
-                                            ex = f.getAbsolutePath();
-                                        }
-                                        checkExists(f, new Rummable() {
-                                            @Override
-                                            public void rum() throws Exception {
-                                                all.exportOnePageOnePage_weekSingleSide(ex);
-                                            }
-                                        });
-
-                                    }
+                            exportDialog(rp.getYearOfChoice(), "-single_side-table", ".pdf", new Rummable() {
+                                @Override
+                                public void rum() throws Exception {
+                                    all.exportOnePageOnePage_weekSingleSide(this.getRum());
                                 }
-                            } catch (Exception ex) {
-                                ex.printStackTrace();
-                                JOptionPane.showMessageDialog(null, ex);
-                            }
+                            });
                         }
                     });
                     export3.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent actionEvent) {
-                            try {
-                                JFileChooser jf = new JFileChooser(lastDir);
-                                jf.setSelectedFile(new File("calendar-" + rp.getYearOfChoice() + "-two_side-table.pdf"));
-                                if (jf.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
-                                    File f = jf.getSelectedFile();
-                                    if (f != null) {
-                                        lastDir = f.getParentFile();
-                                        final String ex;
-                                        if (!f.getAbsolutePath().endsWith(".pdf")) {
-                                            ex = f.getAbsolutePath() + "-two_sidetable.pdf";
-                                        } else {
-                                            ex = f.getAbsolutePath();
-                                        }
-                                        checkExists(f, new Rummable() {
-                                            @Override
-                                            public void rum() throws Exception {
-                                                all.exportOnePageOnePage_weekDoubleSide(ex);
-                                            }
-                                        });
-
-                                    }
+                            exportDialog(rp.getYearOfChoice(), "-two_side-table", ".pdf", new Rummable() {
+                                @Override
+                                public void rum() throws Exception {
+                                    all.exportOnePageOnePage_weekDoubleSide(this.getRum());
                                 }
-                            } catch (Exception ex) {
-                                ex.printStackTrace();
-                                JOptionPane.showMessageDialog(null, ex);
+                            });
                             }
-                        }
                     });
 
                     rot1.addActionListener(new ActionListener() {
@@ -544,6 +485,30 @@ public class MainFrame extends JFrame {
         } else {
             r.rum();
             System.out.println("saved "+f.getAbsolutePath());
+        }
+    }
+
+    public static void exportDialog(int year, String suffixNice, String suffixFile, Rummable r) {
+        try {
+            JFileChooser jf = new JFileChooser(lastDir);
+            jf.setSelectedFile(new File("calendar-" + year + suffixNice+suffixFile));
+            if (jf.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+                File f = jf.getSelectedFile();
+                if (f != null) {
+                    lastDir = f.getParentFile();
+                    final String ex;
+                    if (!f.getAbsolutePath().endsWith(suffixFile)) {
+                        ex = f.getAbsolutePath() + suffixNice+suffixFile;
+                    } else {
+                        ex = f.getAbsolutePath();
+                    }
+                    r.setRum(ex);
+                    checkExists(f,r);
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, ex);
         }
     }
 

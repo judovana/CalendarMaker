@@ -1,6 +1,17 @@
 package org.judovana.calendarmaker;
 
-public interface Rummable {
+public abstract class Rummable {
 
-    public void rum() throws Exception;
+    String rum;
+
+    public abstract void rum() throws Exception;
+
+    public void setRum(String s) {
+        rum = s;
+    }
+
+    public String getRum() {
+        return rum;
+
+    }
 }
