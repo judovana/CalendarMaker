@@ -44,8 +44,26 @@ public class App {
             if (arg.matches("^-+load=.+$")) {
                 a.load(arg.split("=")[1]);
             }
+            if (arg.matches("^-+names=.+$")) {
+                //(arg.split("=")[1]);
+            }
+            if (arg.matches("^-+super-names=.+$") || arg.matches("^-+supernames=.+$")) {
+                //(arg.split("=")[1]);
+            }
+            if (arg.matches("^-+dates=.+$") || arg.matches("^-+anniversaries=.+$")) {
+                //(arg.split("=")[1]);
+            }
             if (arg.matches("^-+nowizard$") || arg.matches("^-+no-wizard$")) {
-                //no op now
+                //no op now, no param
+            }
+            if (arg.matches("^-+save=.+$")) {
+                //arg.split("=")[1]);
+            }
+            if (arg.matches("^-+width=.+$")) {
+                //arg.split("=")[1]);
+            }
+            if (arg.matches("^-+heigh=.+$")) {
+                //arg.split("=")[1]);
             }
         }
         SwingUtilities.invokeLater(new Runnable() {
