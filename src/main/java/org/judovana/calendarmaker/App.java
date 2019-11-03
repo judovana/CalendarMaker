@@ -1,7 +1,10 @@
 package org.judovana.calendarmaker;
 
 import javax.swing.*;
+import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,9 +17,14 @@ public class App {
         Integer year = null;
         List<String> dirs = new ArrayList<>();
         String template;
+        private List<String> loaded;
+
+        public void load(String s) throws IOException {
+            this.loaded = Files.readAllLines(new File(s).toPath(), Charset.forName("utf-8"));
+        }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         final Args a = new Args();
         for (String arg : args) {
             if (arg.matches("^-+type=.+$")) {
@@ -33,12 +41,18 @@ public class App {
             if (arg.matches("^-+dir=.+$")) {
                 a.dirs.add(arg.split("=")[1]);
             }
+            if (arg.matches("^-+load=.+$")) {
+                a.load(arg.split("=")[1]);
+            }
+            if (arg.matches("^-+nowizard$") || arg.matches("^-+no-wizard$")) {
+                //no op now
+            }
         }
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
                 try {
-                    new MainFrame(a.week, a.year, a.dirs, a.template).setVisible(true);
+                    new MainFrame(a.week, a.year, a.dirs, a.template, a.loaded).setVisible(true);
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }

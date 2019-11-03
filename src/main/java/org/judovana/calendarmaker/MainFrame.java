@@ -12,14 +12,14 @@ public class MainFrame extends JFrame {
 
     public static String[] photoFolders = new String[]{"/usr/share/backgrounds", "/usr/share/icons/"};
 
-    public MainFrame(boolean week, Integer year, List<String> dirs, String template) throws IOException {
+    public MainFrame(boolean week, Integer year, List<String> dirs, String template, List<String> loaded) throws IOException {
         this.setSize(800, 600);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         final PhotoLoader pl = createDefaultLoader(dirs);
         final RangeProvider rp = getYearOfCal(week, year);
         final List<List<Date>> ranges = rp.getRanges();
         final Template tmplt;
-        if ("HR".equalsIgnoreCase(template)){
+        if ("HR".equalsIgnoreCase(template)) {
             tmplt = new Template.HorizontalImageRight();
         } else if ("HL".equalsIgnoreCase(template)) {
             tmplt = new Template.HorizontalImageLeft();
@@ -31,12 +31,30 @@ public class MainFrame extends JFrame {
             tmplt = new Template.HorizontalImageRight();
         }
         List<PageView> pages = new ArrayList<>(ranges.size());
-        for (List<Date> range : ranges) {
-            CalendarPage cp = new CalendarPage(range, new PhotoFrame(pl.getRandomImage()), tmplt);
-            PageView p = new PageView(cp);
-            pages.add(p);
+        if (loaded == null) {
+            for (List<Date> range : ranges) {
+                CalendarPage cp = new CalendarPage(range, new PhotoFrame(pl.getRandomImage()), tmplt);
+                PageView p = new PageView(cp);
+                pages.add(p);
+            }
+        } else {
+            int i = 0;
+            for (List<Date> range : ranges) {
+                PhotoFrame pf;
+                if (i < loaded.size()) {
+                    String[] imgRotate = loaded.get(i).split("\\|");
+                    pf = new PhotoFrame(imgRotate[0]);
+                    pf.setRotate(imgRotate[1]);
+                } else {
+                    pf = new PhotoFrame(pl.getRandomImage());
+                    System.err.println("Warning! Exceeded range of loaded list! Filling by random");
+                }
+                CalendarPage cp = new CalendarPage(range, pf, tmplt);
+                PageView p = new PageView(cp);
+                pages.add(p);
+                i++;
+            }
         }
-
         final AllView all = new AllView(pages);
         this.addKeyListener(new KeyAdapter() {
             @Override
@@ -232,7 +250,7 @@ public class MainFrame extends JFrame {
                     export1.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent actionEvent) {
-                            exportDialog(rp.getYearOfChoice(), "-wall", ".pdf",  new Rummable() {
+                            exportDialog(rp.getYearOfChoice(), "-wall", ".pdf", new Rummable() {
                                 @Override
                                 public void rum() throws Exception {
                                     all.exportOnePageOnePage_month(this.getRum());
@@ -260,7 +278,7 @@ public class MainFrame extends JFrame {
                                     all.exportOnePageOnePage_weekDoubleSide(this.getRum());
                                 }
                             });
-                            }
+                        }
                     });
 
                     rot1.addActionListener(new ActionListener() {
@@ -480,30 +498,30 @@ public class MainFrame extends JFrame {
             int a = JOptionPane.showConfirmDialog(null, f.getName() + " exists, overwrite?");
             if (a == JOptionPane.OK_OPTION || a == JOptionPane.YES_OPTION) {
                 r.rum();
-                System.out.println("overwritten "+f.getAbsolutePath());
+                System.out.println("overwritten " + f.getAbsolutePath());
             }
         } else {
             r.rum();
-            System.out.println("saved "+f.getAbsolutePath());
+            System.out.println("saved " + f.getAbsolutePath());
         }
     }
 
     public static void exportDialog(int year, String suffixNice, String suffixFile, Rummable r) {
         try {
             JFileChooser jf = new JFileChooser(lastDir);
-            jf.setSelectedFile(new File("calendar-" + year + suffixNice+suffixFile));
+            jf.setSelectedFile(new File("calendar-" + year + suffixNice + suffixFile));
             if (jf.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
                 File f = jf.getSelectedFile();
                 if (f != null) {
                     lastDir = f.getParentFile();
                     final String ex;
                     if (!f.getAbsolutePath().endsWith(suffixFile)) {
-                        ex = f.getAbsolutePath() + suffixNice+suffixFile;
+                        ex = f.getAbsolutePath() + suffixNice + suffixFile;
                     } else {
                         ex = f.getAbsolutePath();
                     }
                     r.setRum(ex);
-                    checkExists(f,r);
+                    checkExists(f, r);
                 }
             }
         } catch (Exception ex) {
