@@ -1,377 +1,379 @@
-1.1.	je Nový rok
-2.1.	má svátek Karina
-3.1.	má svátek Radmila
-4.1.	má svátek Diana
-5.1.	má svátek Dalimil
-6.1.	je Tří králů
-7.1.	má svátek Vilma
-8.1.	má svátek Čestmír
-9.1.	má svátek Vladan
-10.1.	má svátek Břetislav
-11.1.	má svátek Bohdana
-12.1.	má svátek Pravoslav
-13.1.	má svátek Edita
-14.1.	má svátek Radovan
-15.1.	má svátek Alice
-16.1.	má svátek Ctirad
-17.1.	má svátek Drahoslav
-18.1.	má svátek Vladislav
-19.1.	má svátek Doubravka
-20.1.	má svátek Ilona
-21.1.	má svátek Běla
-22.1.	má svátek Slavomír
-23.1.	má svátek Zdeněk
-24.1.	má svátek Milena
-25.1.	má svátek Miloš
-26.1.	má svátek Zora
-27.1.	má svátek Ingrid
-28.1.	má svátek Otýlie
-29.1.	má svátek Zdislava
-30.1.	má svátek Robin
-31.1.	má svátek Marika
+By # are preffixed names by *  are preffixed holidays
+everything not starting by X.Y.<tab> date is skipped (daywhere x.y. is day of month.month.)
+1.1.	# Nový rok
+2.1.	* Karina
+3.1.	* Radmila
+4.1.	* Diana
+5.1.	* Dalimil
+6.1.	# Tří králů
+7.1.	* Vilma
+8.1.	* Čestmír
+9.1.	* Vladan
+10.1.	* Břetislav
+11.1.	* Bohdana
+12.1.	* Pravoslav
+13.1.	* Edita
+14.1.	* Radovan
+15.1.	* Alice
+16.1.	* Ctirad
+17.1.	* Drahoslav
+18.1.	* Vladislav
+19.1.	* Doubravka
+20.1.	* Ilona
+21.1.	* Běla
+22.1.	* Slavomír
+23.1.	* Zdeněk
+24.1.	* Milena
+25.1.	* Miloš
+26.1.	* Zora
+27.1.	* Ingrid
+28.1.	* Otýlie
+29.1.	* Zdislava
+30.1.	* Robin
+31.1.	* Marika
 Únor
-1.2.	má svátek Hynek
-2.2.	má svátek Nela
-3.2.	má svátek Blažej
-4.2.	má svátek Jarmila
-5.2.	má svátek Dobromila
-6.2.	má svátek Vanda
-7.2.	má svátek Veronika
-8.2.	má svátek Milada
-9.2.	má svátek Apolena
-10.2.	má svátek Mojmír
-11.2.	má svátek Božena
-12.2.	má svátek Slavěna
-13.2.	má svátek Věnceslav
-14.2.	má svátek Valentýn
-15.2.	má svátek Jiřina
-16.2.	má svátek Ljuba
-17.2.	má svátek Miloslava
-18.2.	má svátek Gizela
-19.2.	má svátek Patrik
-20.2.	má svátek Oldřich
-21.2.	má svátek Lenka
-22.2.	má svátek Petr
-23.2.	má svátek Svatopluk
-24.2.	má svátek Matěj
-25.2.	má svátek Liliana
-26.2.	má svátek Dorota
-27.2.	má svátek Alexandr
-28.2.	má svátek Lumír
-29.2.	má svátek Horymír
+1.2.	* Hynek
+2.2.	* Nela
+3.2.	* Blažej
+4.2.	* Jarmila
+5.2.	* Dobromila
+6.2.	* Vanda
+7.2.	* Veronika
+8.2.	* Milada
+9.2.	* Apolena
+10.2.	* Mojmír
+11.2.	* Božena
+12.2.	* Slavěna
+13.2.	* Věnceslav
+14.2.	* Valentýn
+15.2.	* Jiřina
+16.2.	* Ljuba
+17.2.	* Miloslava
+18.2.	* Gizela
+19.2.	* Patrik
+20.2.	* Oldřich
+21.2.	* Lenka
+22.2.	* Petr
+23.2.	* Svatopluk
+24.2.	* Matěj
+25.2.	* Liliana
+26.2.	* Dorota
+27.2.	* Alexandr
+28.2.	* Lumír
+29.2.	* Horymír
 Březen
-1.3.	má svátek Bedřich
-2.3.	má svátek Anežka
-3.3.	má svátek Kamil
-4.3.	má svátek Stela
-5.3.	má svátek Kazimír
-6.3.	má svátek Miroslav
-7.3.	má svátek Tomáš
-8.3.	má svátek Gabriela
-9.3.	má svátek Františka
-10.3.	má svátek Viktorie
-11.3.	má svátek Anděla
-12.3.	má svátek Řehoř
-13.3.	má svátek Růžena
-14.3.	má svátek Matylda a Rút
-15.3.	má svátek Ida
-16.3.	má svátek Elena a Herbert
-17.3.	má svátek Vlastimil
-18.3.	má svátek Eduard
-19.3.	má svátek Josef
-20.3.	má svátek Světlana
-21.3.	má svátek Radek
-22.3.	má svátek Leona
-23.3.	má svátek Ivona
-24.3.	má svátek Gabriel
-25.3.	má svátek Marián
-26.3.	má svátek Emanuel
-27.3.	má svátek Dita
-28.3.	má svátek Soňa
-29.3.	má svátek Taťána
-30.3.	má svátek Arnošt
-31.3.	má svátek Kvido
+1.3.	* Bedřich
+2.3.	* Anežka
+3.3.	* Kamil
+4.3.	* Stela
+5.3.	* Kazimír
+6.3.	* Miroslav
+7.3.	* Tomáš
+8.3.	* Gabriela
+9.3.	* Františka
+10.3.	* Viktorie
+11.3.	* Anděla
+12.3.	* Řehoř
+13.3.	* Růžena
+14.3.	* Matylda a Rút
+15.3.	* Ida
+16.3.	* Elena a Herbert
+17.3.	* Vlastimil
+18.3.	* Eduard
+19.3.	* Josef
+20.3.	* Světlana
+21.3.	* Radek
+22.3.	* Leona
+23.3.	* Ivona
+24.3.	* Gabriel
+25.3.	* Marián
+26.3.	* Emanuel
+27.3.	* Dita
+28.3.	* Soňa
+29.3.	* Taťána
+30.3.	* Arnošt
+31.3.	* Kvido
 Duben
-1.4.	má svátek Hugo
-2.4.	má svátek Erika
-3.4.	má svátek Richard
-4.4.	má svátek Ivana
-5.4.	má svátek Miroslava
-6.4.	má svátek Vendula
-7.4.	má svátek Hermína
-8.4.	má svátek Ema
-9.4.	má svátek Dušan
-10.4.	má svátek Darja
-11.4.	má svátek Izabela
-12.4.	má svátek Julius
-13.4.	má svátek Aleš
-14.4.	má svátek Vincenc
-15.4.	má svátek Anastázie
-16.4.	má svátek Irena
-17.4.	má svátek Rudolf
-18.4.	má svátek Valérie
-19.4.	má svátek Rostislav
-20.4.	má svátek Marcela
-21.4.	má svátek Alexandra
-22.4.	má svátek Evžénie
-23.4.	má svátek Vojtěch
-24.4.	má svátek Jiří
-25.4.	má svátek Marek
-26.4.	má svátek Oto
-27.4.	má svátek Jaroslav
-28.4.	má svátek Vlastislav
-29.4.	má svátek Robert
-30.4.	má svátek Blahoslav
+1.4.	* Hugo
+2.4.	* Erika
+3.4.	* Richard
+4.4.	* Ivana
+5.4.	* Miroslava
+6.4.	* Vendula
+7.4.	* Hermína
+8.4.	* Ema
+9.4.	* Dušan
+10.4.	* Darja
+11.4.	* Izabela
+12.4.	* Julius
+13.4.	* Aleš
+14.4.	* Vincenc
+15.4.	* Anastázie
+16.4.	* Irena
+17.4.	* Rudolf
+18.4.	* Valérie
+19.4.	* Rostislav
+20.4.	* Marcela
+21.4.	* Alexandra
+22.4.	* Evžénie
+23.4.	* Vojtěch
+24.4.	* Jiří
+25.4.	* Marek
+26.4.	* Oto
+27.4.	* Jaroslav
+28.4.	* Vlastislav
+29.4.	* Robert
+30.4.	* Blahoslav
 Květen
-1.5.	je Svátek práce
-2.5.	má svátek Zikmund
-3.5.	má svátek Alexej
-4.5.	má svátek Květoslav
-5.5.	má svátek Klaudie
-6.5.	má svátek Radoslav
-7.5.	má svátek Stanislav
-8.5.	je Statní svátek - Den vítězství
-9.5.	má svátek Ctibor
-10.5.	má svátek Blažena
-11.5.	má svátek Svatava
-12.5.	má svátek Pankrác
-13.5.	má svátek Servác
-14.5.	má svátek Bonifác
-15.5.	má svátek Žofie
-16.5.	má svátek Přemysl
-17.5.	má svátek Aneta
-18.5.	má svátek Nataša
-19.5.	má svátek Ivo
-20.5.	má svátek Zbyšek
-21.5.	má svátek Monika
-22.5.	má svátek Emil
-23.5.	má svátek Vladimír
-24.5.	má svátek Jana
-25.5.	má svátek Viola
-26.5.	má svátek Filip
-27.5.	má svátek Valdemar
-28.5.	má svátek Vilém
-29.5.	má svátek Maxim
-30.5.	má svátek Ferdinand
-31.5.	má svátek Kamila
+1.5.	# Svátek práce
+2.5.	* Zikmund
+3.5.	* Alexej
+4.5.	* Květoslav
+5.5.	* Klaudie
+6.5.	* Radoslav
+7.5.	* Stanislav
+8.5.	# Statní svátek - Den vítězství
+9.5.	* Ctibor
+10.5.	* Blažena
+11.5.	* Svatava
+12.5.	* Pankrác
+13.5.	* Servác
+14.5.	* Bonifác
+15.5.	* Žofie
+16.5.	* Přemysl
+17.5.	* Aneta
+18.5.	* Nataša
+19.5.	* Ivo
+20.5.	* Zbyšek
+21.5.	* Monika
+22.5.	* Emil
+23.5.	* Vladimír
+24.5.	* Jana
+25.5.	* Viola
+26.5.	* Filip
+27.5.	* Valdemar
+28.5.	* Vilém
+29.5.	* Maxim
+30.5.	* Ferdinand
+31.5.	* Kamila
 Červen
-1.6.	má svátek Laura
-2.6.	má svátek Jarmil
-3.6.	má svátek Tamara
-4.6.	má svátek Dalibor
-5.6.	má svátek Dobroslav
-6.6.	má svátek Norbert
-7.6.	má svátek Iveta
-8.6.	má svátek Medard
-9.6.	má svátek Stanislava
-10.6.	má svátek Gita
-11.6.	má svátek Bruno
-12.6.	má svátek Antonie
-13.6.	má svátek Antonín
-14.6.	má svátek Roland
-15.6.	má svátek Vít
-16.6.	má svátek Zbyněk
-17.6.	má svátek Adolf
-18.6.	má svátek Milan
-19.6.	má svátek Leoš
-20.6.	má svátek Květa
-21.6.	má svátek Alois
-22.6.	má svátek Pavla
-23.6.	má svátek Zdeňka
-24.6.	má svátek Jan
-25.6.	má svátek Ivan
-26.6.	má svátek Adriana
-27.6.	má svátek Ladislav
-28.6.	má svátek Lubomír
-29.6.	má svátek Petr a Pavel
-30.6.	má svátek Šárka
+1.6.	* Laura
+2.6.	* Jarmil
+3.6.	* Tamara
+4.6.	* Dalibor
+5.6.	* Dobroslav
+6.6.	* Norbert
+7.6.	* Iveta
+8.6.	* Medard
+9.6.	* Stanislava
+10.6.	* Gita
+11.6.	* Bruno
+12.6.	* Antonie
+13.6.	* Antonín
+14.6.	* Roland
+15.6.	* Vít
+16.6.	* Zbyněk
+17.6.	* Adolf
+18.6.	* Milan
+19.6.	* Leoš
+20.6.	* Květa
+21.6.	* Alois
+22.6.	* Pavla
+23.6.	* Zdeňka
+24.6.	* Jan
+25.6.	* Ivan
+26.6.	* Adriana
+27.6.	* Ladislav
+28.6.	* Lubomír
+29.6.	* Petr a Pavel
+30.6.	* Šárka
 Červenec
-1.7.	má svátek Jaroslava
-2.7.	má svátek Patricie
-3.7.	má svátek Radomír
-4.7.	má svátek Prokop
-5.7.	je Státní svátek - Cyril a Metoděj, má svátek Cyril a Metoděj
-6.7.	je Státní svátek - Mistr Jan Hus
-7.7.	má svátek Bohuslava
-8.7.	má svátek Nora
-9.7.	má svátek Drahoslava
-10.7.	má svátek Libuše
-11.7.	má svátek Olga
-12.7.	má svátek Bořek
-13.7.	má svátek Markéta
-14.7.	má svátek Karolína
-15.7.	má svátek Jindřich
-16.7.	má svátek Luboš
-17.7.	má svátek Martina
-18.7.	má svátek Drahomíra
-19.7.	má svátek Čeněk
-20.7.	má svátek Ilja
-21.7.	má svátek Vítězslav
-22.7.	má svátek Magdaléna
-23.7.	má svátek Libor
-24.7.	má svátek Kristýna
-25.7.	má svátek Jakub
-26.7.	má svátek Anna
-27.7.	má svátek Věroslav
-28.7.	má svátek Viktor
-29.7.	má svátek Marta
-30.7.	má svátek Bořivoj
-31.7.	má svátek Ignác
+1.7.	* Jaroslava
+2.7.	* Patricie
+3.7.	* Radomír
+4.7.	* Prokop
+5.7.	# Státní svátek (a mají svátek) - Cyril a Metoděj
+6.7.	# Státní svátek - Mistr Jan Hus
+7.7.	* Bohuslava
+8.7.	* Nora
+9.7.	* Drahoslava
+10.7.	* Libuše
+11.7.	* Olga
+12.7.	* Bořek
+13.7.	* Markéta
+14.7.	* Karolína
+15.7.	* Jindřich
+16.7.	* Luboš
+17.7.	* Martina
+18.7.	* Drahomíra
+19.7.	* Čeněk
+20.7.	* Ilja
+21.7.	* Vítězslav
+22.7.	* Magdaléna
+23.7.	* Libor
+24.7.	* Kristýna
+25.7.	* Jakub
+26.7.	* Anna
+27.7.	* Věroslav
+28.7.	* Viktor
+29.7.	* Marta
+30.7.	* Bořivoj
+31.7.	* Ignác
 Srpen
-1.8.	má svátek Oskar
-2.8.	má svátek Gustav
-3.8.	má svátek Miluše
-4.8.	má svátek Dominik
-5.8.	má svátek Kristián
-6.8.	má svátek Oldřiška
-7.8.	má svátek Lada
-8.8.	má svátek Soběslav
-9.8.	má svátek Roman
-10.8.	má svátek Vavřinec
-11.8.	má svátek Zuzana
-12.8.	má svátek Klára
-13.8.	má svátek Alena
-14.8.	má svátek Alan
-15.8.	má svátek Hana
-16.8.	má svátek Jáchym
-17.8.	má svátek Petra
-18.8.	má svátek Helena
-19.8.	má svátek Ludvík
-20.8.	má svátek Bernard
-21.8.	má svátek Johana
-22.8.	má svátek Bohuslav
-23.8.	má svátek Sandra
-24.8.	má svátek Bartoloměj
-25.8.	má svátek Radim
-26.8.	má svátek Luděk
-27.8.	má svátek Otakar
-28.8.	má svátek Augustýn
-29.8.	má svátek Evelína
-30.8.	má svátek Vladěna
-31.8.	má svátek Pavlína
+1.8.	* Oskar
+2.8.	* Gustav
+3.8.	* Miluše
+4.8.	* Dominik
+5.8.	* Kristián
+6.8.	* Oldřiška
+7.8.	* Lada
+8.8.	* Soběslav
+9.8.	* Roman
+10.8.	* Vavřinec
+11.8.	* Zuzana
+12.8.	* Klára
+13.8.	* Alena
+14.8.	* Alan
+15.8.	* Hana
+16.8.	* Jáchym
+17.8.	* Petra
+18.8.	* Helena
+19.8.	* Ludvík
+20.8.	* Bernard
+21.8.	* Johana
+22.8.	* Bohuslav
+23.8.	* Sandra
+24.8.	* Bartoloměj
+25.8.	* Radim
+26.8.	* Luděk
+27.8.	* Otakar
+28.8.	* Augustýn
+29.8.	* Evelína
+30.8.	* Vladěna
+31.8.	* Pavlína
 Září
-1.9.	má svátek Linda a Samuel
-2.9.	má svátek Adéla
-3.9.	má svátek Bronislav
-4.9.	má svátek Jindřiška
-5.9.	má svátek Boris
-6.9.	má svátek Boleslav
-7.9.	má svátek Regína
-8.9.	má svátek Mariana
-9.9.	má svátek Daniela
-10.9.	má svátek Irma
-11.9.	má svátek Denisa
-12.9.	má svátek Marie
-13.9.	má svátek Lubor
-14.9.	má svátek Radka
-15.9.	má svátek Jolana
-16.9.	má svátek Ludmila
-17.9.	má svátek Naděžda
-18.9.	má svátek Kryštof
-19.9.	má svátek Zita
-20.9.	má svátek Oleg
-21.9.	má svátek Matouš
-22.9.	má svátek Darina
-23.9.	má svátek Berta
-24.9.	má svátek Jaromír
-25.9.	má svátek Zlata
-26.9.	má svátek Andrea
-27.9.	má svátek Jonáš
-28.9.	má svátek Václav
-29.9.	má svátek Michal
-30.9.	má svátek Jeroným
+1.9.	* Linda a Samuel
+2.9.	* Adéla
+3.9.	* Bronislav
+4.9.	* Jindřiška
+5.9.	* Boris
+6.9.	* Boleslav
+7.9.	* Regína
+8.9.	* Mariana
+9.9.	* Daniela
+10.9.	* Irma
+11.9.	* Denisa
+12.9.	* Marie
+13.9.	* Lubor
+14.9.	* Radka
+15.9.	* Jolana
+16.9.	* Ludmila
+17.9.	* Naděžda
+18.9.	* Kryštof
+19.9.	* Zita
+20.9.	* Oleg
+21.9.	* Matouš
+22.9.	* Darina
+23.9.	* Berta
+24.9.	* Jaromír
+25.9.	* Zlata
+26.9.	* Andrea
+27.9.	* Jonáš
+28.9.	* Václav
+29.9.	* Michal
+30.9.	* Jeroným
 Říjen
-1.10.	má svátek Igor
-2.10.	má svátek Olívie a Oliver
-3.10.	má svátek Bohumil
-4.10.	má svátek František
-5.10.	má svátek Eliška
-6.10.	má svátek Hanuš
-7.10.	má svátek Justýna
-8.10.	má svátek Věra
-9.10.	má svátek Sára a Štefan
-10.10.	má svátek Marina
-11.10.	má svátek Andrej
-12.10.	má svátek Marcel
-13.10.	má svátek Renáta
-14.10.	má svátek Agáta
-15.10.	má svátek Tereza
-16.10.	má svátek Havel
-17.10.	má svátek Hedvika
-18.10.	má svátek Lukáš
-19.10.	má svátek Michaela
-20.10.	má svátek Vendelín
-21.10.	má svátek Brigita
-22.10.	má svátek Sabina
-23.10.	má svátek Teodor
-24.10.	má svátek Nina
-25.10.	má svátek Beáta
-26.10.	má svátek Erik
-27.10.	má svátek Šarlota
-28.10.	je Státní svátek
-29.10.	má svátek Silvie
-30.10.	má svátek Tadeáš
-31.10.	má svátek Štěpánka
+1.10.	* Igor
+2.10.	* Olívie a Oliver
+3.10.	* Bohumil
+4.10.	* František
+5.10.	* Eliška
+6.10.	* Hanuš
+7.10.	* Justýna
+8.10.	* Věra
+9.10.	* Sára a Štefan
+10.10.	* Marina
+11.10.	* Andrej
+12.10.	* Marcel
+13.10.	* Renáta
+14.10.	* Agáta
+15.10.	* Tereza
+16.10.	* Havel
+17.10.	* Hedvika
+18.10.	* Lukáš
+19.10.	* Michaela
+20.10.	* Vendelín
+21.10.	* Brigita
+22.10.	* Sabina
+23.10.	* Teodor
+24.10.	* Nina
+25.10.	* Beáta
+26.10.	* Erik
+27.10.	* Šarlota
+28.10.	# Státní svátek
+29.10.	* Silvie
+30.10.	* Tadeáš
+31.10.	* Štěpánka
 Listopad
-1.11.	má svátek Felix
-2.11.	je Památka zesnulých
-3.11.	má svátek Hubert
-4.11.	má svátek Karel
-5.11.	má svátek Miriam
-6.11.	má svátek Liběna
-7.11.	má svátek Saskie
-8.11.	má svátek Bohumír
-9.11.	má svátek Bohdan
-10.11.	má svátek Evžen
-11.11.	má svátek Martin
-12.11.	má svátek Benedikt
-13.11.	má svátek Tibor
-14.11.	má svátek Sáva
-15.11.	má svátek Leopold
-16.11.	má svátek Otmar
-17.11.	má svátek Mahuléna
-18.11.	má svátek Romana
-19.11.	má svátek Alžběta
-20.11.	má svátek Nikola
-21.11.	má svátek Albert
-22.11.	má svátek Cecílie
-23.11.	má svátek Klement
-24.11.	má svátek Emílie
-25.11.	má svátek Kateřina
-26.11.	má svátek Artur
-27.11.	má svátek Xenie
-28.11.	má svátek René
-29.11.	má svátek Zina
-30.11.	má svátek Ondřej
+1.11.	* Felix
+2.11.	# Památka zesnulých
+3.11.	* Hubert
+4.11.	* Karel
+5.11.	* Miriam
+6.11.	* Liběna
+7.11.	* Saskie
+8.11.	* Bohumír
+9.11.	* Bohdan
+10.11.	* Evžen
+11.11.	* Martin
+12.11.	* Benedikt
+13.11.	* Tibor
+14.11.	* Sáva
+15.11.	* Leopold
+16.11.	* Otmar
+17.11.	* Mahuléna
+18.11.	* Romana
+19.11.	* Alžběta
+20.11.	* Nikola
+21.11.	* Albert
+22.11.	* Cecílie
+23.11.	* Klement
+24.11.	* Emílie
+25.11.	* Kateřina
+26.11.	* Artur
+27.11.	* Xenie
+28.11.	* René
+29.11.	* Zina
+30.11.	* Ondřej
 Prosinec
-1.12.	má svátek Iva
-2.12.	má svátek Blanka
-3.12.	má svátek Svatoslav
-4.12.	má svátek Barbora
-5.12.	má svátek Jitka
-6.12.	má svátek Mikuláš
-7.12.	má svátek Ambrož
-8.12.	má svátek Květoslava
-9.12.	má svátek Vratislav
-10.12.	má svátek Julie
-11.12.	má svátek Dana
-12.12.	má svátek Simona
-13.12.	má svátek Lucie
-14.12.	má svátek Lýdie
-15.12.	má svátek Radana
-16.12.	má svátek Albína
-17.12.	má svátek Daniel
-18.12.	má svátek Miloslav
-19.12.	má svátek Ester
-20.12.	má svátek Dagmar
-21.12.	má svátek Natálie
-22.12.	má svátek Šimon
-23.12.	má svátek Vlasta
-24.12.	je Štědrý den, má svátek Adam a Eva
-25.12.	je 1.svátek vánoční
-26.12.	je 2.svátek vánoční, má svátek Štěpán
-27.12.	má svátek Žaneta
-28.12.	má svátek Bohumila
-29.12.	má svátek Judita
-30.12.	má svátek David
-31.12.	má svátek Silvestr
+1.12.	* Iva
+2.12.	* Blanka
+3.12.	* Svatoslav
+4.12.	* Barbora
+5.12.	* Jitka
+6.12.	* Mikuláš
+7.12.	* Ambrož
+8.12.	* Květoslava
+9.12.	* Vratislav
+10.12.	* Julie
+11.12.	* Dana
+12.12.	* Simona
+13.12.	* Lucie
+14.12.	* Lýdie
+15.12.	* Radana
+16.12.	* Albína
+17.12.	* Daniel
+18.12.	* Miloslav
+19.12.	* Ester
+20.12.	* Dagmar
+21.12.	* Natálie
+22.12.	* Šimon
+23.12.	* Vlasta
+24.12.	# Štědrý den, * Adam a Eva
+25.12.	# 1.svátek vánoční
+26.12.	# 2.svátek vánoční, * Štěpán
+27.12.	* Žaneta
+28.12.	* Bohumila
+29.12.	* Judita
+30.12.	* David
+31.12.	* Silvestr

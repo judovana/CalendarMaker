@@ -45,11 +45,12 @@ public class DateRangeRenderrer {
                 g.drawString(dayThis.format(range.get(i)), x + 2 * border, hh + (g.getFontMetrics().getHeight()));
                 g.drawLine(x + border, hh, x + w - border, hh);
                 String s = NamesLoader.NAMES.getDaysMeaning(c2);
-                if (s.startsWith("má svátek")) {
+                if (isName(s)) {
                     g.setColor(Color.black);
-                    s = s.replace("má svátek", "").trim();
-                } else {
+                    s = clearName(s);
+                } else if (isHoliday(s)) {
                     g.setColor(Color.red);
+                    s = clearHoliday(s);
                 }
                 if (NamesLoader.NAMES.isInterestin(s)) {
                     g.setColor(Color.blue);
@@ -103,11 +104,12 @@ public class DateRangeRenderrer {
                 g.drawString(thisMonth.format(range.get(i)), x + border + inRow * ww, y + border + row * hh + g.getFontMetrics().getHeight());
 
                 String s = NamesLoader.NAMES.getDaysMeaning(c2);
-                if (s.startsWith("má svátek")) {
+                if (isName(s)) {
                     g.setColor(new Color(0, 0, 0, alpha));
-                    s = s.replace("má svátek", "").trim();
-                } else {
+                    s=clearName(s);
+                } else if (isHoliday(s)){
                     g.setColor(new Color(255, 0, 0, alpha));
+                    s=clearHoliday(s);
                 }
                 if (NamesLoader.NAMES.isInterestin(s)) {
                     g.setColor(new Color(0, 0, 255, alpha));
@@ -131,6 +133,22 @@ public class DateRangeRenderrer {
             }
         }
 
+    }
+
+    private String clearName(String s) {
+        return s.replace("* ", "").trim();
+    }
+
+    private boolean isName(String s) {
+        return s.startsWith("* ");
+    }
+
+    private String clearHoliday(String s) {
+        return s.replace("# ", "").trim();
+    }
+
+    private boolean isHoliday(String s) {
+        return s.startsWith("# ");
     }
 
     public String getTitle() {
