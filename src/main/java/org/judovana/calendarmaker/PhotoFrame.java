@@ -63,20 +63,20 @@ public class PhotoFrame {
         h = h - 2 * border;
         if (scaleType == 1) {
             double spaceRatio = (double) w / (double) h;
-            BufferedImage data = rotatedImg();
-            double imgRatio = (double) data.getWidth() / (double) data.getHeight();
+            BufferedImage rotatedData = rotatedImg();
+            double imgRatio = (double) rotatedData.getWidth() / (double) rotatedData.getHeight();
             int nW;
             int nH;
             if (spaceRatio <= imgRatio) {
-                double ratio = (double) data.getWidth() / (double) w;
-                nW = (int) (1d / ratio * (double) data.getWidth());
-                nH = (int) (1d / ratio * (double) data.getHeight());
-                g2d.drawImage(data, x, y + (h - nH) / 2, nW, nH, null);
+                double ratio = (double) rotatedData.getWidth() / (double) w;
+                nW = (int) (1d / ratio * (double) rotatedData.getWidth());
+                nH = (int) (1d / ratio * (double) rotatedData.getHeight());
+                g2d.drawImage(rotatedData, x, y + (h - nH) / 2, nW, nH, null);
             } else {
-                double ratio = (double) data.getHeight() / (double) h;
-                nW = (int) (1d / ratio * (double) data.getWidth());
-                nH = (int) (1d / ratio * (double) data.getHeight());
-                g2d.drawImage(data, x + (w - nW) / 2, y, nW, nH, null);
+                double ratio = (double) rotatedData.getHeight() / (double) h;
+                nW = (int) (1d / ratio * (double) rotatedData.getWidth());
+                nH = (int) (1d / ratio * (double) rotatedData.getHeight());
+                g2d.drawImage(rotatedData, x + (w - nW) / 2, y, nW, nH, null);
             }
         } else {
             g2d.drawImage(rotatedImg(), x, y, w, h, null);
