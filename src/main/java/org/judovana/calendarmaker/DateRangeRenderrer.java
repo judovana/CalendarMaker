@@ -27,6 +27,10 @@ public class DateRangeRenderrer {
         draw((int) x, (int) y, (int) w, (int) h, g, border);
     }
 
+    public Color defaultInterestingNameColor(int alpha) {
+        return new Color(0,125,255, alpha);
+    }
+
     public void draw(int x, int y, int w, int h, Graphics2D g, Template.Border border) {
         g.setFont(g.getFont().deriveFont(Font.BOLD));
         g.setColor(Color.black);
@@ -54,7 +58,7 @@ public class DateRangeRenderrer {
                     s = clearHoliday(s);
                 }
                 if (NamesLoader.NAMES.isInterestin(s)) {
-                    g.setColor(Color.blue);
+                    g.setColor(defaultInterestingNameColor(255));
                 }
                 g.drawString(s, x + border.lr(), hh + (2 * g.getFontMetrics().getHeight()));
 
@@ -113,7 +117,7 @@ public class DateRangeRenderrer {
                     s=clearHoliday(s);
                 }
                 if (NamesLoader.NAMES.isInterestin(s)) {
-                    g.setColor(new Color(0, 0, 255, alpha));
+                    g.setColor(defaultInterestingNameColor(alpha));
                 }
                 g.drawString(s, x + border.l + inRow * ww, y + border.t + row * hh + 2 * g.getFontMetrics().getHeight());
 

@@ -45,13 +45,13 @@ public class App {
                 a.load(arg.split("=")[1]);
             }
             if (arg.matches("^-+names=.+$")) {
-                //(arg.split("=")[1]);
+                //(arg.split("=")[1]); EXAMPLE
             }
             if (arg.matches("^-+super-names=.+$") || arg.matches("^-+supernames=.+$")) {
-                //(arg.split("=")[1]);
+                //(arg.split("=")[1]); EXAMPLE
             }
             if (arg.matches("^-+dates=.+$") || arg.matches("^-+anniversaries=.+$")) {
-                //(arg.split("=")[1]);
+                //(arg.split("=")[1]); EXAMPLE
             }
             if (arg.matches("^-+nowizard$") || arg.matches("^-+no-wizard$")) {
                 //no op now, no param
