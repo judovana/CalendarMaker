@@ -33,10 +33,12 @@ public class CalendarPage {
         photo.draw(ww*t.imgX, hh*t.imgY, ww*t.imgWidth, hh*t.imgHeight, g,t.imgBorder);
 
 
-        String title = dates.getTitle();
+        String footer = dates.getTitle();
         if (week !=null){
-            title=title+" "+(week+1)+"/"+53;
+            footer=footer+" "+(week+1)+"/"+53;
         }
+        g.setFont(g.getFont().deriveFont(Font.BOLD));
+        String title = photo.getFotoTitle();
         Rectangle2D rect1 = g.getFontMetrics().getStringBounds(title, g);
         int th = g.getFontMetrics().getHeight();
         int tw = (int) rect1.getWidth();
@@ -49,7 +51,6 @@ public class CalendarPage {
         g.setColor(Color.black);
         g.drawString(title, rectX1+rectW1/2-tw/2, rectY1 + th);
 
-        String footer = photo.getFooter();
         Rectangle2D rect2 = g.getFontMetrics().getStringBounds(footer, g);
         int fh = g.getFontMetrics().getHeight();
         int fw = (int) rect2.getWidth();

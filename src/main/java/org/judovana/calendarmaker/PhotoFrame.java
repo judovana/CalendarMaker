@@ -84,7 +84,7 @@ public class PhotoFrame {
 
     public static final SimpleDateFormat dayThis = new SimpleDateFormat("dd/MM/yyyy");
 
-    public String getFooter() {
+    public String getFotoTitle() {
         File f = new File(src);
         return f.getParentFile().getName() + "/" + f.getName() + " " + dayThis.format(new Date(f.lastModified()));
 

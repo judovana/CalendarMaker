@@ -109,7 +109,7 @@ public class MainFrame extends JFrame {
                 final PageView page = all.get(e.getX(), e.getY());
                 final String s;
                 if (page != null) {
-                    s = page.getData().getDates().getTitle() + " ||| " + page.getData().getPhoto().getFooter();
+                    s = page.getData().getDates().getTitle() + " ||| " + page.getData().getPhoto().getFotoTitle();
                 } else {
                     s = "???";
                 }
