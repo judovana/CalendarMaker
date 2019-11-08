@@ -1,7 +1,30 @@
 package org.judovana.calendarmaker;
 
 public abstract class Template {
-    public int calBorder = 5;
+
+    public static class Border{
+        public final int t;
+        public final int r;
+        public final int b;
+        public final int l;
+
+        public Border(int t, int r, int b, int l) {
+            this.t = t;
+            this.r = r;
+            this.b = b;
+            this.l = l;
+        }
+
+        public int lr(){
+            return r+l;
+        }
+
+        public int tb(){
+            return t+b;
+        }
+    }
+
+    public Border calBorder = new Border(45,5,5,5);
     public int imgBorder = 5;
     public double calWidth;
     public double calHeight;
@@ -11,23 +34,19 @@ public abstract class Template {
     public double calY;
     public double imgX;
     public double imgY;
-    public String type = MONTH;
     public double monthWidht;
     public int monthHeight = 15;
-    public double monthX;
-    public double monthY;//on lower half of screen needs adjust by height (or on upper)
+    public double titleX;
+    public double titleY;//on lower half of screen needs adjust by height (or on upper)
     public double labelWidht;
     public int labelHeight = 10;
-    public double labelX;
-    public double labelY;//on lower half of screen needs adjust by height (or on upper)
+    public double footerX;
+    public double footerY;//on lower half of screen needs adjust by height (or on upper)
     //font
     //formaters...
     //name...
     //aligns...
     //moon
-
-    private static final String MONTH = "month";
-    private static final String WEEK = "week";
 
     public static class HorizontalImageRight extends Template {
         public HorizontalImageRight() {
@@ -40,11 +59,11 @@ public abstract class Template {
             imgX = 0.5;
             imgY = 0;
             monthWidht = 0.5;
-            monthX = 0.5;
-            monthY = 0;
+            titleX = 0.5;
+            titleY = 0.05;
             labelWidht = 0.5;
-            labelX = 0.5;
-            labelY = 0.95;
+            footerX = 0.5;
+            footerY = 0.95;
         }
     }
 
@@ -59,11 +78,11 @@ public abstract class Template {
             imgX = 0;
             imgY = 0;
             monthWidht = 0.5;
-            monthX = 0;
-            monthY = 0;
+            titleX = 0;
+            titleY = 0.05;
             labelWidht = 0.5;
-            labelX = 0;
-            labelY = 0.95;
+            footerX = 0;
+            footerY = 0.95;
         }
     }
 
@@ -78,11 +97,11 @@ public abstract class Template {
             imgX = 0;
             imgY = 0.5;
             monthWidht = 1;
-            monthX = 0;
-            monthY = 0.5;
+            titleX = 0;
+            titleY = 0.5;
             labelWidht = 1;
-            labelX = 0;
-            labelY = 0.95;
+            footerX = 0;
+            footerY = 0.95;
         }
     }
 
@@ -97,11 +116,11 @@ public abstract class Template {
             imgX = 0;
             imgY = 0;
             monthWidht = 1;
-            monthX = 0;
-            monthY = 0;
+            titleX = 0;
+            titleY = 0.05;
             labelWidht = 1;
-            labelX = 0;
-            labelY = 0.45;
+            footerX = 0;
+            footerY = 0.45;
         }
     }
 

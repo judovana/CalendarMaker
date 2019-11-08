@@ -23,27 +23,28 @@ public class DateRangeRenderrer {
     public static final SimpleDateFormat monthName = new SimpleDateFormat("MMMMMMMM yyyy");
     public static final SimpleDateFormat dayThis = new SimpleDateFormat("EEEEEEEE dd.MM");
 
-    public void draw(double x, double y, double w, double h, Graphics2D g, int border) {
+    public void draw(double x, double y, double w, double h, Graphics2D g, Template.Border border) {
         draw((int) x, (int) y, (int) w, (int) h, g, border);
     }
 
-    public void draw(int x, int y, int w, int h, Graphics2D g, int border) {
+    public void draw(int x, int y, int w, int h, Graphics2D g, Template.Border border) {
+        g.setFont(g.getFont().deriveFont(Font.BOLD));
         g.setColor(Color.black);
         if (range.size() == 7) {
-            int step = (h - (2 * border)) / range.size();
-            g.drawRect(x + border, y + border, w - 2 * border, h - 2 * border);
+            int step = (h - (border.tb())) / range.size();
+            g.drawRect(x + border.l , y + border.t, w - (border.lr()), h - (border.t+border.b));
             //todo, x is likely used only above
             for (int i = 0; i < range.size(); i++) {
                 Calendar c2 = new GregorianCalendar();
                 c2.setTime(range.get(i));
-                int hh = y + border + (i) * step;
+                int hh = y + border.t + (i) * step;
                 if (c2.get(Calendar.DAY_OF_MONTH) == 1) {
                     g.setColor(Color.red);
                 } else {
                     g.setColor(Color.black);
                 }
-                g.drawString(dayThis.format(range.get(i)), x + 2 * border, hh + (g.getFontMetrics().getHeight()));
-                g.drawLine(x + border, hh, x + w - border, hh);
+                g.drawString(dayThis.format(range.get(i)), x + (border.lr()), hh + (g.getFontMetrics().getHeight()));
+                g.drawLine(x + border.l, hh, x + w - border.r, hh);
                 String s = NamesLoader.NAMES.getDaysMeaning(c2);
                 if (isName(s)) {
                     g.setColor(Color.black);
@@ -55,7 +56,7 @@ public class DateRangeRenderrer {
                 if (NamesLoader.NAMES.isInterestin(s)) {
                     g.setColor(Color.blue);
                 }
-                g.drawString(s, x + 2 * border, hh + (2 * g.getFontMetrics().getHeight()));
+                g.drawString(s, x + border.lr(), hh + (2 * g.getFontMetrics().getHeight()));
 
                 Object[] event = (NamesLoader.NAMES.getDaysEvent(c2));
                 String eS = (String) event[0];
@@ -66,27 +67,27 @@ public class DateRangeRenderrer {
                     } else {
                         g.setColor(eC);
                     }
-                    g.drawString(eS, x + 2 * border, hh + (3 * g.getFontMetrics().getHeight()));
+                    g.drawString(eS, x + border.lr(), hh + (3 * g.getFontMetrics().getHeight()));
                 }
                 BufferedImage bi = MoonPhaseRenderer.getMoonGauge(c2.get(Calendar.YEAR), c2.get(Calendar.MONTH) + 1, c2.get(Calendar.DAY_OF_MONTH), step, step, 255, clipMoon);
-                g.drawImage(bi, x + w - step - 2 * border, hh, null);
+                g.drawImage(bi, x + w - step - border.lr(), hh, null);
             }
             {
                 Calendar c2 = new GregorianCalendar();
                 c2.setTime(range.get(range.size() - 1));
                 if (c2.getActualMaximum(Calendar.DAY_OF_MONTH) == c2.get(Calendar.DAY_OF_MONTH)) {
                     g.setColor(Color.red);
-                    int hh = y + border + (range.size()) * step;
+                    int hh = y + border.t + (range.size()) * step;
                     if (!clipMoon) {
-                        g.drawLine(x + border, hh, x + w - 2 * border - step/*width of moon*/, hh);
+                        g.drawLine(x + border.l, hh, x + w - border .lr()- step/*width of moon*/, hh);
                     } else {
-                        g.drawLine(x + border, hh, x + w - 2 * border, hh);
+                        g.drawLine(x + border.l, hh, x + w - border.lr(), hh);
                     }
                 }
             }
         } else {
-            int ww = (w - (2 * border)) / 7;
-            int hh = (h - (2 * border)) / (range.size() / 6);
+            int ww = (w - (border.lr())) / 7;
+            int hh = (h - (border.tb())) / (range.size() / 6);
             Calendar c1 = new GregorianCalendar();
             c1.setTime(range.get(range.size() / 2));
             for (int i = 0; i < range.size(); i++) {
@@ -100,8 +101,8 @@ public class DateRangeRenderrer {
                 int row = (i / 7);
                 int inRow = (i % 7);
                 //todo, broken x. is not used here
-                g.drawRect(x + border + inRow * ww, y + border + row * hh, ww, hh);
-                g.drawString(thisMonth.format(range.get(i)), x + border + inRow * ww, y + border + row * hh + g.getFontMetrics().getHeight());
+                g.drawRect(x + border.l + inRow * ww, y + border.t + row * hh, ww, hh);
+                g.drawString(thisMonth.format(range.get(i)), x + border.l + inRow * ww, y + border.t + row * hh + g.getFontMetrics().getHeight());
 
                 String s = NamesLoader.NAMES.getDaysMeaning(c2);
                 if (isName(s)) {
@@ -114,7 +115,7 @@ public class DateRangeRenderrer {
                 if (NamesLoader.NAMES.isInterestin(s)) {
                     g.setColor(new Color(0, 0, 255, alpha));
                 }
-                g.drawString(s, x + border + inRow * ww, y + border + row * hh + 2 * g.getFontMetrics().getHeight());
+                g.drawString(s, x + border.l + inRow * ww, y + border.t + row * hh + 2 * g.getFontMetrics().getHeight());
 
                 Object[] event = (NamesLoader.NAMES.getDaysEvent(c2));
                 String eS = (String) event[0];
@@ -125,10 +126,10 @@ public class DateRangeRenderrer {
                     } else {
                         g.setColor(new Color(eC.getRed(), eC.getGreen(), eC.getBlue(), alpha));
                     }
-                    g.drawString(eS, x + border + inRow * ww, y + border + row * hh + 3 * g.getFontMetrics().getHeight());
+                    g.drawString(eS, x + border.l + inRow * ww, y + border.t + row * hh + 3 * g.getFontMetrics().getHeight());
                 }
                 BufferedImage bi = MoonPhaseRenderer.getMoonGauge(c2.get(Calendar.YEAR), c2.get(Calendar.MONTH) + 1, c2.get(Calendar.DAY_OF_MONTH), ww / 2, hh / 4, alpha, clipMoon);
-                g.drawImage(bi, x + border + inRow * ww + ww / 2, y + border + row * hh + (2 * hh) / 3, null);
+                g.drawImage(bi, x + border.l + inRow * ww + ww / 2, y + border.t + row * hh + (2 * hh) / 3, null);
 
             }
         }

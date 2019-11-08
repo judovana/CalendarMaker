@@ -42,8 +42,8 @@ public class CalendarPage {
         Rectangle2D rect1 = g.getFontMetrics().getStringBounds(title, g);
         int th = g.getFontMetrics().getHeight();
         int tw = (int) rect1.getWidth();
-        int rectX1=(int)(ww*t.monthX);
-        int rectY1=(int)(hh*t.monthY);
+        int rectX1=(int)(ww*t.titleX);
+        int rectY1=(int)(hh*t.titleY);
         int rectW1=(int)(ww*t.monthWidht);
         int rectH1=(int)(hh*t.monthHeight);
         g.setColor(new Color(255, 255, 225, 125));
@@ -54,8 +54,8 @@ public class CalendarPage {
         Rectangle2D rect2 = g.getFontMetrics().getStringBounds(footer, g);
         int fh = g.getFontMetrics().getHeight();
         int fw = (int) rect2.getWidth();
-        int rectX2=(int)(ww*t.labelX);
-        int rectY2=(int)(hh*t.labelY);
+        int rectX2=(int)(ww*t.footerX);
+        int rectY2=(int)(hh*t.footerY);
         int rectW2=(int)(ww*t.labelWidht);
         int rectH2=(int)(hh*t.labelHeight);
         g.setColor(new Color(255, 255, 225, 125));
