@@ -5,6 +5,7 @@ import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.kernel.pdf.canvas.PdfCanvas;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.AreaBreak;
 import com.itextpdf.layout.element.Image;
@@ -283,6 +284,12 @@ public class AllView extends JPanel {
             im1.scaleAbsolute(PageSize.A4.getWidth() - 2f * margins, (PageSize.A4.getHeight() - 2f * margins) / 2);
             d.add(im1);
         }
+
+        PdfCanvas canvas = new PdfCanvas(d.getPdfDocument().getPage(d.getPdfDocument().getNumberOfPages()));
+        canvas.moveTo(0, PageSize.A4.getHeight()/2d);
+        canvas.lineTo(PageSize.A4.getWidth(), PageSize.A4.getHeight()/2d);
+        canvas.closePathStroke();
+
         week = null;
         if (isWeekCal()) {
             week = ii;
