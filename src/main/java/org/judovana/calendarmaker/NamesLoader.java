@@ -1,9 +1,7 @@
 package org.judovana.calendarmaker;
 
 import java.awt.*;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -11,11 +9,29 @@ import java.util.List;
 
 public class NamesLoader {
 
-    public static final NamesLoader NAMES = new NamesLoader();
+    public static NamesLoader NAMES;
+    private final String allSrc;
+    private final String namesSrc;
+    private final String datesSrc;
 
     private Map<String, String> all;
     private List<String> names;
     private Map<String, MyInterestingDay> dates;
+
+    public NamesLoader(String names, String interesting, String anniversaries) {
+        this.allSrc = names;
+        this.namesSrc = interesting;
+        this.datesSrc = anniversaries;
+    }
+
+    private static boolean useInternal(String s) {
+        //likely to treat null in featuere as some default file in .config
+        if (s == null || s.toUpperCase().equals("EXAMPLE")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 
     public String getDaysMeaning(Calendar date) {
@@ -23,22 +39,26 @@ public class NamesLoader {
             return getDaysMeaningImp(date);
         } catch (IOException e) {
             e.printStackTrace();
-            return e.toString();
+            return "";
         }
     }
 
-    public Object[] getDaysEvent(Calendar date) {
+    public Anniversary getDaysEvent(Calendar date) {
         try {
             return getDaysEventImpl(date);
         } catch (IOException e) {
             e.printStackTrace();
-            return new Object[]{"", null};
+            return new Anniversary("", null);
         }
     }
 
     private String getDaysMeaningImp(Calendar date) throws IOException {
         if (all == null) {
-            all = loadAllNames("org/judovana/calendarmaker/data/czDb");
+            if (useInternal(allSrc)) {
+                all = loadAllNames(getExemplatNameList());
+            } else {
+                all = loadAllNames(new FileInputStream(allSrc));
+            }
         }
 
         String name = all.get(date.get(Calendar.DAY_OF_MONTH) + "." + (date.get(Calendar.MONTH) + 1) + ".");
@@ -49,13 +69,17 @@ public class NamesLoader {
         }
     }
 
-    private Object[] getDaysEventImpl(Calendar date) throws IOException {
+        private Anniversary getDaysEventImpl(Calendar date) throws IOException {
         if (dates == null) {
-            dates = loadCustomDates("org/judovana/calendarmaker/data/InterestingDates");
+            if (useInternal(datesSrc)) {
+                dates = loadCustomDates(getExemplarAnniversaries());
+            } else {
+                dates = loadCustomDates(new FileInputStream(datesSrc));
+            }
         }
         MyInterestingDay thisDay = dates.get(date.get(Calendar.DAY_OF_MONTH) + "." + (date.get(Calendar.MONTH) + 1) + ".");
         if (thisDay == null) {
-            return new Object[]{"", null};
+            return new Anniversary("", null);
         } else {
             String s;
             if (thisDay.haveYear) {
@@ -66,16 +90,16 @@ public class NamesLoader {
                 s = thisDay.text;
             }
             if (thisDay.color == null) {
-                return new Object[]{s, null};
+                return new Anniversary(s, null);
             } else {
-                return new Object[]{s, thisDay.color};
+                return new Anniversary(s, thisDay.color);
             }
         }
     }
 
-    private static Map<String, String> loadAllNames(String resource) throws IOException {
+    private static Map<String, String> loadAllNames(InputStream resource) throws IOException {
         Map<String, String> all = new HashMap<>();
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(NamesLoader.class.getClassLoader().getResourceAsStream(resource)))) {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(resource))) {
             while (true) {
                 String s = br.readLine();
                 if (s == null) {
@@ -96,9 +120,9 @@ public class NamesLoader {
         return all;
     }
 
-    private static Map<String, MyInterestingDay> loadCustomDates(String resource) throws IOException {
+    private static Map<String, MyInterestingDay> loadCustomDates(InputStream resource) throws IOException {
         Map<String, MyInterestingDay> all = new HashMap<>();
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(NamesLoader.class.getClassLoader().getResourceAsStream(resource)))) {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(resource))) {
             while (true) {
                 String s = br.readLine();
                 if (s == null) {
@@ -120,9 +144,9 @@ public class NamesLoader {
         return all;
     }
 
-    private static List<String> loadMyNames(String resource) throws IOException {
+    private static List<String> loadMyNames(InputStream resource) throws IOException {
         List<String> all = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(NamesLoader.class.getClassLoader().getResourceAsStream(resource)))) {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(resource))) {
             while (true) {
                 String s = br.readLine();
                 if (s == null) {
@@ -147,9 +171,30 @@ public class NamesLoader {
 
     public boolean isInterestingImpl(String s) throws IOException {
         if (names == null) {
-            names = loadMyNames("org/judovana/calendarmaker/data/InterestingNames");
+            if (useInternal(namesSrc)) {
+                names = loadMyNames(getInterestingNamesExampleStream());
+            } else {
+                names = loadMyNames(new FileInputStream((namesSrc)));
+            }
         }
         return names.contains(s);
+    }
+
+    private InputStream getInterestingNamesExampleStream() {
+        return getExemplarStream("org/judovana/calendarmaker/data/InterestingNames");
+    }
+
+    private InputStream getExemplarAnniversaries() {
+        return getExemplarStream("org/judovana/calendarmaker/data/InterestingDates");
+    }
+
+    private InputStream getExemplatNameList() {
+        return getExemplarStream("org/judovana/calendarmaker/data/czDb");
+    }
+
+
+    private InputStream getExemplarStream(String s) {
+        return NamesLoader.class.getClassLoader().getResourceAsStream(s);
     }
 
     private static class MyInterestingDay {
@@ -183,6 +228,16 @@ public class NamesLoader {
 
         String getKey() {
             return c.get(Calendar.DAY_OF_MONTH) + "." + (c.get(Calendar.MONTH) + 1) + ".";
+        }
+    }
+
+    public static class Anniversary {
+        public final String text;
+        public final Color color;
+
+        public Anniversary(String text, Color color) {
+            this.text = text;
+            this.color = color;
         }
     }
 }

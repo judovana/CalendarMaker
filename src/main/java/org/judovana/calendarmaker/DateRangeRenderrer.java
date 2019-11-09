@@ -62,9 +62,9 @@ public class DateRangeRenderrer {
                 }
                 g.drawString(s, x + border.lr(), hh + (2 * g.getFontMetrics().getHeight()));
 
-                Object[] event = (NamesLoader.NAMES.getDaysEvent(c2));
-                String eS = (String) event[0];
-                Color eC = (Color) event[1];
+                NamesLoader.Anniversary event = (NamesLoader.NAMES.getDaysEvent(c2));
+                String eS = (String) event.text;
+                Color eC = (Color) event.color;
                 if (event != null && eS.trim().length() > 0) {
                     if (eC == null) {
                         g.setColor(Color.blue);
@@ -121,9 +121,9 @@ public class DateRangeRenderrer {
                 }
                 g.drawString(s, x + border.l + inRow * ww, y + border.t + row * hh + 2 * g.getFontMetrics().getHeight());
 
-                Object[] event = (NamesLoader.NAMES.getDaysEvent(c2));
-                String eS = (String) event[0];
-                Color eC = (Color) event[1];
+                NamesLoader.Anniversary event = (NamesLoader.NAMES.getDaysEvent(c2));
+                String eS = (String) event.text;
+                Color eC = (Color) event.color;
                 if (event != null && eS.trim().length() > 0) {
                     if (eC == null) {
                         g.setColor(new Color(0, 0, 255, alpha));
