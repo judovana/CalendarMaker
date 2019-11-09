@@ -12,8 +12,19 @@ public class MainFrame extends JFrame {
 
     public static String[] photoFolders = new String[]{"/usr/share/backgrounds", "/usr/share/icons/"};
 
-    public MainFrame(boolean week, Integer year, List<String> dirs, String template, List<String> loaded) throws IOException {
-        this.setSize(800, 600);
+    public MainFrame(boolean week, Integer year, List<String> dirs, String template, List<String> loaded, Integer w, Integer h, String names, String interesting, String aniversaries) throws IOException {
+        int wii, hee;
+        if (w == null || w == 0){
+            wii = 800;
+        } else {
+            wii = w;
+        }
+        if (h == null || h == 0){
+            hee= 600;
+        } else {
+            hee= h;
+        }
+        this.setSize(wii, hee);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         final PhotoLoader pl = createDefaultLoader(dirs);
         final RangeProvider rp = getYearOfCal(week, year);

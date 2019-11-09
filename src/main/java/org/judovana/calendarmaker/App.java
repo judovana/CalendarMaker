@@ -18,6 +18,8 @@ public class App {
         List<String> dirs = new ArrayList<>();
         String template;
         private List<String> loaded;
+        Integer w, h;
+        String names, anniversaries, interesting;
 
         public void load(String s) throws IOException {
             this.loaded = Files.readAllLines(new File(s).toPath(), Charset.forName("utf-8"));
@@ -45,13 +47,13 @@ public class App {
                 a.load(arg.split("=")[1]);
             }
             if (arg.matches("^-+names=.+$")) {
-                //(arg.split("=")[1]); EXAMPLE
+                a.names = (arg.split("=")[1]); //EXAMPLE, DEFAULT?
             }
             if (arg.matches("^-+super-names=.+$") || arg.matches("^-+supernames=.+$")) {
-                //(arg.split("=")[1]); EXAMPLE
+                a.interesting = (arg.split("=")[1]); //EXAMPLE, DEFAULT?
             }
             if (arg.matches("^-+dates=.+$") || arg.matches("^-+anniversaries=.+$")) {
-                //(arg.split("=")[1]); EXAMPLE
+                a.anniversaries = (arg.split("=")[1]); //EXAMPLE, DEFAULT?
             }
             if (arg.matches("^-+nowizard$") || arg.matches("^-+no-wizard$")) {
                 //no op now, no param
@@ -60,17 +62,17 @@ public class App {
                 //arg.split("=")[1]);
             }
             if (arg.matches("^-+width=.+$")) {
-                //arg.split("=")[1]);
+                a.w = Integer.valueOf(arg.split("=")[1]);
             }
-            if (arg.matches("^-+heigh=.+$")) {
-                //arg.split("=")[1]);
+            if (arg.matches("^-+height=.+$")) {
+                a.h = Integer.valueOf(arg.split("=")[1]);
             }
         }
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
                 try {
-                    new MainFrame(a.week, a.year, a.dirs, a.template, a.loaded).setVisible(true);
+                    new MainFrame(a.week, a.year, a.dirs, a.template, a.loaded, a.w, a.h, a.names, a.interesting, a.anniversaries).setVisible(true);
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
