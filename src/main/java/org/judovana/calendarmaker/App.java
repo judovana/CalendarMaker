@@ -12,7 +12,7 @@ import java.util.List;
  * Hello world!
  */
 public class App {
-    private static class Args {
+    static class Args {
         boolean week = false;
         Integer year = null;
         List<String> dirs = new ArrayList<>();
@@ -25,8 +25,9 @@ public class App {
             this.loaded = Files.readAllLines(new File(s).toPath(), Charset.forName("utf-8"));
         }
     }
+        private static boolean showWizard=true;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(final String[] args) throws IOException {
         final Args a = new Args();
         for (String arg : args) {
             if (arg.matches("^-+type=.+$")) {
@@ -56,9 +57,15 @@ public class App {
                 a.anniversaries = (arg.split("=")[1]); //EXAMPLE, DEFAULT?
             }
             if (arg.matches("^-+nowizard$") || arg.matches("^-+no-wizard$")) {
-                //no op now, no param
+                showWizard=false;
             }
-            if (arg.matches("^-+save=.+$")) {
+            if (arg.matches("^-+save-wall=.+$")) {
+                //arg.split("=")[1]);
+            }
+            if (arg.matches("^-+save-table-1=.+$")) {
+                //arg.split("=")[1]);
+            }
+            if (arg.matches("^-+save-table-2=.+$")) {
                 //arg.split("=")[1]);
             }
             if (arg.matches("^-+width=.+$")) {
@@ -72,6 +79,11 @@ public class App {
             @Override
             public void run() {
                 try {
+                    if (showWizard){
+                        new Wizard(a).setVisible(true);
+                        //what to skip in no wizard?
+                        //no defaults switch?
+                    }
                     new MainFrame(a.week, a.year, a.dirs, a.template, a.loaded, a.w, a.h, a.names, a.interesting, a.anniversaries).setVisible(true);
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
