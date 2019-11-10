@@ -28,6 +28,8 @@ public class App {
         private static boolean showWizard=true;
 
     public static void main(final String[] args) throws IOException {
+        //preload args from default file?
+        //override by cmdline
         final Args a = new Args();
         for (String arg : args) {
             if (arg.matches("^-+type=.+$")) {
