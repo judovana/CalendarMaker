@@ -1,10 +1,14 @@
 package org.judovana.calendarmaker;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
+import java.util.Calendar;
+import java.util.Date;
 
 public class Wizard extends JDialog {
 
@@ -56,6 +60,11 @@ public class Wizard extends JDialog {
             this.add(mainButtons, BorderLayout.SOUTH);
         }
 
+        public WizardPanel  setMainPane(Component c){
+            this.add(c);
+            return this;
+        }
+
     }
 
     private final App.Args args;
@@ -101,7 +110,7 @@ public class Wizard extends JDialog {
         panes.setTitleAt(8, "Misc");
         this.add(panes);
 
-        year.add(new WizardPanel(panes, 0));
+        year.add(new WizardPanel(panes, 0).setMainPane(createYear(args.year)));
         mOrW.add(new WizardPanel(panes, 1));
         templates.add(new WizardPanel(panes, 2));
         photoDirs.add(new WizardPanel(panes, 3));
@@ -110,5 +119,33 @@ public class Wizard extends JDialog {
         datesAndAniversaries.add(new WizardPanel(panes, 6));
         load.add(new WizardPanel(panes, 7));
         misc.add(new WizardPanel(panes, 8));
+    }
+
+    private Component createYear(Integer year) {
+        JPanel p = new JPanel(new BorderLayout());
+        p.add(new JLabel("Year, calendar is for"), BorderLayout.CENTER);
+        final JSpinner sp = new JSpinner(new SpinnerNumberModel(suggestYear(year), -2000, 20000, 1));
+        p.add(sp, BorderLayout.SOUTH);
+        sp.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                args.year=(Integer)sp.getValue();
+            }
+        });
+        return p;
+    }
+
+    public static int suggestYear(Integer year){
+        if (year == null) {
+            Calendar now = Calendar.getInstance();
+            now.setTime(new Date());
+            if (now.get(Calendar.MONTH) == 0) {
+                return now.get(Calendar.YEAR);
+            } else {
+                return now.get(Calendar.YEAR) + 1;
+            }
+        } else {
+            return year;
+        }
     }
 }

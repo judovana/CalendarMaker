@@ -14,15 +14,15 @@ public class MainFrame extends JFrame {
 
     public MainFrame(boolean week, Integer year, List<String> dirs, String template, List<String> loaded, Integer w, Integer h, String names, String interesting, String anniversaries) throws IOException {
         int wii, hee;
-        if (w == null || w == 0){
+        if (w == null || w == 0) {
             wii = 800;
         } else {
             wii = w;
         }
-        if (h == null || h == 0){
-            hee= 600;
+        if (h == null || h == 0) {
+            hee = 600;
         } else {
-            hee= h;
+            hee = h;
         }
         this.setSize(wii, hee);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -492,17 +492,8 @@ public class MainFrame extends JFrame {
     }
 
     private RangeProvider getYearOfCal(boolean week, Integer year) {
-        if (year == null) {
-            Calendar now = Calendar.getInstance();
-            now.setTime(new Date());
-            if (now.get(Calendar.MONTH) == 0) {
-                return new RangeProvider(now.get(Calendar.YEAR), week);
-            } else {
-                return new RangeProvider(now.get(Calendar.YEAR) + 1, week);
-            }
-        } else {
-            return new RangeProvider(year, week);
-        }
+        return new RangeProvider(Wizard.suggestYear(year), week);
+
     }
 
     public static void checkExists(File f, Rummable r) throws Exception {
