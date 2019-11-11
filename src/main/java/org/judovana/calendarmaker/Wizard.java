@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class Wizard extends JDialog {
 
@@ -113,7 +114,7 @@ public class Wizard extends JDialog {
         year.add(new WizardPanel(panes, 0).setMainPane(createYear(args.year)));
         mOrW.add(new WizardPanel(panes, 1).setMainPane(createWeekMonth(args.week)));
         templates.add(new WizardPanel(panes, 2).setMainPane(createTemplate(args.template)));
-        photoDirs.add(new WizardPanel(panes, 3));
+        photoDirs.add(new WizardPanel(panes, 3).setMainPane(createPhotoDirs(args.dirs)));
         names.add(new WizardPanel(panes, 4));
         myNames.add(new WizardPanel(panes, 5));
         datesAndAniversaries.add(new WizardPanel(panes, 6));
@@ -300,5 +301,26 @@ public class Wizard extends JDialog {
             pp.validate();
         }
         return pp;
+    }
+
+    private Component createPhotoDirs(List<String> dirs) {
+        JPanel p = new JPanel(new GridLayout(0, 1));
+        final JPanel pp = new JPanel(new BorderLayout());
+        pp.add(new JLabel("Directories where photos/images you wish to use are to be searched for (recursively)"), BorderLayout.NORTH);
+        p.add(createDirField());
+        p.add(createDirField());
+        pp.add(p, BorderLayout.CENTER);
+        return pp;
+    }
+
+    private JPanel createDirField() {
+        JPanel p1=new JPanel(new BorderLayout());
+        p1.add(new JButton("-"),BorderLayout.WEST);
+        p1.add(new JTextField("/some/dir1"));
+        JPanel pp1=new JPanel(new BorderLayout());
+        pp1.add(new JButton("..."), BorderLayout.WEST);
+        pp1.add(new JButton("+"), BorderLayout.EAST);
+        p1.add(pp1, BorderLayout.EAST);
+        return p1;
     }
 }
