@@ -12,14 +12,14 @@ import java.util.List;
  * Hello world!
  */
 public class App {
-    static class Args {
-        boolean week = false;
-        Integer year = null;
-        List<String> dirs = new ArrayList<>();
-        String template;
-        private List<String> loaded;
-        Integer w, h;
-        String names, anniversaries, interesting;
+    public static class Args {
+        public boolean week = false;
+        public Integer year = null;
+        public List<String> dirs = new ArrayList<>();
+        public String template;
+        public List<String> loaded;
+        public Integer w, h;
+        public String names, anniversaries, interesting;
 
         public void load(String s) throws IOException {
             this.loaded = Files.readAllLines(new File(s).toPath(), Charset.forName("utf-8"));

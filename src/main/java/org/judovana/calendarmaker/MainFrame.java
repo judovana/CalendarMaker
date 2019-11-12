@@ -1,5 +1,7 @@
 package org.judovana.calendarmaker;
 
+import org.judovana.calendarmaker.wizard.YearWizard;
+
 import javax.swing.*;
 import java.awt.event.*;
 import java.io.File;
@@ -492,7 +494,7 @@ public class MainFrame extends JFrame {
     }
 
     private RangeProvider getYearOfCal(boolean week, Integer year) {
-        return new RangeProvider(Wizard.suggestYear(year), week);
+        return new RangeProvider(YearWizard.suggestYear(year), week);
 
     }
 
