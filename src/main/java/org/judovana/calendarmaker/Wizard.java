@@ -61,7 +61,7 @@ public class Wizard extends JDialog {
             this.add(mainButtons, BorderLayout.SOUTH);
         }
 
-        public WizardPanel  setMainPane(Component c){
+        public WizardPanel setMainPane(Component c) {
             this.add(c);
             return this;
         }
@@ -70,6 +70,13 @@ public class Wizard extends JDialog {
 
     private final App.Args args;
 
+    /**
+     * IMportant implementation detail is, that although gui shows some details, it do not affect users values, unless he especially edit tat
+     * It is imrotant, as the result of wizard is by default is by default saved. We do not wont to save some defaults, but oly user's values
+     *
+     * @param args
+     * @throws HeadlessException
+     */
     public Wizard(App.Args args) throws HeadlessException {
         Dimension d = ScreenFinder.getCurrentScreenSizeWithoutBounds().getSize();
         int w = (4 * d.width) / 5;
@@ -130,13 +137,13 @@ public class Wizard extends JDialog {
         sp.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                args.year=(Integer)sp.getValue();
+                args.year = (Integer) sp.getValue();
             }
         });
         return p;
     }
 
-    public static int suggestYear(Integer year){
+    public static int suggestYear(Integer year) {
         if (year == null) {
             Calendar now = Calendar.getInstance();
             now.setTime(new Date());
@@ -151,7 +158,7 @@ public class Wizard extends JDialog {
     }
 
     private Component createWeekMonth(boolean week) {
-        JPanel p = new JPanel(new GridLayout(1,2));
+        JPanel p = new JPanel(new GridLayout(1, 2));
         final JRadioButton b1 = new JRadioButton("Week");
         final JRadioButton b2 = new JRadioButton("Month");
         p.add(b1);
@@ -164,8 +171,8 @@ public class Wizard extends JDialog {
         b1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (b1.isSelected()){
-                    args.week=true;
+                if (b1.isSelected()) {
+                    args.week = true;
                     clean(pp);
                     ImageIcon ii = new ImageIcon(Wizard.class.getClassLoader().getResource("org/judovana/calendarmaker/data/53.png"));
                     JLabel jl = new JLabel(ii);
@@ -177,8 +184,8 @@ public class Wizard extends JDialog {
         b2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (b2.isSelected()){
-                    args.week=false;
+                if (b2.isSelected()) {
+                    args.week = false;
                     clean(pp);
                     ImageIcon ii = new ImageIcon(Wizard.class.getClassLoader().getResource("org/judovana/calendarmaker/data/12.png"));
                     JLabel jl = new JLabel(ii);
@@ -187,7 +194,7 @@ public class Wizard extends JDialog {
                 }
             }
         });
-        if (week){
+        if (week) {
             b1.setSelected(true);
             b1.getActionListeners()[0].actionPerformed(null);
         } else {
@@ -198,15 +205,15 @@ public class Wizard extends JDialog {
     }
 
     private void clean(JPanel pp) {
-        for(Component c: pp.getComponents()){
-            if (c instanceof  JLabel){
+        for (Component c : pp.getComponents()) {
+            if (c instanceof JLabel) {
                 pp.remove(c);
             }
         }
     }
 
     private Component createTemplate(String template) {
-        JPanel p = new JPanel(new GridLayout(1,4));
+        JPanel p = new JPanel(new GridLayout(1, 4));
         final JRadioButton hr = new JRadioButton("Image right");
         final JRadioButton hl = new JRadioButton("Image left");
         final JRadioButton vd = new JRadioButton("Image down");
@@ -229,8 +236,8 @@ public class Wizard extends JDialog {
         hr.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (hr.isSelected()){
-                    args.template="hr";
+                if (hr.isSelected()) {
+                    args.template = "hr";
                     clean(pp);
                     ImageIcon ii = new ImageIcon(Wizard.class.getClassLoader().getResource("org/judovana/calendarmaker/data/hr.png"));
                     JLabel jl = new JLabel(ii);
@@ -242,8 +249,8 @@ public class Wizard extends JDialog {
         hl.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (hl.isSelected()){
-                    args.template="hl";
+                if (hl.isSelected()) {
+                    args.template = "hl";
                     clean(pp);
                     ImageIcon ii = new ImageIcon(Wizard.class.getClassLoader().getResource("org/judovana/calendarmaker/data/hl.png"));
                     JLabel jl = new JLabel(ii);
@@ -255,8 +262,8 @@ public class Wizard extends JDialog {
         vd.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (vd.isSelected()){
-                    args.template="vd";
+                if (vd.isSelected()) {
+                    args.template = "vd";
                     clean(pp);
                     ImageIcon ii = new ImageIcon(Wizard.class.getClassLoader().getResource("org/judovana/calendarmaker/data/vd.png"));
                     JLabel jl = new JLabel(ii);
@@ -268,8 +275,8 @@ public class Wizard extends JDialog {
         vu.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (vu.isSelected()){
-                    args.template="vu";
+                if (vu.isSelected()) {
+                    args.template = "vu";
                     clean(pp);
                     ImageIcon ii = new ImageIcon(Wizard.class.getClassLoader().getResource("org/judovana/calendarmaker/data/vu.png"));
                     JLabel jl = new JLabel(ii);
@@ -304,23 +311,36 @@ public class Wizard extends JDialog {
     }
 
     private Component createPhotoDirs(List<String> dirs) {
-        JPanel p = new JPanel(new GridLayout(0, 1));
         final JPanel pp = new JPanel(new BorderLayout());
         pp.add(new JLabel("Directories where photos/images you wish to use are to be searched for (recursively)"), BorderLayout.NORTH);
-        p.add(createDirField());
-        p.add(createDirField());
-        pp.add(p, BorderLayout.CENTER);
+        pp.add(new PhotoDirsCotroller(args), BorderLayout.CENTER);
         return pp;
     }
 
-    private JPanel createDirField() {
-        JPanel p1=new JPanel(new BorderLayout());
-        p1.add(new JButton("-"),BorderLayout.WEST);
-        p1.add(new JTextField("/some/dir1"));
-        JPanel pp1=new JPanel(new BorderLayout());
-        pp1.add(new JButton("..."), BorderLayout.WEST);
-        pp1.add(new JButton("+"), BorderLayout.EAST);
-        p1.add(pp1, BorderLayout.EAST);
-        return p1;
+
+    private static class PhotoDirsCotroller extends JPanel {
+        private class DirPane extends JPanel {
+            public DirPane(String dir) {
+                this.setLayout(new BorderLayout());
+                this.add(new JButton("-"), BorderLayout.WEST);
+                this.add(new JTextField(dir));
+                JPanel pp1 = new JPanel(new BorderLayout());
+                pp1.add(new JButton("..."), BorderLayout.WEST);
+                pp1.add(new JButton("+"), BorderLayout.EAST);
+                this.add(pp1, BorderLayout.EAST);
+            }
+        }
+
+        public PhotoDirsCotroller(App.Args aargs) {
+            this.setLayout(new GridLayout(0, 1));
+            if (aargs.dirs == null || aargs.dirs.isEmpty()) {
+                this.add(new DirPane("/usr/share/icons"));
+            } else {
+                for (String s : aargs.dirs) {
+                    this.add(new DirPane(s));
+                }
+            }
+
+        }
     }
 }
