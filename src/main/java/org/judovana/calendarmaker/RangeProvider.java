@@ -50,7 +50,7 @@ public class RangeProvider {
             }
         } else {
             //we are on monday
-            c2.add(Calendar.DAY_OF_YEAR, -1);
+            //c2.add(Calendar.DAY_OF_YEAR, -1);
             //so we canadd in loop
             int lastMonth = 0;
             while (true) {
