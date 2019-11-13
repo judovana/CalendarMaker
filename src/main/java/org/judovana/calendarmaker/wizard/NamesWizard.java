@@ -29,7 +29,7 @@ public class NamesWizard {
         final JPanel main = new JPanel(new BorderLayout());
         main.add(radios, BorderLayout.NORTH);
         final JTextArea text = new JTextArea();
-        main.add(text);
+        main.add(new JScrollPane(text));
         final ButtonGroup bg = new ButtonGroup();
         bg.add(internal);
         bg.add(external);
