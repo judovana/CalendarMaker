@@ -98,7 +98,10 @@ public class PhotoFrame {
             String ff = f.getAbsolutePath();
             for (String s : sortedStringList) {
                 if (ff.startsWith(s)) {
-                    ff = ff.substring(s.length()+1);
+                    ff = ff.substring(s.length());
+                    while  (ff.startsWith("/") || ff.startsWith("\\")) {
+                        ff = ff.substring(1);
+                    }
                     break;
                 }
             }
