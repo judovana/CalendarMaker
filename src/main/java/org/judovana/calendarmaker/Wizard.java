@@ -1,9 +1,6 @@
 package org.judovana.calendarmaker;
 
-import org.judovana.calendarmaker.wizard.DirsWizard;
-import org.judovana.calendarmaker.wizard.TemplateWizard;
-import org.judovana.calendarmaker.wizard.TypeWizard;
-import org.judovana.calendarmaker.wizard.YearWizard;
+import org.judovana.calendarmaker.wizard.*;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -14,9 +11,16 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class Wizard extends JDialog {
 
@@ -129,7 +133,7 @@ public class Wizard extends JDialog {
         mOrW.add(new WizardPanel(panes, 1).setMainPane(TypeWizard.createWeekMonth(args)));
         templates.add(new WizardPanel(panes, 2).setMainPane(TemplateWizard.createTemplate(args)));
         photoDirs.add(new WizardPanel(panes, 3).setMainPane(DirsWizard.createPhotoDirs(args)));
-        names.add(new WizardPanel(panes, 4));
+        names.add(new WizardPanel(panes, 4).setMainPane(NamesWizard.create(args)));
         myNames.add(new WizardPanel(panes, 5));
         datesAndAniversaries.add(new WizardPanel(panes, 6));
         load.add(new WizardPanel(panes, 7));
@@ -137,4 +141,33 @@ public class Wizard extends JDialog {
     }
 
 
+    public static String[] filePreview(String filePath) {
+        StringBuilder contentBuilder = new StringBuilder();
+        try {
+            try (Stream<String> stream = Files.lines(Paths.get(filePath), StandardCharsets.UTF_8)) {
+                stream.forEach(s -> contentBuilder.append(s).append("\n"));
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return new String[]{"error reading '" + filePath + "'. File missing?", null};
+        }
+        return new String[]{contentBuilder.toString(),"ok"};
+    }
+
+
+
+    public static String[] inputStreamToString(InputStream inputStream) {
+        try {
+            try (ByteArrayOutputStream result = new ByteArrayOutputStream()) {
+                byte[] buffer = new byte[1024];
+                int length;
+                while ((length = inputStream.read(buffer)) != -1) {
+                    result.write(buffer, 0, length);
+                }
+                return new String[]{result.toString("UTF-8"),"ok"};
+            }
+        } catch(Exception ex){
+            return new String[]{"Error reading example",null};
+        }
+    }
 }

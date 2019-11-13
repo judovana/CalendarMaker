@@ -9,6 +9,8 @@ import java.util.List;
 
 public class NamesLoader {
 
+    public static final String EXAMPLE = "EXAMPLE";
+    public static final String NAMES_EXAMPLE = "org/judovana/calendarmaker/data/czDb";
     public static NamesLoader NAMES;
     private final String allSrc;
     private final String namesSrc;
@@ -24,13 +26,49 @@ public class NamesLoader {
         this.datesSrc = anniversaries;
     }
 
-    private static boolean useInternal(String s) {
-        //likely to treat null in featuere as some default file in .config
-        if (s == null || s.toUpperCase().equals("EXAMPLE")) {
+    public static boolean useInternal(String s) {
+        if (s.toUpperCase().equals(EXAMPLE)) {
             return true;
         } else {
             return false;
         }
+    }
+
+    public static boolean useNothing(String s) {
+        if (s == null) {
+            return true;
+        }
+        if (useInternal(s)){
+            return false;
+        }
+        if (s.trim().isEmpty() || !new File(s).exists()) {
+            if (!new File(s).exists()) {
+                new FileNotFoundException(s).printStackTrace();
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static InputStream getStream(String s, String internalDefault) {
+        if (useNothing(s)) {
+            return new ByteArrayInputStream(new byte[0]);
+        } else if (useInternal(s)) {
+            return getExemplarStream(internalDefault);
+        } else {
+            try {
+                return new FileInputStream(s);
+            }catch (Exception ex){
+                //already handled in useNothing/internal
+                ex.printStackTrace();
+                return new ByteArrayInputStream(new byte[0]);
+            }
+        }
+    }
+
+    public static InputStream getExemplarStream(String s) {
+        return NamesLoader.class.getClassLoader().getResourceAsStream(s);
     }
 
 
@@ -54,11 +92,7 @@ public class NamesLoader {
 
     private String getDaysMeaningImp(Calendar date) throws IOException {
         if (all == null) {
-            if (useInternal(allSrc)) {
-                all = loadAllNames(getExemplatNameList());
-            } else {
-                all = loadAllNames(new FileInputStream(allSrc));
-            }
+            all = loadAllNames(getStream(allSrc, NAMES_EXAMPLE));
         }
 
         String name = all.get(date.get(Calendar.DAY_OF_MONTH) + "." + (date.get(Calendar.MONTH) + 1) + ".");
@@ -69,13 +103,9 @@ public class NamesLoader {
         }
     }
 
-        private Anniversary getDaysEventImpl(Calendar date) throws IOException {
+    private Anniversary getDaysEventImpl(Calendar date) throws IOException {
         if (dates == null) {
-            if (useInternal(datesSrc)) {
-                dates = loadCustomDates(getExemplarAnniversaries());
-            } else {
-                dates = loadCustomDates(new FileInputStream(datesSrc));
-            }
+            dates = loadCustomDates(getStream(datesSrc, "org/judovana/calendarmaker/data/InterestingDates"));
         }
         MyInterestingDay thisDay = dates.get(date.get(Calendar.DAY_OF_MONTH) + "." + (date.get(Calendar.MONTH) + 1) + ".");
         if (thisDay == null) {
@@ -171,31 +201,11 @@ public class NamesLoader {
 
     public boolean isInterestingImpl(String s) throws IOException {
         if (names == null) {
-            if (useInternal(namesSrc)) {
-                names = loadMyNames(getInterestingNamesExampleStream());
-            } else {
-                names = loadMyNames(new FileInputStream((namesSrc)));
-            }
+            names = loadMyNames(getStream(namesSrc, "org/judovana/calendarmaker/data/InterestingNames"));
         }
         return names.contains(s);
     }
 
-    private InputStream getInterestingNamesExampleStream() {
-        return getExemplarStream("org/judovana/calendarmaker/data/InterestingNames");
-    }
-
-    private InputStream getExemplarAnniversaries() {
-        return getExemplarStream("org/judovana/calendarmaker/data/InterestingDates");
-    }
-
-    private InputStream getExemplatNameList() {
-        return getExemplarStream("org/judovana/calendarmaker/data/czDb");
-    }
-
-
-    private InputStream getExemplarStream(String s) {
-        return NamesLoader.class.getClassLoader().getResourceAsStream(s);
-    }
 
     private static class MyInterestingDay {
 
