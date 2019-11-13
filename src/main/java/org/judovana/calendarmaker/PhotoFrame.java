@@ -1,6 +1,7 @@
 package org.judovana.calendarmaker;
 
 import javax.imageio.ImageIO;
+
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
@@ -11,6 +12,7 @@ import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class PhotoFrame {
 
@@ -28,7 +30,9 @@ public class PhotoFrame {
         if (rangeTesting) {
             this.data = new BufferedImage(100, 100, BufferedImage.TYPE_4BYTE_ABGR);
             Graphics g = data.createGraphics();
-            g.setColor(new Color(Math.abs(src.hashCode()) % 250, Math.abs(new File(src).hashCode()) % 250, Math.abs(src.hashCode() + new File(src).hashCode()) % 250));
+            g.setColor(new Color(Math.abs(src.hashCode()) % 250,
+                    Math.abs(new File(src).hashCode()) % 250,
+                    Math.abs(src.hashCode() + new File(src).hashCode()) % 250));
             g.fillRect(0, 0, 100, 100);
         } else {
             this.data = ImageIO.read(new File(src));
@@ -85,9 +89,22 @@ public class PhotoFrame {
 
     public static final SimpleDateFormat dayThis = new SimpleDateFormat("dd/MM/yyyy");
 
-    public String getFotoTitle() {
+    public String getFotoTitle(List<String> sortedStringList) {
         File f = new File(src);
-        return f.getParentFile().getName() + "/" + f.getName() + " " + dayThis.format(new Date(f.lastModified()));
+        if (sortedStringList == null) {
+            return f.getParentFile().getName() + "/" + f.getName() + " " + dayThis.format(
+                    new Date(f.lastModified()));
+        } else {
+            String ff = f.getAbsolutePath();
+            for (String s : sortedStringList) {
+                if (ff.startsWith(s)) {
+                    ff = ff.substring(s.length()+1);
+                    break;
+                }
+            }
+            return ff + " " + dayThis.format(new Date(f.lastModified()));
+        }
+
 
     }
 
@@ -131,7 +148,7 @@ public class PhotoFrame {
     private double round(double v) {
         int rounded = ((int) (v * 100d)) + 628/*to keep in positives*/;
         rounded = rounded % 628;
-        double vv =  ((double) rounded) / 100d;
+        double vv = ((double) rounded) / 100d;
         if (vv < 0.2) {
             return 0;
         }

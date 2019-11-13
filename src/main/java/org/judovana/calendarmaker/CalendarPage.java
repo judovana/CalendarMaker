@@ -2,18 +2,27 @@ package org.judovana.calendarmaker;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
 public class CalendarPage {
 
+    private final List<String> sortedStripDirs;
     private PhotoFrame photo;
     private final DateRangeRenderrer dates;
     private final Template t;
-    public CalendarPage(List<Date> dates, PhotoFrame photo, Template t) {
+    public CalendarPage(List<Date> dates, PhotoFrame photo, Template t, List<String> stripDirs) {
         this.dates = new DateRangeRenderrer(dates);
         this.photo = photo;
         this.t = t;
+        stripDirs.sort(new Comparator<String>() {
+            @Override
+            public int compare(String s1, String s2) {
+                return s2.length()-s1.length();
+            }
+        });
+        this.sortedStripDirs = stripDirs;
     }
 
     public PhotoFrame getPhoto() {
@@ -38,7 +47,7 @@ public class CalendarPage {
             footer=footer+" "+(week+1)+"/"+53;
         }
         g.setFont(g.getFont().deriveFont(Font.BOLD));
-        String title = photo.getFotoTitle();
+        String title = photo.getFotoTitle(sortedStripDirs);
         Rectangle2D rect1 = g.getFontMetrics().getStringBounds(title, g);
         int th = g.getFontMetrics().getHeight();
         int tw = (int) rect1.getWidth();

@@ -47,7 +47,7 @@ public class MainFrame extends JFrame {
         List<PageView> pages = new ArrayList<>(ranges.size());
         if (loaded == null) {
             for (List<Date> range : ranges) {
-                CalendarPage cp = new CalendarPage(range, new PhotoFrame(pl.getRandomImage()), tmplt);
+                CalendarPage cp = new CalendarPage(range, new PhotoFrame(pl.getRandomImage()), tmplt, pl.getSrcs());
                 PageView p = new PageView(cp);
                 pages.add(p);
             }
@@ -63,7 +63,7 @@ public class MainFrame extends JFrame {
                     pf = new PhotoFrame(pl.getRandomImage());
                     System.err.println("Warning! Exceeded range of loaded list! Filling by random");
                 }
-                CalendarPage cp = new CalendarPage(range, pf, tmplt);
+                CalendarPage cp = new CalendarPage(range, pf, tmplt, pl.getSrcs());
                 PageView p = new PageView(cp);
                 pages.add(p);
                 i++;
@@ -123,7 +123,7 @@ public class MainFrame extends JFrame {
                 final PageView page = all.get(e.getX(), e.getY());
                 final String s;
                 if (page != null) {
-                    s = page.getData().getDates().getTitle() + " ||| " + page.getData().getPhoto().getFotoTitle();
+                    s = page.getData().getDates().getTitle() + " ||| " + page.getData().getPhoto().getFotoTitle(null);
                 } else {
                     s = "???";
                 }
