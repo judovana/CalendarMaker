@@ -5,6 +5,9 @@ import org.judovana.calendarmaker.NamesLoader;
 import org.judovana.calendarmaker.Wizard;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,8 +15,20 @@ import java.awt.event.ActionListener;
 public class NamesWizard {
     public static Component create(final App.Args args) {
         final JPanel textfieldPane = new JPanel(new BorderLayout());
-        final JTextField file = new JTextField(System.getProperty("user.home") + "/.config/CalendarMaker/names");
+        final JTextField file = new JTextField(
+                System.getProperty("user.home") + "/.config/CalendarMaker/names");
         final JButton select = new JButton("...");
+        select.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                JFileChooser jf = new JFileChooser(file.getText());
+                jf.setFileSelectionMode(JFileChooser.FILES_ONLY);
+                int a = jf.showOpenDialog(null);
+                if (a == JFileChooser.APPROVE_OPTION) {
+                    file.setText(jf.getSelectedFile().getAbsolutePath());
+                }
+            }
+        });
         textfieldPane.add(file);
         textfieldPane.add(select, BorderLayout.EAST);
         final JPanel radios = new JPanel(new GridLayout(3, 2));
@@ -55,7 +70,7 @@ public class NamesWizard {
                     }
                     String[] t = Wizard.filePreview(file.getText());
                     text.setText(t[0]);
-                    if (t[1] == null ){
+                    if (t[1] == null) {
                         text.setEnabled(false);
                     }
                 } else {
@@ -82,6 +97,33 @@ public class NamesWizard {
         }
 
         al.actionPerformed(new ActionEvent(new JPanel(), 1, "NO"));
+        //after the action, to not disturb the initial setting
+        file.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent documentEvent) {
+                updatePreview();
+            }
+
+            private void updatePreview() {
+                text.setEnabled(true);
+                args.names = text.getText();
+                String[] t = Wizard.filePreview(file.getText());
+                text.setText(t[0]);
+                if (t[1] == null) {
+                    text.setEnabled(false);
+                }
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent documentEvent) {
+                updatePreview();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent documentEvent) {
+                updatePreview();
+            }
+        });
         return main;
     }
 }
