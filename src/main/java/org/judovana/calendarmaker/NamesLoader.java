@@ -16,9 +16,81 @@ public class NamesLoader {
     private final String namesSrc;
     private final String datesSrc;
 
-    private Map<String, String> all;
-    private List<String> names;
-    private Map<String, MyInterestingDay> dates;
+    private AllNamesKeeper all;
+    private NamesKeeper names;
+    private DatesKeeper dates;
+
+    private static class DatesKeeper {
+        private Map<String, MyInterestingDay> dates = new HashMap<>();
+        private int errors = 0;
+        private String errosDetails = "";
+
+        public void put(String key, MyInterestingDay md) {
+            this.dates.put(key, md);
+        }
+
+        public MyInterestingDay get(String s) {
+            return this.dates.get(s);
+        }
+
+        public void error(int line, String s) {
+            errors++;
+            if (s == null) {
+                s = "null";
+            }
+            errosDetails = errosDetails + line + ": " + s + "\n";
+        }
+    }
+
+    public static class AllNamesKeeper {
+        private Map<String, String> all = new HashMap<>();
+        private int errors = 0;
+        private String errosDetails = "";
+
+        @Override
+        public String toString() {
+            return "Loaded:  " + all.size() + "\n" +
+                    "errors: " + errors + "\n" + errosDetails;
+        }
+
+        public void put(String s, String s1) {
+            this.all.put(s, s1);
+        }
+
+        public String get(String s) {
+            return this.all.get(s);
+        }
+
+        public void error(int line, String s) {
+            errors++;
+            if (s == null) {
+                s = "null";
+            }
+            errosDetails = errosDetails + line + ": " + s + "\n";
+        }
+    }
+
+    public static class NamesKeeper {
+        private List<String> names = new ArrayList<>();
+        private int errors = 0;
+        private String errosDetails = "";
+
+        public void add(String s) {
+            this.names.add(s);
+        }
+
+        public boolean contains(String s) {
+            return this.names.contains(s);
+        }
+
+        public void error(int line, String s) {
+            errors++;
+            if (s == null) {
+                s = "null";
+            }
+            errosDetails = errosDetails + line + ": " + s + "\n";
+        }
+    }
 
     public NamesLoader(String names, String interesting, String anniversaries) {
         this.allSrc = names;
@@ -38,7 +110,7 @@ public class NamesLoader {
         if (s == null) {
             return true;
         }
-        if (useInternal(s)){
+        if (useInternal(s)) {
             return false;
         }
         if (s.trim().isEmpty() || !new File(s).exists()) {
@@ -59,7 +131,7 @@ public class NamesLoader {
         } else {
             try {
                 return new FileInputStream(s);
-            }catch (Exception ex){
+            } catch (Exception ex) {
                 //already handled in useNothing/internal
                 ex.printStackTrace();
                 return new ByteArrayInputStream(new byte[0]);
@@ -95,7 +167,8 @@ public class NamesLoader {
             all = loadAllNames(getStream(allSrc, NAMES_EXAMPLE));
         }
 
-        String name = all.get(date.get(Calendar.DAY_OF_MONTH) + "." + (date.get(Calendar.MONTH) + 1) + ".");
+        String name = all.get(
+                date.get(Calendar.DAY_OF_MONTH) + "." + (date.get(Calendar.MONTH) + 1) + ".");
         if (name == null) {
             return "";
         } else {
@@ -105,9 +178,11 @@ public class NamesLoader {
 
     private Anniversary getDaysEventImpl(Calendar date) throws IOException {
         if (dates == null) {
-            dates = loadCustomDates(getStream(datesSrc, "org/judovana/calendarmaker/data/InterestingDates"));
+            dates = loadCustomDates(
+                    getStream(datesSrc, "org/judovana/calendarmaker/data/InterestingDates"));
         }
-        MyInterestingDay thisDay = dates.get(date.get(Calendar.DAY_OF_MONTH) + "." + (date.get(Calendar.MONTH) + 1) + ".");
+        MyInterestingDay thisDay = dates.get(
+                date.get(Calendar.DAY_OF_MONTH) + "." + (date.get(Calendar.MONTH) + 1) + ".");
         if (thisDay == null) {
             return new Anniversary("", null);
         } else {
@@ -127,11 +202,13 @@ public class NamesLoader {
         }
     }
 
-    private static Map<String, String> loadAllNames(InputStream resource) throws IOException {
-        Map<String, String> all = new HashMap<>();
+    public static AllNamesKeeper loadAllNames(InputStream resource) throws IOException {
+        AllNamesKeeper r = new AllNamesKeeper();
+        int line = 0;
         try (BufferedReader br = new BufferedReader(new InputStreamReader(resource))) {
             while (true) {
                 String s = br.readLine();
+                line++;
                 if (s == null) {
                     break;
                 }
@@ -140,54 +217,66 @@ public class NamesLoader {
                     try {
                         Integer.valueOf(start);
                         String[] ss = s.split("\t+");
-                        all.put(ss[0], ss[1]);
+                        r.put(ss[0], ss[1]);
                     } catch (NumberFormatException ex) {
                         //comment
+                        r.error(line, s);
                     }
+                } else {
+                    r.error(line, s);
                 }
             }
         }
-        return all;
+        return r;
     }
 
-    private static Map<String, MyInterestingDay> loadCustomDates(InputStream resource) throws IOException {
-        Map<String, MyInterestingDay> all = new HashMap<>();
+    private static DatesKeeper loadCustomDates(InputStream resource) throws IOException {
+        DatesKeeper r = new DatesKeeper();
+        int line = 0;
         try (BufferedReader br = new BufferedReader(new InputStreamReader(resource))) {
             while (true) {
                 String s = br.readLine();
+                line++;
                 if (s == null) {
                     break;
                 }
                 if (s.startsWith("#")) {
-                    continue;
+                    r.error(line, s);
                 }
                 if (s != null && s.trim().length() > 0) {
                     try {
                         MyInterestingDay md = new MyInterestingDay(s);
-                        all.put(md.getKey(), md);
+                        r.put(md.getKey(), md);
                     } catch (ParseException ex) {
                         ex.printStackTrace();
+                        r.error(line, s);
                     }
+                } else {
+                    r.error(line, s);
                 }
             }
         }
-        return all;
+        return r;
     }
 
-    private static List<String> loadMyNames(InputStream resource) throws IOException {
-        List<String> all = new ArrayList<>();
+    private static NamesKeeper loadMyNames(InputStream resource) throws IOException {
+        NamesKeeper r = new NamesKeeper();
+        int line = 0;
         try (BufferedReader br = new BufferedReader(new InputStreamReader(resource))) {
             while (true) {
                 String s = br.readLine();
+                line++;
                 if (s == null) {
                     break;
                 }
                 if (s != null && s.trim().length() > 0) {
-                    all.add(s);
+                    r.add(s);
+                } else {
+                    r.error(line, s);
                 }
             }
         }
-        return all;
+        return r;
     }
 
     public boolean isInterestin(String s) {
@@ -201,7 +290,8 @@ public class NamesLoader {
 
     public boolean isInterestingImpl(String s) throws IOException {
         if (names == null) {
-            names = loadMyNames(getStream(namesSrc, "org/judovana/calendarmaker/data/InterestingNames"));
+            names = loadMyNames(
+                    getStream(namesSrc, "org/judovana/calendarmaker/data/InterestingNames"));
         }
         return names.contains(s);
     }

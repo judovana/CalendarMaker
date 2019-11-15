@@ -49,6 +49,18 @@ public class NamesWizard {
         final JButton addLine = new JButton("Add Line");
         final JButton test = new JButton("test");
         final JPanel tools = new JPanel(new GridLayout(1, 3));
+        test.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                try {
+                    NamesLoader.AllNamesKeeper all = NamesLoader.loadAllNames(
+                            NamesLoader.getStream(args.names, NamesLoader.NAMES_EXAMPLE));
+                    JOptionPane.showMessageDialog(null, all);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, ex);
+                }
+            }
+        });
         tools.add(copyEditCreate);
         tools.add(test);
         tools.add(addLine);
@@ -132,7 +144,7 @@ public class NamesWizard {
 
             private void updatePreview() {
                 text.setEnabled(true);
-                args.names = text.getText();
+                args.names = file.getText();
                 String[] t = Wizard.filePreview(file.getText());
                 text.setText(t[0]);
                 if (t[1] == null) {
