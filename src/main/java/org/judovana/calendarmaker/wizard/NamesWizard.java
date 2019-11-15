@@ -45,6 +45,14 @@ public class NamesWizard {
         main.add(radios, BorderLayout.NORTH);
         final JTextArea text = new JTextArea();
         main.add(new JScrollPane(text));
+        final JButton copyEditCreate = new JButton("?");
+        final JButton addLine = new JButton("Add Line");
+        final JButton test = new JButton("test");
+        final JPanel tools = new JPanel(new GridLayout(1, 3));
+        tools.add(copyEditCreate);
+        tools.add(test);
+        tools.add(addLine);
+        main.add(tools, BorderLayout.SOUTH);
         final ButtonGroup bg = new ButtonGroup();
         bg.add(internal);
         bg.add(external);
@@ -59,8 +67,13 @@ public class NamesWizard {
                     if (!"NO".equals(e.getActionCommand())) {
                         args.names = NamesLoader.EXAMPLE;
                     }
-                    String[] t = Wizard.inputStreamToString(NamesLoader.getExemplarStream(NamesLoader.NAMES_EXAMPLE));
+                    String[] t = Wizard.inputStreamToString(
+                            NamesLoader.getExemplarStream(NamesLoader.NAMES_EXAMPLE));
                     text.setText(t[0]);
+                    copyEditCreate.setText("Copy to clipboard");
+                    copyEditCreate.setEnabled(true);
+                    addLine.setEnabled(false);
+                    test.setEnabled(true);
                 } else if (external.isSelected()) {
                     select.setEnabled(true);
                     file.setEnabled(true);
@@ -72,6 +85,15 @@ public class NamesWizard {
                     text.setText(t[0]);
                     if (t[1] == null) {
                         text.setEnabled(false);
+                        copyEditCreate.setText("create");
+                        copyEditCreate.setEnabled(true);
+                        addLine.setEnabled(false);
+                        test.setEnabled(true);
+                    } else {
+                        copyEditCreate.setText("save");
+                        copyEditCreate.setEnabled(true);
+                        addLine.setEnabled(true);
+                        test.setEnabled(true);
                     }
                 } else {
                     select.setEnabled(false);
@@ -81,6 +103,10 @@ public class NamesWizard {
                         args.names = null;
                     }
                     text.setText("");
+                    copyEditCreate.setText("?");
+                    copyEditCreate.setEnabled(false);
+                    addLine.setEnabled(false);
+                    test.setEnabled(false);
                 }
             }
         };
@@ -111,6 +137,15 @@ public class NamesWizard {
                 text.setText(t[0]);
                 if (t[1] == null) {
                     text.setEnabled(false);
+                    copyEditCreate.setText("create");
+                    copyEditCreate.setEnabled(true);
+                    addLine.setEnabled(false);
+                    test.setEnabled(true);
+                } else {
+                    copyEditCreate.setText("save");
+                    copyEditCreate.setEnabled(true);
+                    addLine.setEnabled(true);
+                    test.setEnabled(true);
                 }
             }
 
