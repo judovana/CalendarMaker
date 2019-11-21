@@ -1,6 +1,7 @@
 package org.judovana.calendarmaker;
 
 import javax.swing.*;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -20,12 +21,11 @@ public class App {
         public List<String> loaded;
         public Integer w, h;
         public String names, anniversaries, interesting;
-
         public void load(String s) throws IOException {
             this.loaded = Files.readAllLines(new File(s).toPath(), Charset.forName("utf-8"));
         }
     }
-        private static boolean showWizard=true;
+    private static boolean showWizard = true;
 
     public static void main(final String[] args) throws IOException {
         //preload args from default file?
@@ -59,7 +59,7 @@ public class App {
                 a.anniversaries = (arg.split("=")[1]); //EXAMPLE, DEFAULT?
             }
             if (arg.matches("^-+nowizard$") || arg.matches("^-+no-wizard$")) {
-                showWizard=false;
+                showWizard = false;
             }
             if (arg.matches("^-+save-wall=.+$")) {
                 //arg.split("=")[1]);
@@ -81,12 +81,13 @@ public class App {
             @Override
             public void run() {
                 try {
-                    if (showWizard){
+                    if (showWizard) {
                         new Wizard(a).setVisible(true);
                         //what to skip in no wizard?
                         //no defaults switch?
                     }
-                    new MainFrame(a.week, a.year, a.dirs, a.template, a.loaded, a.w, a.h, a.names, a.interesting, a.anniversaries).setVisible(true);
+                    new MainFrame(a.week, a.year, a.dirs, a.template, a.loaded, a.w, a.h,
+                            a.names, a.interesting, a.anniversaries).setVisible(true);
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }

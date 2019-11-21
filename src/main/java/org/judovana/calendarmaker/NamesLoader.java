@@ -11,6 +11,8 @@ public class NamesLoader {
 
     public static final String EXAMPLE = "EXAMPLE";
     public static final String NAMES_EXAMPLE = "org/judovana/calendarmaker/data/czDb";
+    public static final String INTERESTING_DATES_EXAMPLE = "org/judovana/calendarmaker/data/InterestingDates";
+    public static final String INTERESTING_NAMES_EXAMPLE = "org/judovana/calendarmaker/data/InterestingNames";
     public static NamesLoader NAMES;
     private final String allSrc;
     private final String namesSrc;
@@ -20,7 +22,7 @@ public class NamesLoader {
     private NamesKeeper names;
     private DatesKeeper dates;
 
-    private static class DatesKeeper {
+    public static class DatesKeeper {
         private Map<String, MyInterestingDay> dates = new HashMap<>();
         private int errors = 0;
         private String errosDetails = "";
@@ -40,6 +42,12 @@ public class NamesLoader {
             }
             errosDetails = errosDetails + line + ": " + s + "\n";
         }
+
+        @Override
+        public String toString() {
+            return "Loaded:  " + dates.size() + "\n" +
+                    "Skipped: " + errors + "\n" + errosDetails;
+        }
     }
 
     public static class AllNamesKeeper {
@@ -50,7 +58,7 @@ public class NamesLoader {
         @Override
         public String toString() {
             return "Loaded:  " + all.size() + "\n" +
-                    "errors: " + errors + "\n" + errosDetails;
+                    "Skipped: " + errors + "\n" + errosDetails;
         }
 
         public void put(String s, String s1) {
@@ -89,6 +97,11 @@ public class NamesLoader {
                 s = "null";
             }
             errosDetails = errosDetails + line + ": " + s + "\n";
+        }
+        @Override
+        public String toString() {
+            return "Loaded:  " + names.size() + "\n" +
+                    "Skipped: " + errors + "\n" + errosDetails;
         }
     }
 
@@ -179,7 +192,7 @@ public class NamesLoader {
     private Anniversary getDaysEventImpl(Calendar date) throws IOException {
         if (dates == null) {
             dates = loadCustomDates(
-                    getStream(datesSrc, "org/judovana/calendarmaker/data/InterestingDates"));
+                    getStream(datesSrc, INTERESTING_DATES_EXAMPLE));
         }
         MyInterestingDay thisDay = dates.get(
                 date.get(Calendar.DAY_OF_MONTH) + "." + (date.get(Calendar.MONTH) + 1) + ".");
@@ -230,7 +243,7 @@ public class NamesLoader {
         return r;
     }
 
-    private static DatesKeeper loadCustomDates(InputStream resource) throws IOException {
+    public static DatesKeeper loadCustomDates(InputStream resource) throws IOException {
         DatesKeeper r = new DatesKeeper();
         int line = 0;
         try (BufferedReader br = new BufferedReader(new InputStreamReader(resource))) {
@@ -259,7 +272,7 @@ public class NamesLoader {
         return r;
     }
 
-    private static NamesKeeper loadMyNames(InputStream resource) throws IOException {
+    public static NamesKeeper loadMyNames(InputStream resource) throws IOException {
         NamesKeeper r = new NamesKeeper();
         int line = 0;
         try (BufferedReader br = new BufferedReader(new InputStreamReader(resource))) {
@@ -291,7 +304,7 @@ public class NamesLoader {
     public boolean isInterestingImpl(String s) throws IOException {
         if (names == null) {
             names = loadMyNames(
-                    getStream(namesSrc, "org/judovana/calendarmaker/data/InterestingNames"));
+                    getStream(namesSrc, INTERESTING_NAMES_EXAMPLE));
         }
         return names.contains(s);
     }

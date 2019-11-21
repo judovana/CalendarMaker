@@ -3,23 +3,16 @@ package org.judovana.calendarmaker;
 import org.judovana.calendarmaker.wizard.*;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 import java.util.stream.Stream;
 
 public class Wizard extends JDialog {
@@ -133,9 +126,9 @@ public class Wizard extends JDialog {
         mOrW.add(new WizardPanel(panes, 1).setMainPane(TypeWizard.createWeekMonth(args)));
         templates.add(new WizardPanel(panes, 2).setMainPane(TemplateWizard.createTemplate(args)));
         photoDirs.add(new WizardPanel(panes, 3).setMainPane(DirsWizard.createPhotoDirs(args)));
-        names.add(new WizardPanel(panes, 4).setMainPane(NamesWizard.create(args)));
-        myNames.add(new WizardPanel(panes, 5));
-        datesAndAniversaries.add(new WizardPanel(panes, 6));
+        names.add(new WizardPanel(panes, 4).setMainPane(FilesWizard.createNames(args)));
+        myNames.add(new WizardPanel(panes, 5).setMainPane(FilesWizard.createImportantNames(args)));
+        datesAndAniversaries.add(new WizardPanel(panes, 6).setMainPane(FilesWizard.createAnniversaries(args)));
         load.add(new WizardPanel(panes, 7));
         misc.add(new WizardPanel(panes, 8));
     }
