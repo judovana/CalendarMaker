@@ -7,17 +7,18 @@ import org.judovana.calendarmaker.Wizard;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.text.DefaultEditorKit;
 
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.nio.file.Files;
 
 public class FilesWizard {
     public static Component createNames(final App.Args args) {
-        final String config_path = getMainPath()+"/names";
+        final String config_path = getMainPath() + "/names";
         final String rbut1Label = "no names/holidays";
         final String infoLabel = "Example file with czech date-names and holidays.";
         final String example = NamesLoader.NAMES_EXAMPLE;
@@ -50,7 +51,7 @@ public class FilesWizard {
     }
 
     public static Component createImportantNames(final App.Args args) {
-        final String config_path = getMainPath()+"/importantNames";
+        final String config_path = getMainPath() + "/importantNames";
         final String rbut1Label = "no important names";
         final String infoLabel = "Example file with some random czech names to be highlighted";
         final String example = NamesLoader.INTERESTING_NAMES_EXAMPLE;
@@ -83,7 +84,7 @@ public class FilesWizard {
     }
 
     public static Component createAnniversaries(final App.Args args) {
-        final String config_path = getMainPath()+"/anniversaries";
+        final String config_path = getMainPath() + "/anniversaries";
         final String rbut1Label = "no anniversaries/dates";
         final String infoLabel = "Example file with some random dates";
         final String example = NamesLoader.INTERESTING_DATES_EXAMPLE;
@@ -116,7 +117,7 @@ public class FilesWizard {
     }
 
     private static String getMainPath() {
-        return System.getProperty("user.home")+ "/.config/CalendarMaker";
+        return System.getProperty("user.home") + "/.config/CalendarMaker";
     }
 
     private interface ArgsSetter {
@@ -179,6 +180,37 @@ public class FilesWizard {
         main.add(radios, BorderLayout.NORTH);
         final JTextArea text = new JTextArea();
         main.add(new JScrollPane(text));
+        text.getDocument().addDocumentListener(new DocumentListener() {
+            private void work() {
+                if (text.isEnabled()) {
+                    try {
+                        File f = new File(file.getText());
+                        f.getParentFile().mkdirs();
+                        Files.write(f.toPath(),
+                                text.getText().getBytes("utf-8"));
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                        JOptionPane.showMessageDialog(null, ex);
+                    }
+                }
+
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                work();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                work();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                work();
+            }
+        });
         final JButton copyEditCreate = new JButton("?");
         final JButton addLine = new JButton("Add Line");
         final JButton test = new JButton("test");
@@ -198,22 +230,17 @@ public class FilesWizard {
                 if (internal.isSelected()) {
                     select.setEnabled(false);
                     file.setEnabled(false);
-                    text.setEnabled(false);
                     if (!"NO".equals(e.getActionCommand())) {
                         ts.as.set(NamesLoader.EXAMPLE);
                     }
                     String[] t = Wizard.inputStreamToString(
                             NamesLoader.getExemplarStream(ts.example));
-                    text.setText(t[0]);
+                    disableText(text, t[0]);
                     copyEditCreate.setText("Copy to clipboard");
-                    clearActions(copyEditCreate);
-                    copyEditCreate.addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            StringSelection stringSelection = new StringSelection(text.getText());
-                            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-                            clipboard.setContents(stringSelection, null);
-                        }
+                    setAction(copyEditCreate, e1 -> {
+                        StringSelection stringSelection = new StringSelection(text.getText());
+                        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                        clipboard.setContents(stringSelection, null);
                     });
                     copyEditCreate.setEnabled(true);
                     addLine.setEnabled(false);
@@ -221,43 +248,32 @@ public class FilesWizard {
                 } else if (external.isSelected()) {
                     select.setEnabled(true);
                     file.setEnabled(true);
-                    text.setEnabled(true);
                     if (!"NO".equals(e.getActionCommand())) {
                         ts.as.set(file.getText());
                     }
                     String[] t = Wizard.filePreview(file.getText());
-                    text.setText(t[0]);
+                    enableText(text, t[0]);
                     if (t[1] == null) {
                         text.setEnabled(false);
-                        copyEditCreate.setText("create");
-                        copyEditCreate.setEnabled(true);
+                        setCreateAction(copyEditCreate, text, addLine, file);
                         addLine.setEnabled(false);
                         test.setEnabled(true);
                     } else {
-                        copyEditCreate.setText("save");
-                        copyEditCreate.setEnabled(true);
+                        setDeleteAction(copyEditCreate, text, addLine, file);
                         addLine.setEnabled(true);
                         test.setEnabled(true);
                     }
                 } else {
                     select.setEnabled(false);
                     file.setEnabled(false);
-                    text.setEnabled(false);
+                    disableText(text, "");
                     if (!"NO".equals(e.getActionCommand())) {
                         ts.as.set(null);
                     }
-                    text.setText("");
                     copyEditCreate.setText("?");
                     copyEditCreate.setEnabled(false);
                     addLine.setEnabled(false);
                     test.setEnabled(false);
-                }
-            }
-
-            private void clearActions(JButton copyEditCreate) {
-                ActionListener[] ls = copyEditCreate.getActionListeners();
-                for (ActionListener l : ls) {
-                    copyEditCreate.removeActionListener(l);
                 }
             }
         };
@@ -282,19 +298,16 @@ public class FilesWizard {
             }
 
             private void updatePreview() {
-                text.setEnabled(true);
                 ts.as.set(file.getText());
                 String[] t = Wizard.filePreview(file.getText());
-                text.setText(t[0]);
+                enableText(text, t[0]);
                 if (t[1] == null) {
                     text.setEnabled(false);
-                    copyEditCreate.setText("create");
-                    copyEditCreate.setEnabled(true);
+                    setCreateAction(copyEditCreate, text, addLine, file);
                     addLine.setEnabled(false);
                     test.setEnabled(true);
                 } else {
-                    copyEditCreate.setText("save");
-                    copyEditCreate.setEnabled(true);
+                    setDeleteAction(copyEditCreate, text, addLine, file);
                     addLine.setEnabled(true);
                     test.setEnabled(true);
                 }
@@ -311,5 +324,61 @@ public class FilesWizard {
             }
         });
         return main;
+    }
+
+    private static void setDeleteAction(JButton copyEditCreate, JTextArea text, JButton addLine,
+            JTextField file) {
+        copyEditCreate.setText("delete");
+        copyEditCreate.setEnabled(true);
+        setAction(copyEditCreate, e1 -> {
+            File f = new File(file.getText());
+            if (f.exists()) {
+                int a = JOptionPane.showConfirmDialog(null,
+                        "Delete " + f.getAbsolutePath() + " ?");
+                if (a == JOptionPane.YES_OPTION) {
+                    f.delete();
+                    addLine.setEnabled(false);
+                    disableText(text, "");
+                    setCreateAction(copyEditCreate, text, addLine, file);
+                }
+            }
+        });
+    }
+
+    private static void setCreateAction(JButton copyEditCreate, JTextArea text, JButton addLine,
+            JTextField file) {
+        copyEditCreate.setText("create");
+        copyEditCreate.setEnabled(true);
+        setAction(copyEditCreate, e1 -> {
+            enableText(text, "");
+            addLine.setEnabled(true);
+            setDeleteAction(copyEditCreate, text, addLine, file);
+        });
+    }
+
+    private static void setAction(JButton b, ActionListener a) {
+        clearActions(b);
+        b.addActionListener(a);
+    }
+
+    private static void clearActions(JButton button) {
+        ActionListener[] ls = button.getActionListeners();
+        for (ActionListener l : ls) {
+            button.removeActionListener(l);
+        }
+    }
+
+    private static void enableText(JTextArea text, String s) {
+        //it crucial to set doc dirst, then enable
+        //see tis doc listener
+        text.setText(s);
+        text.setEnabled(true);
+    }
+
+    private static void disableText(JTextArea text, String s) {
+        //it is crucial to disable first, and then set, see text
+        //see tis doc listener
+        text.setEnabled(false);
+        text.setText(s);
     }
 }
