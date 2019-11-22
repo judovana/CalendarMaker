@@ -3,6 +3,7 @@ package org.judovana.calendarmaker;
 import org.judovana.calendarmaker.wizard.YearWizard;
 
 import javax.swing.*;
+
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
@@ -12,9 +13,19 @@ import java.util.List;
 public class MainFrame extends JFrame {
     private static File lastDir = new File(System.getProperty("user.home"));
 
-    public static String[] photoFolders = new String[]{"/usr/share/backgrounds", "/usr/share/icons/"};
+    public static String[] photoFolders =
+            new String[]{"/usr/share/backgrounds", "/usr/share/icons/"};
 
-    public MainFrame(boolean week, Integer year, List<String> dirs, String template, List<String> loaded, Integer w, Integer h, String names, String interesting, String anniversaries) throws IOException {
+    public MainFrame(boolean week, Integer year, List<String> dirs, String template,
+            List<String> loaded, Integer w, Integer h, String names, String interesting,
+            String anniversaries) throws IOException {
+        this.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                System.out.println("-width=" + MainFrame.this.getWidth() + " -height="
+                        + MainFrame.this.getHeight());
+            }
+        });
         int wii, hee;
         if (w == null || w == 0) {
             wii = 800;
@@ -47,7 +58,8 @@ public class MainFrame extends JFrame {
         List<PageView> pages = new ArrayList<>(ranges.size());
         if (loaded == null) {
             for (List<Date> range : ranges) {
-                CalendarPage cp = new CalendarPage(range, new PhotoFrame(pl.getRandomImage()), tmplt, pl.getSrcs());
+                CalendarPage cp = new CalendarPage(range, new PhotoFrame(pl.getRandomImage()),
+                        tmplt, pl.getSrcs());
                 PageView p = new PageView(cp);
                 pages.add(p);
             }
@@ -73,7 +85,8 @@ public class MainFrame extends JFrame {
         this.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                final PageView page = all.get(MainFrame.this.getWidth() / 2, MainFrame.this.getHeight() / 2);
+                final PageView page = all.get(MainFrame.this.getWidth() / 2,
+                        MainFrame.this.getHeight() / 2);
                 if (e.getKeyCode() == KeyEvent.VK_Z) {
                     undo(all);
                 }
@@ -123,7 +136,8 @@ public class MainFrame extends JFrame {
                 final PageView page = all.get(e.getX(), e.getY());
                 final String s;
                 if (page != null) {
-                    s = page.getData().getDates().getTitle() + " ||| " + page.getData().getPhoto().getFotoTitle(null);
+                    s = page.getData().getDates().getTitle() + " ||| "
+                            + page.getData().getPhoto().getFotoTitle(null);
                 } else {
                     s = "???";
                 }
@@ -275,23 +289,25 @@ public class MainFrame extends JFrame {
                     export2.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent actionEvent) {
-                            exportDialog(rp.getYearOfChoice(), "-single_side-table", ".pdf", new Rummable() {
-                                @Override
-                                public void rum() throws Exception {
-                                    all.exportOnePageOnePage_weekSingleSide(this.getRum());
-                                }
-                            });
+                            exportDialog(rp.getYearOfChoice(), "-single_side-table", ".pdf",
+                                    new Rummable() {
+                                        @Override
+                                        public void rum() throws Exception {
+                                            all.exportOnePageOnePage_weekSingleSide(this.getRum());
+                                        }
+                                    });
                         }
                     });
                     export3.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent actionEvent) {
-                            exportDialog(rp.getYearOfChoice(), "-two_side-table", ".pdf", new Rummable() {
-                                @Override
-                                public void rum() throws Exception {
-                                    all.exportOnePageOnePage_weekDoubleSide(this.getRum());
-                                }
-                            });
+                            exportDialog(rp.getYearOfChoice(), "-two_side-table", ".pdf",
+                                    new Rummable() {
+                                        @Override
+                                        public void rum() throws Exception {
+                                            all.exportOnePageOnePage_weekDoubleSide(this.getRum());
+                                        }
+                                    });
                         }
                     });
 
@@ -437,7 +453,8 @@ public class MainFrame extends JFrame {
     private void select(PageView page, AllView all) {
         try {
             JFileChooser chooser = new JFileChooser();
-            chooser.setCurrentDirectory(new File(page.getData().getPhoto().getSrc()).getParentFile());
+            chooser.setCurrentDirectory(
+                    new File(page.getData().getPhoto().getSrc()).getParentFile());
             chooser.setSelectedFile(new File(page.getData().getPhoto().getSrc()));
             int r = chooser.showOpenDialog(all);
             if (r == JFileChooser.APPROVE_OPTION) {
@@ -475,7 +492,8 @@ public class MainFrame extends JFrame {
 
     private void randomizeSameFolder(PageView page, AllView all) {
         try {
-            all.reData(page, new PhotoLoader(new File(page.getData().getPhoto().getSrc()).getParent()).getRandomImage());
+            all.reData(page, new PhotoLoader(
+                    new File(page.getData().getPhoto().getSrc()).getParent()).getRandomImage());
             all.repaint();
         } catch (Exception ex) {
             ex.printStackTrace();
