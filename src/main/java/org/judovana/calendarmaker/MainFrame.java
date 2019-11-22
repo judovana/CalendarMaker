@@ -7,6 +7,8 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.util.*;
 import java.util.List;
 
@@ -17,7 +19,7 @@ public class MainFrame extends JFrame {
             new String[]{"/usr/share/backgrounds", "/usr/share/icons/"};
 
     public MainFrame(boolean week, Integer year, List<String> dirs, String template,
-            List<String> loaded, Integer w, Integer h, String names, String interesting,
+            String toLoad, Integer w, Integer h, String names, String interesting,
             String anniversaries) throws IOException {
         this.addComponentListener(new ComponentAdapter() {
             @Override
@@ -56,6 +58,15 @@ public class MainFrame extends JFrame {
             tmplt = new Template.HorizontalImageRight();
         }
         List<PageView> pages = new ArrayList<>(ranges.size());
+        List<String> loaded = null;
+        if (toLoad != null) {
+            File toad = new File(toLoad);
+            try {
+                loaded = Files.readAllLines(toad.toPath(), Charset.forName("utf-8"));
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, ex);
+            }
+        }
         if (loaded == null) {
             for (List<Date> range : ranges) {
                 CalendarPage cp = new CalendarPage(range, new PhotoFrame(pl.getRandomImage()),

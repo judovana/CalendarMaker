@@ -129,7 +129,7 @@ public class Wizard extends JDialog {
         names.add(new WizardPanel(panes, 4).setMainPane(FilesWizard.createNames(args)));
         myNames.add(new WizardPanel(panes, 5).setMainPane(FilesWizard.createImportantNames(args)));
         datesAndAniversaries.add(new WizardPanel(panes, 6).setMainPane(FilesWizard.createAnniversaries(args)));
-        load.add(new WizardPanel(panes, 7));
+        load.add(new WizardPanel(panes, 7).setMainPane(LoadWizard.createLoad(args)));
         misc.add(new WizardPanel(panes, 8));
     }
 

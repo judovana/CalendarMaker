@@ -18,12 +18,10 @@ public class App {
         public Integer year = null;
         public List<String> dirs = new ArrayList<>();
         public String template;
-        public List<String> loaded;
+        public String toLoad;
         public Integer w, h;
         public String names, anniversaries, interesting;
-        public void load(String s) throws IOException {
-            this.loaded = Files.readAllLines(new File(s).toPath(), Charset.forName("utf-8"));
-        }
+
     }
     private static boolean showWizard = true;
 
@@ -47,7 +45,7 @@ public class App {
                 a.dirs.add(arg.split("=")[1]);
             }
             if (arg.matches("^-+load=.+$")) {
-                a.load(arg.split("=")[1]);
+                a.toLoad = arg.split("=")[1];
             }
             if (arg.matches("^-+names=.+$")) {
                 a.names = (arg.split("=")[1]); //EXAMPLE, DEFAULT?
@@ -86,8 +84,7 @@ public class App {
                         //what to skip in no wizard?
                         //no defaults switch?
                     }
-                    new MainFrame(a.week, a.year, a.dirs, a.template, a.loaded, a.w, a.h,
-                            a.names, a.interesting, a.anniversaries).setVisible(true);
+                    new MainFrame(a.week, a.year, a.dirs, a.template, a.toLoad, a.w, a.h, a.names, a.interesting, a.anniversaries).setVisible(true);
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
