@@ -7,11 +7,7 @@ import java.nio.file.FileVisitor;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class PhotoLoader {
 
@@ -22,7 +18,7 @@ public class PhotoLoader {
         this.paths = paths;
     }
 
-    public PhotoLoader(List<String> l) {
+    public PhotoLoader(Collection<String> l) {
         this(l.toArray(new String[l.size()]));
     }
 

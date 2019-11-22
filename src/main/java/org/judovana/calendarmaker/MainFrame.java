@@ -18,7 +18,9 @@ public class MainFrame extends JFrame {
     public static String[] photoFolders =
             new String[]{"/usr/share/backgrounds", "/usr/share/icons/"};
 
-    public MainFrame(boolean week, Integer year, List<String> dirs, String template,
+    final AllView all;
+
+    public MainFrame(Boolean week, Integer year, Collection<String> dirs, String template,
             String toLoad, Integer w, Integer h, String names, String interesting,
             String anniversaries) throws IOException {
         this.addComponentListener(new ComponentAdapter() {
@@ -92,7 +94,7 @@ public class MainFrame extends JFrame {
                 i++;
             }
         }
-        final AllView all = new AllView(pages);
+        all = new AllView(pages);
         this.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -292,7 +294,7 @@ public class MainFrame extends JFrame {
                             exportDialog(rp.getYearOfChoice(), "-wall", ".pdf", new Rummable() {
                                 @Override
                                 public void rum() throws Exception {
-                                    all.exportOnePageOnePage_month(this.getRum());
+                                    exportOnePageOnePage_month(this.getRum());
                                 }
                             });
                         }
@@ -304,7 +306,7 @@ public class MainFrame extends JFrame {
                                     new Rummable() {
                                         @Override
                                         public void rum() throws Exception {
-                                            all.exportOnePageOnePage_weekSingleSide(this.getRum());
+                                            exportOnePageOnePage_weekSingleSide(this.getRum());
                                         }
                                     });
                         }
@@ -316,7 +318,7 @@ public class MainFrame extends JFrame {
                                     new Rummable() {
                                         @Override
                                         public void rum() throws Exception {
-                                            all.exportOnePageOnePage_weekDoubleSide(this.getRum());
+                                            exportOnePageOnePage_weekDoubleSide(this.getRum());
                                         }
                                     });
                         }
@@ -413,9 +415,22 @@ public class MainFrame extends JFrame {
         });
         this.setFocusable(true);
         this.setFocusTraversalKeysEnabled(false);
+        all.setSize(this.getSize());//for headless mode
     }
 
-    private PhotoLoader createDefaultLoader(List<String> dirs) throws IOException {
+    public void exportOnePageOnePage_month(String path) throws IOException {
+        all.exportOnePageOnePage_month(path);
+    }
+
+    public void exportOnePageOnePage_weekDoubleSide(String path) throws IOException {
+        all.exportOnePageOnePage_weekDoubleSide(path);
+    }
+
+    public void exportOnePageOnePage_weekSingleSide(String path) throws IOException {
+        all.exportOnePageOnePage_weekSingleSide(path);
+    }
+
+    private PhotoLoader createDefaultLoader(Collection<String> dirs) throws IOException {
         if (dirs == null || dirs.isEmpty()) {
             return new PhotoLoader(photoFolders);
         } else {

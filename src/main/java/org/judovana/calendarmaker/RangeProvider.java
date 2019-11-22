@@ -7,9 +7,13 @@ public class RangeProvider {
     private final int yearOfChoice;
     private final boolean week;
 
-    public RangeProvider(int i, boolean week) {
+    public RangeProvider(int i, Boolean week) {
         this.yearOfChoice = i;
-        this.week = week;
+        if (week == null){
+            this.week = false;
+        } else {
+            this.week = week;
+        }
     }
 
     public int getYearOfChoice() {
@@ -29,7 +33,7 @@ public class RangeProvider {
         rewindToStartofWeek(c2);
 
         List<Date> dates = new ArrayList<>(40);
-        if (week) {
+        if (isWeek()) {
             while (true) {
                 Date theDay = c2.getTime();
                 dates.add(theDay);

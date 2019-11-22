@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -21,15 +22,17 @@ public class Wizard extends JDialog {
 
         private final JTabbedPane parent;
         private final int id;
+        private final SaveController sc;
 
-        public WizardPanel(JTabbedPane pparent, int iid) {
+        public WizardPanel(JTabbedPane pparent, int iid, SaveController sc) {
+            this.sc = sc;
             this.parent = pparent;
             this.id = iid;
             this.setLayout(new BorderLayout());
             JPanel mainButtons = new JPanel(new GridLayout(1, 2));
             JPanel buttons = new JPanel(new GridLayout(1, 3));
             JButton prev = new JButton("<< previous");
-            JButton done = new JButton(" finish ");
+            JButton done = new JButton(" [save and] finish ");
             JButton next = new JButton(" next >>");
             buttons.add(prev);
             buttons.add(done);
@@ -59,7 +62,18 @@ public class Wizard extends JDialog {
             done.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    Wizard.this.dispatchEvent(new WindowEvent(Wizard.this, WindowEvent.WINDOW_CLOSING));
+                    try {
+                        if (sc.isSave()) {
+                            try {
+                                sc.save();
+                            } catch (IOException ex) {
+                                ex.printStackTrace();
+                                JOptionPane.showMessageDialog(null, ex);
+                            }
+                        }
+                    } finally {
+                        Wizard.this.dispatchEvent(new WindowEvent(Wizard.this, WindowEvent.WINDOW_CLOSING));
+                    }
                 }
             });
             this.add(mainButtons, BorderLayout.SOUTH);
@@ -101,6 +115,7 @@ public class Wizard extends JDialog {
         JPanel datesAndAniversaries = new JPanel(new BorderLayout()); //dont forget internal!
         JPanel load = new JPanel(new BorderLayout());
         JPanel misc = new JPanel(new BorderLayout());//w,h explain printing, save?
+        JPanel help = new JPanel(new BorderLayout());
         //save to some defaults?
         panes.add(year);
         panes.add(mOrW);
@@ -111,6 +126,7 @@ public class Wizard extends JDialog {
         panes.add(datesAndAniversaries);
         panes.add(load);
         panes.add(misc);
+        panes.add(help);
         panes.setTitleAt(0, "Year");
         panes.setTitleAt(1, "Type");
         panes.setTitleAt(2, "Templates");
@@ -120,17 +136,24 @@ public class Wizard extends JDialog {
         panes.setTitleAt(6, "Anniversaries and interesting days");
         panes.setTitleAt(7, "Load saved work");
         panes.setTitleAt(8, "Misc");
+        panes.setTitleAt(9, "Help");
         this.add(panes);
 
-        year.add(new WizardPanel(panes, 0).setMainPane(YearWizard.createYear(args)));
-        mOrW.add(new WizardPanel(panes, 1).setMainPane(TypeWizard.createWeekMonth(args)));
-        templates.add(new WizardPanel(panes, 2).setMainPane(TemplateWizard.createTemplate(args)));
-        photoDirs.add(new WizardPanel(panes, 3).setMainPane(DirsWizard.createPhotoDirs(args)));
-        names.add(new WizardPanel(panes, 4).setMainPane(FilesWizard.createNames(args)));
-        myNames.add(new WizardPanel(panes, 5).setMainPane(FilesWizard.createImportantNames(args)));
-        datesAndAniversaries.add(new WizardPanel(panes, 6).setMainPane(FilesWizard.createAnniversaries(args)));
-        load.add(new WizardPanel(panes, 7).setMainPane(LoadWizard.createLoad(args)));
-        misc.add(new WizardPanel(panes, 8));
+        MiscWizard mw = MiscWizard.create(args);
+        year.add(new WizardPanel(panes, 0, mw).setMainPane(YearWizard.createYear(args)));
+        mOrW.add(new WizardPanel(panes, 1, mw).setMainPane(TypeWizard.createWeekMonth(args)));
+        templates.add(new WizardPanel(panes, 2, mw).setMainPane(TemplateWizard.createTemplate(args)));
+        photoDirs.add(new WizardPanel(panes, 3, mw).setMainPane(DirsWizard.createPhotoDirs(args)));
+        names.add(new WizardPanel(panes, 4, mw).setMainPane(FilesWizard.createNames(args)));
+        myNames.add(new WizardPanel(panes, 5, mw).setMainPane(FilesWizard.createImportantNames(args)));
+        datesAndAniversaries.add(new WizardPanel(panes, 6, mw).setMainPane(FilesWizard.createAnniversaries(args)));
+        load.add(new WizardPanel(panes, 7, mw).setMainPane(LoadWizard.createLoad(args)));
+        misc.add(new WizardPanel(panes, 8, mw).setMainPane(MiscWizard.create(args)));
+        help.add(new WizardPanel(panes, 9, mw).setMainPane(createHelp()));
+    }
+
+    private Component createHelp() {
+        return new JScrollPane(new JTextArea(App.getDescription() + "\n" + App.getCmdHelp()));
     }
 
 
@@ -144,9 +167,8 @@ public class Wizard extends JDialog {
             ex.printStackTrace();
             return new String[]{"error reading '" + filePath + "'. File missing?", null};
         }
-        return new String[]{contentBuilder.toString(),"ok"};
+        return new String[]{contentBuilder.toString(), "ok"};
     }
-
 
 
     public static String[] inputStreamToString(InputStream inputStream) {
@@ -157,10 +179,10 @@ public class Wizard extends JDialog {
                 while ((length = inputStream.read(buffer)) != -1) {
                     result.write(buffer, 0, length);
                 }
-                return new String[]{result.toString("UTF-8"),"ok"};
+                return new String[]{result.toString("UTF-8"), "ok"};
             }
-        } catch(Exception ex){
-            return new String[]{"Error reading example",null};
+        } catch (Exception ex) {
+            return new String[]{"Error reading example", null};
         }
     }
 }

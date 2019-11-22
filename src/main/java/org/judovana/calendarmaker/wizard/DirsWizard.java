@@ -95,6 +95,7 @@ public class DirsWizard {
                             });
                             PhotoDirsCotroller.this.add(add);
                         }
+                        PhotoDirsCotroller.this.publish();
                         PhotoDirsCotroller.this.validate();
                     }
                 });

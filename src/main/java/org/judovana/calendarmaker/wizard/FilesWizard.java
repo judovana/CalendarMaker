@@ -116,8 +116,11 @@ public class FilesWizard {
                         testFileListener));
     }
 
-    private static String getMainPath() {
+    public static String getMainPath() {
         return System.getProperty("user.home") + "/.config/CalendarMaker";
+    }
+    public static File getMainConfig() {
+        return new File(getMainPath(), "conf.conf");
     }
 
     private interface ArgsSetter {

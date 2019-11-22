@@ -55,12 +55,12 @@ public class TypeWizard {
                 }
             }
         });
-        if (args.week) {
-            b1.setSelected(true);
-            b1.getActionListeners()[0].actionPerformed(null);
-        } else {
+        if (args.week == null || args.week == false) {
             b2.setSelected(true);
             b2.getActionListeners()[0].actionPerformed(null);
+        } else {
+            b1.setSelected(true);
+            b1.getActionListeners()[0].actionPerformed(null);
         }
         return pp;
     }
