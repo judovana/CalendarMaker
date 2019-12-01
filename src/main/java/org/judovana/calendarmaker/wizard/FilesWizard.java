@@ -15,6 +15,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class FilesWizard {
     public static Component createNames(final App.Args args) {
@@ -47,7 +49,13 @@ public class FilesWizard {
         };
         return createGenereicSuperPanel(
                 new TerribleSetup(config_path, rbut1Label, infoLabel, example, as,
-                        testFileListener));
+                        testFileListener, new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        //names
+                    }
+
+                }));
     }
 
     public static Component createImportantNames(final App.Args args) {
@@ -80,7 +88,17 @@ public class FilesWizard {
         };
         return createGenereicSuperPanel(
                 new TerribleSetup(config_path, rbut1Label, infoLabel, example, as,
-                        testFileListener));
+                        testFileListener, new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        //important names
+                        String r = JOptionPane.showInputDialog("Enter just some name to be highligted in calendar");
+                        JTextArea text = findTextField((Component) e.getSource());
+                        if (r != null) {
+                            append(text, r);
+                        }
+                    }
+                }));
     }
 
     public static Component createAnniversaries(final App.Args args) {
@@ -113,12 +131,18 @@ public class FilesWizard {
         };
         return createGenereicSuperPanel(
                 new TerribleSetup(config_path, rbut1Label, infoLabel, example, as,
-                        testFileListener));
+                        testFileListener, new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        //aniversaries
+                    }
+                }));
     }
 
     public static String getMainPath() {
         return System.getProperty("user.home") + "/.config/CalendarMaker";
     }
+
     public static File getMainConfig() {
         return new File(getMainPath(), "conf.conf");
     }
@@ -137,15 +161,17 @@ public class FilesWizard {
         private final String example;
         private final ArgsSetter as;
         private final ActionListener testFileListener;
+        private final ActionListener adl;
 
         public TerribleSetup(String config_path, String rbut1Label, String infoLabel,
-                String example, ArgsSetter as, ActionListener testFileListener) {
+                String example, ArgsSetter as, ActionListener testFileListener, ActionListener adl) {
             this.config_path = config_path;
             this.rbut1Label = rbut1Label;
             this.infoLabel = infoLabel;
             this.example = example;
             this.as = as;
             this.testFileListener = testFileListener;
+            this.adl = adl;
         }
     }
 
@@ -222,6 +248,7 @@ public class FilesWizard {
         tools.add(copyEditCreate);
         tools.add(test);
         tools.add(addLine);
+        addLine.addActionListener(ts.adl);
         main.add(tools, BorderLayout.SOUTH);
         final ButtonGroup bg = new ButtonGroup();
         bg.add(internal);
@@ -384,4 +411,45 @@ public class FilesWizard {
         text.setEnabled(false);
         text.setText(s);
     }
+
+
+    private static JTextArea findTextField(Component source) {
+        return findTextField(source, new ArrayList<>());
+    }
+
+    private static JTextArea findTextField(Component source, ArrayList<Object> found) {
+        if (source == null || found.contains(source)) {
+            return null;
+        }
+        if (source instanceof JTextArea) {
+            return (JTextArea) source;
+        }
+        found.add(source);
+        if (source instanceof Container) {
+            Container q = (Container) (source);
+            Component[] cs = q.getComponents();
+            for (Component c : cs) {
+                JTextArea qq = findTextField(c, found);
+                if (qq != null) {
+                    return qq;
+                }
+            }
+        }
+        return findTextField(source.getParent(), found);
+
+    }
+
+    private static void append(JTextArea text, String r) {
+        if (text.getText().endsWith("\n")) {
+            text.append(r + "\n");
+        } else {
+            String[] lines = text.getText().split("\n");
+            if (lines[lines.length - 1].isEmpty()) {
+                text.append(r + "\n");
+            } else {
+                text.append("\n" + r + "\n");
+            }
+        }
+    }
+
 }
