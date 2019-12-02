@@ -26,7 +26,9 @@ import java.util.Arrays;
 import java.util.Date;
 
 public class FilesWizard {
-    private static LocalDate lastDate= LocalDateTime.ofInstant(new Date().toInstant(), ZoneId.systemDefault()).toLocalDate();
+    private static LocalDate lastDate1 = LocalDateTime.ofInstant(new Date().toInstant(), ZoneId.systemDefault()).toLocalDate();
+    private static LocalDate lastDate2 = LocalDateTime.ofInstant(new Date().toInstant(), ZoneId.systemDefault()).toLocalDate();
+
     public static Component createNames(final App.Args args) {
         final String config_path = getMainPath() + "/names";
         final String rbut1Label = "no names/holidays";
@@ -74,7 +76,7 @@ public class FilesWizard {
                         if (a == JOptionPane.OK_OPTION) {
                             String tt = t.getText();
                             String dd = d.getText();
-                            lastDate = d.getDate();
+                            lastDate1 = d.getDate();
                             dd = dd.replaceAll("\\.\\d\\d\\d\\d", ".");
                             if (r1.isSelected()) {
                                 append(findTextField((Component) e.getSource()), dd + "\t" + "* " + tt);
@@ -93,7 +95,7 @@ public class FilesWizard {
                         ButtonGroup bg = new ButtonGroup();
                         bg.add(r1);
                         bg.add(r2);
-                        d.setDate(lastDate);
+                        d.setDate(lastDate1);
                         DatePickerSettings s = new DatePickerSettings();
                         s.setFormatForDatesCommonEra("d.M.yyyy");
                         s.setFormatForDatesBeforeCommonEra("d.M.yyyy");
@@ -179,9 +181,65 @@ public class FilesWizard {
         return createGenereicSuperPanel(
                 new TerribleSetup(config_path, rbut1Label, infoLabel, example, as,
                         testFileListener, new ActionListener() {
+                    private DatePicker d = new DatePicker();
+                    private JColorChooser c = new JColorChooser();
+                    private JTextField t = new JTextField("what");
+                    private JCheckBox r1 = new JCheckBox("have year");
+                    private JCheckBox r2 = new JCheckBox("have special color");
+                    private JButton color = new JButton("Select color");
+
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        //aniversaries
+                        //anniversaries
+                        int a = JOptionPane.showConfirmDialog(null,
+                                getPanel(),
+                                "setup  some date/anniversary: ",
+                                JOptionPane.OK_CANCEL_OPTION,
+                                JOptionPane.PLAIN_MESSAGE);
+                        if (a == JOptionPane.OK_OPTION) {
+                            String tt = t.getText();
+                            String dd = d.getText();
+                            lastDate2 = d.getDate();
+                            if (!r1.isSelected()) {
+                                dd = dd.replaceAll("\\.\\d\\d\\d\\d", ".");
+                            }
+                            if (r2.isSelected()) {
+                                append(findTextField((Component) e.getSource()), dd + "\t" + tt + "\t" + "" + getHTMLColorString(color.getBackground()));
+                            } else {
+                                append(findTextField((Component) e.getSource()), dd + "\t" + tt);
+                            }
+
+                        }
+                    }
+
+                    private Object getPanel() {
+                        JPanel p = new JPanel(new GridLayout(3, 2));
+                        r1.setSelected(true);
+                        p.add(r1);
+                        p.add(r2);
+                        r2.addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                color.setEnabled(r2.isSelected());
+                            }
+                        });
+                        color.setEnabled(r2.isSelected());
+                        d.setDate(lastDate2);
+                        DatePickerSettings s = new DatePickerSettings();
+                        s.setFormatForDatesCommonEra("d.M.yyyy");
+                        s.setFormatForDatesBeforeCommonEra("d.M.yyyy");
+                        d.setSettings(s);
+                        p.add(d);
+                        p.add(t);
+                        p.add(color);
+                        clearActions(color);
+                        color.addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                color.setBackground(JColorChooser.showDialog(color, "", color.getBackground()));
+                            }
+                        });
+                        return p;
                     }
                 }));
     }
@@ -498,6 +556,17 @@ public class FilesWizard {
                 text.append("\n" + r + "\n");
             }
         }
+    }
+
+    public static String getHTMLColorString(Color color) {
+        String red = Integer.toHexString(color.getRed());
+        String green = Integer.toHexString(color.getGreen());
+        String blue = Integer.toHexString(color.getBlue());
+
+        return "#" +
+                (red.length() == 1 ? "0" + red : red) +
+                (green.length() == 1 ? "0" + green : green) +
+                (blue.length() == 1 ? "0" + blue : blue);
     }
 
 }
