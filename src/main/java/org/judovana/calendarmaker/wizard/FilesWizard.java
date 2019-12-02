@@ -1,5 +1,8 @@
 package org.judovana.calendarmaker.wizard;
 
+import com.github.lgooddatepicker.components.DatePicker;
+import com.github.lgooddatepicker.components.DatePickerSettings;
+
 import org.judovana.calendarmaker.App;
 import org.judovana.calendarmaker.NamesLoader;
 import org.judovana.calendarmaker.Wizard;
@@ -50,11 +53,46 @@ public class FilesWizard {
         return createGenereicSuperPanel(
                 new TerribleSetup(config_path, rbut1Label, infoLabel, example, as,
                         testFileListener, new ActionListener() {
+                    private DatePicker  d = new DatePicker();
+                    private JTextField  t = new JTextField("event or name");
+                    private JRadioButton r1 = new JRadioButton("name day");
+                    private JRadioButton r2 = new JRadioButton("holidays");
+
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         //names
+                        int a = JOptionPane.showConfirmDialog(null,
+                                getPanel(),
+                                "give day meaning: ",
+                                JOptionPane.OK_CANCEL_OPTION,
+                                JOptionPane.PLAIN_MESSAGE);
+                        if (a== JOptionPane.OK_OPTION){
+                            if (r1.isSelected()) {
+                                append(findTextField((Component) e.getSource()), d.getText()+"\t"+"* "+t.getText());
+                            }else if (r2.isSelected()){
+                                append(findTextField((Component) e.getSource()), d.getText()+"\t"+"# "+t.getText());
+                            }
+
+                        }
                     }
 
+                    private Object getPanel() {
+                        JPanel p = new JPanel(new GridLayout(2, 2));
+                        r1.setSelected(true);
+                        p.add(r1);
+                        p.add(r2);
+                        ButtonGroup bg = new ButtonGroup();
+                        bg.add(r1);
+                        bg.add(r2);
+                        d.setDateToToday();
+                        DatePickerSettings s = new DatePickerSettings();
+                        s.setFormatForDatesCommonEra("dd.MM.");
+                        s.setFormatForDatesBeforeCommonEra("dd.MM.");
+                        d.setSettings(s);
+                        p.add(d);
+                        p.add(t);
+                        return p;
+                    }
                 }));
     }
 
@@ -173,6 +211,7 @@ public class FilesWizard {
             this.testFileListener = testFileListener;
             this.adl = adl;
         }
+
     }
 
     private static Component createGenereicSuperPanel(final TerribleSetup ts) {
