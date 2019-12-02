@@ -18,10 +18,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.nio.file.Files;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 
 public class FilesWizard {
+    private static LocalDate lastDate= LocalDateTime.ofInstant(new Date().toInstant(), ZoneId.systemDefault()).toLocalDate();
     public static Component createNames(final App.Args args) {
         final String config_path = getMainPath() + "/names";
         final String rbut1Label = "no names/holidays";
@@ -53,8 +58,8 @@ public class FilesWizard {
         return createGenereicSuperPanel(
                 new TerribleSetup(config_path, rbut1Label, infoLabel, example, as,
                         testFileListener, new ActionListener() {
-                    private DatePicker  d = new DatePicker();
-                    private JTextField  t = new JTextField("event or name");
+                    private DatePicker d = new DatePicker();
+                    private JTextField t = new JTextField("event or name");
                     private JRadioButton r1 = new JRadioButton("name day");
                     private JRadioButton r2 = new JRadioButton("holidays");
 
@@ -66,11 +71,15 @@ public class FilesWizard {
                                 "give day meaning: ",
                                 JOptionPane.OK_CANCEL_OPTION,
                                 JOptionPane.PLAIN_MESSAGE);
-                        if (a== JOptionPane.OK_OPTION){
+                        if (a == JOptionPane.OK_OPTION) {
+                            String tt = t.getText();
+                            String dd = d.getText();
+                            lastDate = d.getDate();
+                            dd = dd.replaceAll("\\.\\d\\d\\d\\d", ".");
                             if (r1.isSelected()) {
-                                append(findTextField((Component) e.getSource()), d.getText()+"\t"+"* "+t.getText());
-                            }else if (r2.isSelected()){
-                                append(findTextField((Component) e.getSource()), d.getText()+"\t"+"# "+t.getText());
+                                append(findTextField((Component) e.getSource()), dd + "\t" + "* " + tt);
+                            } else if (r2.isSelected()) {
+                                append(findTextField((Component) e.getSource()), dd + "\t" + "# " + tt);
                             }
 
                         }
@@ -84,10 +93,10 @@ public class FilesWizard {
                         ButtonGroup bg = new ButtonGroup();
                         bg.add(r1);
                         bg.add(r2);
-                        d.setDateToToday();
+                        d.setDate(lastDate);
                         DatePickerSettings s = new DatePickerSettings();
-                        s.setFormatForDatesCommonEra("dd.MM.");
-                        s.setFormatForDatesBeforeCommonEra("dd.MM.");
+                        s.setFormatForDatesCommonEra("d.M.yyyy");
+                        s.setFormatForDatesBeforeCommonEra("d.M.yyyy");
                         d.setSettings(s);
                         p.add(d);
                         p.add(t);
