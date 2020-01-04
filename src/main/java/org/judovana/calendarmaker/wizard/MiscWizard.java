@@ -13,8 +13,9 @@ import java.io.IOException;
 public class MiscWizard extends JPanel implements SaveController {
 
 
-    private JCheckBox saveOnExit;
     private App.Args args;
+    private JCheckBox saveOnExit;
+    private JComboBox<String> page;
 
     public MiscWizard(GridLayout gridLayout) {
         super(gridLayout);
@@ -37,7 +38,7 @@ public class MiscWizard extends JPanel implements SaveController {
     }
 
     public static MiscWizard create(App.Args args) {
-        MiscWizard p = new MiscWizard(new GridLayout(3, 2));
+        MiscWizard p = new MiscWizard(new GridLayout(5, 2));
         p.setArgs(args);
         p.add(new JLabel("width"));
         final JSpinner w = new JSpinner(new SpinnerNumberModel(800, 50, 20000, 50));
@@ -47,6 +48,10 @@ public class MiscWizard extends JPanel implements SaveController {
         p.add(h);
         p.saveOnExit = new JCheckBox("Save on Finish", null, true);
         p.add(p.saveOnExit);
+        p.add(new JLabel());
+        p.add(new JLabel("output size"));
+        p.page = new JComboBox<String>(new String[]{"A4"});
+        p.add(p.page);
         JButton delte = new JButton("delete: " + FilesWizard.getMainConfig());
          delte.setEnabled(FilesWizard.getMainConfig().exists());
         delte.addActionListener(new ActionListener() {

@@ -1,5 +1,8 @@
 package org.judovana.calendarmaker.wizard;
 
+import com.github.lgooddatepicker.components.DatePicker;
+import com.github.lgooddatepicker.components.DatePickerSettings;
+
 import org.judovana.calendarmaker.App;
 import org.judovana.calendarmaker.NamesLoader;
 import org.judovana.calendarmaker.Wizard;
@@ -15,8 +18,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.nio.file.Files;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 
 public class FilesWizard {
+    private static LocalDate lastDate1 = LocalDateTime.ofInstant(new Date().toInstant(), ZoneId.systemDefault()).toLocalDate();
+    private static LocalDate lastDate2 = LocalDateTime.ofInstant(new Date().toInstant(), ZoneId.systemDefault()).toLocalDate();
+
     public static Component createNames(final App.Args args) {
         final String config_path = getMainPath() + "/names";
         final String rbut1Label = "no names/holidays";
@@ -47,7 +59,52 @@ public class FilesWizard {
         };
         return createGenereicSuperPanel(
                 new TerribleSetup(config_path, rbut1Label, infoLabel, example, as,
-                        testFileListener));
+                        testFileListener, new ActionListener() {
+                    private DatePicker d = new DatePicker();
+                    private JTextField t = new JTextField("event or name");
+                    private JRadioButton r1 = new JRadioButton("name day");
+                    private JRadioButton r2 = new JRadioButton("holidays");
+
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        //names
+                        int a = JOptionPane.showConfirmDialog(null,
+                                getPanel(),
+                                "give day meaning: ",
+                                JOptionPane.OK_CANCEL_OPTION,
+                                JOptionPane.PLAIN_MESSAGE);
+                        if (a == JOptionPane.OK_OPTION) {
+                            String tt = t.getText();
+                            String dd = d.getText();
+                            lastDate1 = d.getDate();
+                            dd = dd.replaceAll("\\.\\d\\d\\d\\d", ".");
+                            if (r1.isSelected()) {
+                                append(findTextField((Component) e.getSource()), dd + "\t" + "* " + tt);
+                            } else if (r2.isSelected()) {
+                                append(findTextField((Component) e.getSource()), dd + "\t" + "# " + tt);
+                            }
+
+                        }
+                    }
+
+                    private Object getPanel() {
+                        JPanel p = new JPanel(new GridLayout(2, 2));
+                        r1.setSelected(true);
+                        p.add(r1);
+                        p.add(r2);
+                        ButtonGroup bg = new ButtonGroup();
+                        bg.add(r1);
+                        bg.add(r2);
+                        d.setDate(lastDate1);
+                        DatePickerSettings s = new DatePickerSettings();
+                        s.setFormatForDatesCommonEra("d.M.yyyy");
+                        s.setFormatForDatesBeforeCommonEra("d.M.yyyy");
+                        d.setSettings(s);
+                        p.add(d);
+                        p.add(t);
+                        return p;
+                    }
+                }));
     }
 
     public static Component createImportantNames(final App.Args args) {
@@ -80,7 +137,17 @@ public class FilesWizard {
         };
         return createGenereicSuperPanel(
                 new TerribleSetup(config_path, rbut1Label, infoLabel, example, as,
-                        testFileListener));
+                        testFileListener, new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        //important names
+                        String r = JOptionPane.showInputDialog("Enter just some name to be highligted in calendar");
+                        JTextArea text = findTextField((Component) e.getSource());
+                        if (r != null) {
+                            append(text, r);
+                        }
+                    }
+                }));
     }
 
     public static Component createAnniversaries(final App.Args args) {
@@ -113,12 +180,74 @@ public class FilesWizard {
         };
         return createGenereicSuperPanel(
                 new TerribleSetup(config_path, rbut1Label, infoLabel, example, as,
-                        testFileListener));
+                        testFileListener, new ActionListener() {
+                    private DatePicker d = new DatePicker();
+                    private JColorChooser c = new JColorChooser();
+                    private JTextField t = new JTextField("what");
+                    private JCheckBox r1 = new JCheckBox("have year");
+                    private JCheckBox r2 = new JCheckBox("have special color");
+                    private JButton color = new JButton("Select color");
+
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        //anniversaries
+                        int a = JOptionPane.showConfirmDialog(null,
+                                getPanel(),
+                                "setup  some date/anniversary: ",
+                                JOptionPane.OK_CANCEL_OPTION,
+                                JOptionPane.PLAIN_MESSAGE);
+                        if (a == JOptionPane.OK_OPTION) {
+                            String tt = t.getText();
+                            String dd = d.getText();
+                            lastDate2 = d.getDate();
+                            if (!r1.isSelected()) {
+                                dd = dd.replaceAll("\\.\\d\\d\\d\\d", ".");
+                            }
+                            if (r2.isSelected()) {
+                                append(findTextField((Component) e.getSource()), dd + "\t" + tt + "\t" + "" + getHTMLColorString(color.getBackground()));
+                            } else {
+                                append(findTextField((Component) e.getSource()), dd + "\t" + tt);
+                            }
+
+                        }
+                    }
+
+                    private Object getPanel() {
+                        JPanel p = new JPanel(new GridLayout(3, 2));
+                        r1.setSelected(true);
+                        p.add(r1);
+                        p.add(r2);
+                        r2.addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                color.setEnabled(r2.isSelected());
+                            }
+                        });
+                        color.setEnabled(r2.isSelected());
+                        d.setDate(lastDate2);
+                        DatePickerSettings s = new DatePickerSettings();
+                        s.setFormatForDatesCommonEra("d.M.yyyy");
+                        s.setFormatForDatesBeforeCommonEra("d.M.yyyy");
+                        d.setSettings(s);
+                        p.add(d);
+                        p.add(t);
+                        p.add(color);
+                        clearActions(color);
+                        color.addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                color.setBackground(JColorChooser.showDialog(color, "", color.getBackground()));
+                            }
+                        });
+                        return p;
+                    }
+                }));
     }
 
     public static String getMainPath() {
         return System.getProperty("user.home") + "/.config/CalendarMaker";
     }
+
     public static File getMainConfig() {
         return new File(getMainPath(), "conf.conf");
     }
@@ -137,16 +266,19 @@ public class FilesWizard {
         private final String example;
         private final ArgsSetter as;
         private final ActionListener testFileListener;
+        private final ActionListener adl;
 
         public TerribleSetup(String config_path, String rbut1Label, String infoLabel,
-                String example, ArgsSetter as, ActionListener testFileListener) {
+                String example, ArgsSetter as, ActionListener testFileListener, ActionListener adl) {
             this.config_path = config_path;
             this.rbut1Label = rbut1Label;
             this.infoLabel = infoLabel;
             this.example = example;
             this.as = as;
             this.testFileListener = testFileListener;
+            this.adl = adl;
         }
+
     }
 
     private static Component createGenereicSuperPanel(final TerribleSetup ts) {
@@ -222,6 +354,7 @@ public class FilesWizard {
         tools.add(copyEditCreate);
         tools.add(test);
         tools.add(addLine);
+        addLine.addActionListener(ts.adl);
         main.add(tools, BorderLayout.SOUTH);
         final ButtonGroup bg = new ButtonGroup();
         bg.add(internal);
@@ -384,4 +517,56 @@ public class FilesWizard {
         text.setEnabled(false);
         text.setText(s);
     }
+
+
+    private static JTextArea findTextField(Component source) {
+        return findTextField(source, new ArrayList<>());
+    }
+
+    private static JTextArea findTextField(Component source, ArrayList<Object> found) {
+        if (source == null || found.contains(source)) {
+            return null;
+        }
+        if (source instanceof JTextArea) {
+            return (JTextArea) source;
+        }
+        found.add(source);
+        if (source instanceof Container) {
+            Container q = (Container) (source);
+            Component[] cs = q.getComponents();
+            for (Component c : cs) {
+                JTextArea qq = findTextField(c, found);
+                if (qq != null) {
+                    return qq;
+                }
+            }
+        }
+        return findTextField(source.getParent(), found);
+
+    }
+
+    private static void append(JTextArea text, String r) {
+        if (text.getText().endsWith("\n")) {
+            text.append(r + "\n");
+        } else {
+            String[] lines = text.getText().split("\n");
+            if (lines[lines.length - 1].isEmpty()) {
+                text.append(r + "\n");
+            } else {
+                text.append("\n" + r + "\n");
+            }
+        }
+    }
+
+    public static String getHTMLColorString(Color color) {
+        String red = Integer.toHexString(color.getRed());
+        String green = Integer.toHexString(color.getGreen());
+        String blue = Integer.toHexString(color.getBlue());
+
+        return "#" +
+                (red.length() == 1 ? "0" + red : red) +
+                (green.length() == 1 ? "0" + green : green) +
+                (blue.length() == 1 ? "0" + blue : blue);
+    }
+
 }
