@@ -12,9 +12,11 @@ import com.itextpdf.layout.element.Image;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -27,8 +29,48 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-public class AllView extends JPanel {
+public class AllView {
 
+    private JPanel view;
+    private Dimension backupSize = new Dimension(0, 0);
+
+    public void repaint() {
+        if (view != null) {
+            view.repaint();
+        }
+    }
+
+    public int getWidth() {
+        if (view != null) {
+            return view.getWidth();
+        }
+        return backupSize.width;
+    }
+
+    public int getHeight() {
+        if (view != null) {
+            return view.getHeight();
+        }
+        return backupSize.height;
+    }
+
+    public void setSize(Dimension size) {
+        backupSize = size;
+        if (view != null) {
+            view.setSize(size);
+        }
+    }
+
+    public JPanel getView() {
+        return view;
+    }
+
+
+    public void addMouseListener(MouseListener m) {
+        if (view != null) {
+            view.addMouseListener(m);
+        }
+    }
 
     private static class HistoryItem {
         private final String img;
@@ -97,29 +139,31 @@ public class AllView extends JPanel {
     }
 
     private void setResize() {
-        this.addComponentListener(new ComponentListener() {
-            @Override
-            public void componentResized(ComponentEvent componentEvent) {
-                for (PageView page : data) {
-                    page.resize();
+        if (view != null) {
+            view.addComponentListener(new ComponentListener() {
+                @Override
+                public void componentResized(ComponentEvent componentEvent) {
+                    for (PageView page : data) {
+                        page.resize();
+                    }
                 }
-            }
 
-            @Override
-            public void componentMoved(ComponentEvent componentEvent) {
+                @Override
+                public void componentMoved(ComponentEvent componentEvent) {
 
-            }
+                }
 
-            @Override
-            public void componentShown(ComponentEvent componentEvent) {
+                @Override
+                public void componentShown(ComponentEvent componentEvent) {
 
-            }
+                }
 
-            @Override
-            public void componentHidden(ComponentEvent componentEvent) {
+                @Override
+                public void componentHidden(ComponentEvent componentEvent) {
 
-            }
-        });
+                }
+            });
+        }
     }
 
     public AllView(PageView... pages) {
@@ -128,6 +172,23 @@ public class AllView extends JPanel {
     }
 
     public AllView(Collection<PageView> pages) {
+        if (!App.getHeadless()) {
+            view = new JPanel() {
+                @Override
+                public void paint(Graphics g) {
+                    g.setColor(Color.white);
+                    g.fillRect(0, 0, this.getWidth(), this.getHeight());
+                    g.setColor(Color.black);
+                    for (int i = 0; i < data.length; i++) {
+                        Integer week = null;
+                        if (isWeekCal()) {
+                            week = i;
+                        }
+                        data[i].paint((Graphics2D) g, 0, offset + i * this.getHeight(), this.getWidth(), this.getHeight(), week);
+                    }
+                }
+            };
+        }
         setResize();
         int i = 0;
         data = new PageView[pages.size()];
@@ -164,19 +225,6 @@ public class AllView extends JPanel {
         setOfset(-data.length * this.getHeight() + this.getHeight());
     }
 
-    @Override
-    public void paint(Graphics g) {
-        g.setColor(Color.white);
-        g.fillRect(0, 0, this.getWidth(), this.getHeight());
-        g.setColor(Color.black);
-        for (int i = 0; i < data.length; i++) {
-            Integer week = null;
-            if (isWeekCal()) {
-                week = i;
-            }
-            data[i].paint((Graphics2D) g, 0, offset + i * this.getHeight(), this.getWidth(), this.getHeight(), week);
-        }
-    }
 
     public PageView get(int x, int y) {
         for (int i = 0; i < data.length; i++) {
@@ -250,12 +298,12 @@ public class AllView extends JPanel {
             int l2 = (data.length / 2) + (i);
             addDualPage(l1, l2, d, margins);
             d.add(new AreaBreak());
-            int rl1=(data.length / 2) - (i);
+            int rl1 = (data.length / 2) - (i);
             int rl2 = data.length - i;
-            if (rl1 == l1 || rl1==l2){
+            if (rl1 == l1 || rl1 == l2) {
                 rl1 = -1;
             }
-            if (rl2 == l1 || rl2==l2){
+            if (rl2 == l1 || rl2 == l2) {
                 rl2 = -1;
             }
             addDualPage(rl1, rl2, d, margins);
@@ -269,12 +317,12 @@ public class AllView extends JPanel {
     }
 
     private void addDualPage(int i, int ii, Document d, float margins) throws IOException {
-        System.out.println(i+"-"+ii+" ["+data.length+"]");
+        System.out.println(i + "-" + ii + " [" + data.length + "]");
         Integer week = null;
         if (isWeekCal()) {
             week = i;
         }
-        if (i>=0 && i < data.length) {
+        if (i >= 0 && i < data.length) {
             BufferedImage bi1 = PhotoFrame.rotate180(data[i].getImage(getWidth(), getHeight(), week), Math.PI);
             ByteArrayOutputStream os1 = new ByteArrayOutputStream();
             ImageIO.write(bi1, "png", os1);
@@ -286,15 +334,15 @@ public class AllView extends JPanel {
         }
 
         PdfCanvas canvas = new PdfCanvas(d.getPdfDocument().getPage(d.getPdfDocument().getNumberOfPages()));
-        canvas.moveTo(0, PageSize.A4.getHeight()/2d);
-        canvas.lineTo(PageSize.A4.getWidth(), PageSize.A4.getHeight()/2d);
+        canvas.moveTo(0, PageSize.A4.getHeight() / 2d);
+        canvas.lineTo(PageSize.A4.getWidth(), PageSize.A4.getHeight() / 2d);
         canvas.closePathStroke();
 
         week = null;
         if (isWeekCal()) {
             week = ii;
         }
-        if (i != ii && ii >=0 && ii < data.length) {
+        if (i != ii && ii >= 0 && ii < data.length) {
             BufferedImage bi2 = data[ii].getImage(getWidth(), getHeight(), week);
             ByteArrayOutputStream os2 = new ByteArrayOutputStream();
             ImageIO.write(bi2, "png", os2);

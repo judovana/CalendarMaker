@@ -16,7 +16,7 @@ import java.util.Set;
 
 
 public class App {
-    public static boolean headless;
+    private static boolean headless;
 
     public static class Args {
 
@@ -139,6 +139,11 @@ public class App {
     private static boolean showWizard = true;
     private static boolean load = true;
 
+
+    public static boolean getHeadless(){
+        return headless || GraphicsEnvironment.getLocalGraphicsEnvironment().isHeadless();
+    }
+
     public static void main(final String[] args) throws IOException {
         final Args a = new Args();
         for (String arg : args) {
@@ -201,7 +206,7 @@ public class App {
             headless = true;
         }
 
-        if (headless || GraphicsEnvironment.getLocalGraphicsEnvironment().isHeadless()){
+        if (getHeadless()){
             r.run();
         } else {
             SwingUtilities.invokeLater(r);

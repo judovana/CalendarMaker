@@ -4,6 +4,7 @@ import org.judovana.calendarmaker.wizard.YearWizard;
 
 import javax.swing.*;
 
+import java.awt.Dimension;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
@@ -19,7 +20,7 @@ public class MainFrame  {
             new String[]{"/usr/share/backgrounds", "/usr/share/icons/"};
 
     final AllView all;
-    JFrame frame;
+    private JFrame frame;
 
 
     public MainFrame(Boolean week, Integer year, Collection<String> dirs, String template,
@@ -88,8 +89,8 @@ public class MainFrame  {
             }
         }
         all = new AllView(pages);
-        if (App.headless) {
-            all.setSize(wii, hee);
+        if (App.getHeadless()) {
+            all.setSize(new Dimension(wii, hee));
         } else {
             fun(wii, hee, pl, rp);
             all.setSize(frame.getSize());//for headless mode
@@ -380,11 +381,11 @@ public class MainFrame  {
                             selectNext(page, pl, all);
                         }
                     });
-                    menu.show(all, e.getX(), e.getY());
+                    menu.show(all.getView(), e.getX(), e.getY());
                 }
             }
         });
-        frame.add(all);
+        frame.add(all.getView());
         frame.addMouseWheelListener(new MouseWheelListener() {
             @Override
             public void mouseWheelMoved(MouseWheelEvent e) {
@@ -492,7 +493,7 @@ public class MainFrame  {
             chooser.setCurrentDirectory(
                     new File(page.getData().getPhoto().getSrc()).getParentFile());
             chooser.setSelectedFile(new File(page.getData().getPhoto().getSrc()));
-            int r = chooser.showOpenDialog(all);
+            int r = chooser.showOpenDialog(all.getView());
             if (r == JFileChooser.APPROVE_OPTION) {
                 File f = chooser.getSelectedFile();
                 if (f != null) {
@@ -501,7 +502,7 @@ public class MainFrame  {
                 }
             }
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(all, ex);
+            JOptionPane.showMessageDialog(all.getView(), ex);
             ex.printStackTrace();
         }
     }
@@ -511,7 +512,7 @@ public class MainFrame  {
             all.reData(page, pl.getPrev(page.getData().getPhoto().getSrc()));
             all.repaint();
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(all, ex);
+            JOptionPane.showMessageDialog(all.getView(), ex);
             ex.printStackTrace();
         }
     }
@@ -521,7 +522,7 @@ public class MainFrame  {
             all.reData(page, pl.getNext(page.getData().getPhoto().getSrc()));
             all.repaint();
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(all, ex);
+            JOptionPane.showMessageDialog(all.getView(), ex);
             ex.printStackTrace();
         }
     }
@@ -542,7 +543,7 @@ public class MainFrame  {
             all.reData(page, pl.getRandomImage());
             all.repaint();
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(all, ex);
+            JOptionPane.showMessageDialog(all.getView(), ex);
             ex.printStackTrace();
         }
     }
