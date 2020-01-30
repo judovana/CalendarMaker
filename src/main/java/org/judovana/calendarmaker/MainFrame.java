@@ -12,24 +12,19 @@ import java.nio.file.Files;
 import java.util.*;
 import java.util.List;
 
-public class MainFrame extends JFrame {
+public class MainFrame  {
     private static File lastDir = new File(System.getProperty("user.home"));
 
     public static String[] photoFolders =
             new String[]{"/usr/share/backgrounds", "/usr/share/icons/"};
 
     final AllView all;
+    JFrame frame;
+
 
     public MainFrame(Boolean week, Integer year, Collection<String> dirs, String template,
             String toLoad, Integer w, Integer h, String names, String interesting,
             String anniversaries) throws IOException {
-        this.addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent e) {
-                System.out.println("-width=" + MainFrame.this.getWidth() + " -height="
-                        + MainFrame.this.getHeight());
-            }
-        });
         int wii, hee;
         if (w == null || w == 0) {
             wii = 800;
@@ -41,8 +36,6 @@ public class MainFrame extends JFrame {
         } else {
             hee = h;
         }
-        this.setSize(wii, hee);
-        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         NamesLoader.NAMES = new NamesLoader(names, interesting, anniversaries);
         final PhotoLoader pl = createDefaultLoader(dirs);
         final RangeProvider rp = getYearOfCal(week, year);
@@ -95,11 +88,29 @@ public class MainFrame extends JFrame {
             }
         }
         all = new AllView(pages);
-        this.addKeyListener(new KeyAdapter() {
+        if (App.headless) {
+            all.setSize(wii, hee);
+        } else {
+            fun(wii, hee, pl, rp);
+            all.setSize(frame.getSize());//for headless mode
+        }
+    }
+    public void fun(int wii, int hee, PhotoLoader pl, RangeProvider rp){
+        this.frame = new JFrame();
+        frame.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                System.out.println("-width=" + frame.getWidth() + " -height="
+                        + frame.getHeight());
+            }
+        });
+        frame.setSize(wii, hee);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                final PageView page = all.get(MainFrame.this.getWidth() / 2,
-                        MainFrame.this.getHeight() / 2);
+                final PageView page = all.get(frame.getWidth() / 2,
+                        frame.getHeight() / 2);
                 if (e.getKeyCode() == KeyEvent.VK_Z) {
                     undo(all);
                 }
@@ -373,14 +384,14 @@ public class MainFrame extends JFrame {
                 }
             }
         });
-        this.add(all);
-        this.addMouseWheelListener(new MouseWheelListener() {
+        frame.add(all);
+        frame.addMouseWheelListener(new MouseWheelListener() {
             @Override
             public void mouseWheelMoved(MouseWheelEvent e) {
                 all.adjsutOffset(-e.getUnitsToScroll() * 20);
             }
         });
-        this.addKeyListener(new KeyListener() {
+        frame.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent keyEvent) {
 
@@ -389,10 +400,10 @@ public class MainFrame extends JFrame {
             @Override
             public void keyPressed(KeyEvent keyEvent) {
                 if (keyEvent.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
-                    all.adjsutOffset(-MainFrame.this.getHeight() / 3);
+                    all.adjsutOffset(-frame.getHeight() / 3);
                 }
                 if (keyEvent.getKeyCode() == KeyEvent.VK_PAGE_UP) {
-                    all.adjsutOffset(+MainFrame.this.getHeight() / 3);
+                    all.adjsutOffset(+frame.getHeight() / 3);
                 }
                 if (keyEvent.getKeyCode() == KeyEvent.VK_UP) {
                     all.adjsutOffset(+1);
@@ -413,9 +424,8 @@ public class MainFrame extends JFrame {
 
             }
         });
-        this.setFocusable(true);
-        this.setFocusTraversalKeysEnabled(false);
-        all.setSize(this.getSize());//for headless mode
+        frame.setFocusable(true);
+        frame.setFocusTraversalKeysEnabled(false);
     }
 
     public void exportOnePageOnePage_month(String path) throws IOException {
@@ -580,4 +590,7 @@ public class MainFrame extends JFrame {
     }
 
 
+    public void show() {
+        frame.setVisible(true);
+    }
 }

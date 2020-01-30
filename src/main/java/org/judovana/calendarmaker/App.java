@@ -14,11 +14,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Hello world!
- */
+
 public class App {
+    public static boolean headless;
+
     public static class Args {
+
         //saved
         public Boolean week;
         public Set<String> dirs = new HashSet<>();
@@ -32,6 +33,7 @@ public class App {
         private String save_wall;
         private String save_table1;
         private String save_table2;
+
 
         public void parse(String... args) {
             for (String arg : args) {
@@ -159,7 +161,7 @@ public class App {
             }
         }
         a.parse(args);
-        SwingUtilities.invokeLater(new Runnable() {
+        final Runnable r = new Runnable() {
             @Override
             public void run() {
                 try {
@@ -181,13 +183,29 @@ public class App {
                         main.exportOnePageOnePage_weekDoubleSide(a.save_table2);
                     }
                     if (gui) {
-                        main.setVisible(true);
+                        main.show();
                     }
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
             }
-        });
+        };
+        try {
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+
+                }
+            });
+        }catch (Error | Exception ex){
+            headless = true;
+        }
+
+        if (headless || GraphicsEnvironment.getLocalGraphicsEnvironment().isHeadless()){
+            r.run();
+        } else {
+            SwingUtilities.invokeLater(r);
+        }
     }
 
     private static void printHelp() {
