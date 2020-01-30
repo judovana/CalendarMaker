@@ -537,7 +537,7 @@ public class MainFrame extends JFrame {
         }
     }
 
-    private RangeProvider getYearOfCal(boolean week, Integer year) {
+    private RangeProvider getYearOfCal(Boolean week, Integer year) {
         return new RangeProvider(YearWizard.suggestYear(year), week);
 
     }
