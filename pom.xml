@@ -115,7 +115,7 @@
             <configuration>
               <archive>
                 <manifest>
-                  <addClasspath>true</addClasspath>
+                  <!--<addClasspath>true</addClasspath>-->
                   <mainClass>org.judovana.calendarmaker.App</mainClass>
                 </manifest>
               </archive>
