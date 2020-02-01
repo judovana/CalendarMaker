@@ -204,6 +204,7 @@ public class App {
             });
         }catch (Error | Exception ex){
             headless = true;
+            System.setProperty("java.awt.headless", "true");
         }
 
         if (getHeadless()){
