@@ -255,6 +255,7 @@ public class App {
                 "  heightof single frame in pixels\n" +
                 "-no-load or -noload\n"+
                 "  defaults saved by wizard will not be loaded\n"+
+                "Set java to -Djava.awt.headless=true if you are running with invalid display veriable (unset is ok)\n"+
                 "-h or -help\n"+
                 "  help";
     }
