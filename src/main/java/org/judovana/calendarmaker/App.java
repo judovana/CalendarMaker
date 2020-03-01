@@ -25,6 +25,7 @@ public class App {
         public Set<String> dirs = new HashSet<>();
         public String template;
         public Integer w, h;
+        public Boolean hugeNumbers;
         public String names, anniversaries, interesting;
 
         //not saved
@@ -68,6 +69,9 @@ public class App {
                 }
                 if (arg.matches("^-+nowizard$") || arg.matches("^-+no-wizard$")) {
                     showWizard = false;
+                }
+                if (arg.matches("^-+hugeNumbers$") || arg.matches("^-+huge-numbers$")) {
+                    this.hugeNumbers=true;
                 }
                 if (arg.matches("^-+save-wall=.+$")) {
                     this.save_wall = arg.split("=")[1];
@@ -119,6 +123,9 @@ public class App {
             }
             if (interesting != null) {
                 sb.append("-supernames=" + interesting + "\n");
+            }
+            if (hugeNumbers!= null && hugeNumbers) {
+                sb.append("-hugeNumbers\n");
             }
             return sb.toString();
         }
@@ -173,7 +180,7 @@ public class App {
                     if (showWizard) {
                         new Wizard(a).setVisible(true);
                     }
-                    MainFrame main = new MainFrame(a.week, a.year, a.dirs, a.template, a.toLoad, a.w, a.h, a.names, a.interesting, a.anniversaries);
+                    MainFrame main = new MainFrame(a.week, a.year, a.dirs, a.template, a.toLoad, a.w, a.h, a.names, a.interesting, a.anniversaries, a.hugeNumbers);
                     boolean gui = true;
                     if (a.save_wall != null) {
                         gui = false;
@@ -242,7 +249,7 @@ public class App {
                 "  path to file with names to highlight\n"+
                 "-dates= or-anniversaries= path\n" +
                 "  apth to file with important dates or anniversaries\n"+
-                "-nowizard or -+no-wizard\n" +
+                "-nowizard or -no-wizard\n" +
                 "  the gui wizard will be skipped\n"+
                 "-save-wall= path\n" +
                 "  no gui will start, and loaded work will be saved to specified file as calendar for wall\n"+
@@ -254,6 +261,8 @@ public class App {
                 "  width of single frame in pixels\n" +
                 "-height\n="+
                 "  heightof single frame in pixels\n" +
+                "-hugeNumbers or -huge-numbers\n="+
+                "  enables huge numbers\n" +
                 "-no-load or -noload\n"+
                 "  defaults saved by wizard will not be loaded\n"+
                 "Set java to -Djava.awt.headless=true if you are running with invalid display veriable (unset is ok)\n"+

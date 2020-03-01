@@ -13,10 +13,15 @@ public class DateRangeRenderrer {
 
     private final List<Date> range;
     private static final boolean clipMoon = true;
-    private boolean drawHugeNumber = true;
+    private final boolean drawHugeNumber;
 
-    public DateRangeRenderrer(List<Date> dates) {
+    public DateRangeRenderrer(List<Date> dates, Boolean dh) {
         this.range = dates;
+        if (dh == null){
+            drawHugeNumber = false;
+        } else {
+            drawHugeNumber = dh;
+        }
     }
 
     public static final SimpleDateFormat anotherMonth = new SimpleDateFormat("dd.MM yy");

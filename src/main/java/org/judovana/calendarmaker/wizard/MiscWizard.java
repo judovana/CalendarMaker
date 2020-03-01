@@ -38,7 +38,7 @@ public class MiscWizard extends JPanel implements SaveController {
     }
 
     public static MiscWizard create(App.Args args) {
-        MiscWizard p = new MiscWizard(new GridLayout(5, 2));
+        MiscWizard p = new MiscWizard(new GridLayout(6, 2));
         p.setArgs(args);
         p.add(new JLabel("width"));
         final JSpinner w = new JSpinner(new SpinnerNumberModel(800, 50, 20000, 50));
@@ -52,8 +52,11 @@ public class MiscWizard extends JPanel implements SaveController {
         p.add(new JLabel("output size"));
         p.page = new JComboBox<String>(new String[]{"A4"});
         p.add(p.page);
+        final JCheckBox hugeNumbers = new JCheckBox("Huge numbers");
+        p.add(hugeNumbers);
+        p.add(new JLabel(""));
         JButton delte = new JButton("delete: " + FilesWizard.getMainConfig());
-         delte.setEnabled(FilesWizard.getMainConfig().exists());
+        delte.setEnabled(FilesWizard.getMainConfig().exists());
         delte.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -75,6 +78,9 @@ public class MiscWizard extends JPanel implements SaveController {
         if (args.h != null) {
             h.setValue(args.h);
         }
+        if (args.hugeNumbers != null) {
+            hugeNumbers.setSelected(args.hugeNumbers);
+        }
         w.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
@@ -85,6 +91,12 @@ public class MiscWizard extends JPanel implements SaveController {
             @Override
             public void stateChanged(ChangeEvent e) {
                 args.h = (Integer) h.getValue();
+            }
+        });
+        hugeNumbers.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                args.hugeNumbers = hugeNumbers.isSelected();
             }
         });
         return p;

@@ -12,8 +12,8 @@ public class CalendarPage {
     private PhotoFrame photo;
     private final DateRangeRenderrer dates;
     private final Template t;
-    public CalendarPage(List<Date> dates, PhotoFrame photo, Template t, List<String> stripDirs) {
-        this.dates = new DateRangeRenderrer(dates);
+    public CalendarPage(List<Date> dates, PhotoFrame photo, Template t, List<String> stripDirs, Boolean dh) {
+        this.dates = new DateRangeRenderrer(dates, dh);
         this.photo = photo;
         this.t = t;
         stripDirs.sort(new Comparator<String>() {

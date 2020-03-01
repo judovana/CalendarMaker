@@ -25,7 +25,7 @@ public class MainFrame  {
 
     public MainFrame(Boolean week, Integer year, Collection<String> dirs, String template,
             String toLoad, Integer w, Integer h, String names, String interesting,
-            String anniversaries) throws IOException {
+            String anniversaries, Boolean dh) throws IOException {
         int wii, hee;
         if (w == null || w == 0) {
             wii = 800;
@@ -66,7 +66,7 @@ public class MainFrame  {
         if (loaded == null) {
             for (List<Date> range : ranges) {
                 CalendarPage cp = new CalendarPage(range, new PhotoFrame(pl.getRandomImage()),
-                        tmplt, pl.getSrcs());
+                        tmplt, pl.getSrcs(), dh);
                 PageView p = new PageView(cp);
                 pages.add(p);
             }
@@ -82,7 +82,7 @@ public class MainFrame  {
                     pf = new PhotoFrame(pl.getRandomImage());
                     System.err.println("Warning! Exceeded range of loaded list! Filling by random");
                 }
-                CalendarPage cp = new CalendarPage(range, pf, tmplt, pl.getSrcs());
+                CalendarPage cp = new CalendarPage(range, pf, tmplt, pl.getSrcs(), dh);
                 PageView p = new PageView(cp);
                 pages.add(p);
                 i++;
