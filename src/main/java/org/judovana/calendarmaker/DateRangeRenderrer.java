@@ -13,6 +13,7 @@ public class DateRangeRenderrer {
 
     private final List<Date> range;
     private static final boolean clipMoon = true;
+    private boolean drawHugeNumber = true;
 
     public DateRangeRenderrer(List<Date> dates) {
         this.range = dates;
@@ -76,26 +77,28 @@ public class DateRangeRenderrer {
                 }
                 BufferedImage bi = MoonPhaseRenderer.getMoonGauge(c2.get(Calendar.YEAR), c2.get(Calendar.MONTH) + 1, c2.get(Calendar.DAY_OF_MONTH), step, step, 255, clipMoon);
                 g.drawImage(bi, x + w - step - border.lr(), hh, null);
-                String bigDay = c2.get(Calendar.DAY_OF_MONTH)+"";
-                Color exC = g.getColor();
-                if (exC.equals(Color.black)){
-                    exC=Color.GRAY;
-                }
-                g.setColor(new Color(exC.getRed(), exC.getGreen(), exC.getBlue(),100));
-                Font niceOne = g.getFont();
-                int size=0;
-                while (true) {
-                    size++;
-                    g.setFont(g.getFont().deriveFont((float)size));
-                    if(g.getFontMetrics().getHeight()>=step){
-                        size--;
-                        g.setFont(g.getFont().deriveFont(size));
-                        break;
+                if (drawHugeNumber) {
+                    String bigDay = c2.get(Calendar.DAY_OF_MONTH)+"";
+                    Color exC = g.getColor();
+                    if (exC.equals(Color.black)) {
+                        exC = Color.GRAY;
                     }
+                    g.setColor(new Color(exC.getRed(), exC.getGreen(), exC.getBlue(), 100));
+                    Font niceOne = g.getFont();
+                    int size = 0;
+                    while (true) {
+                        size++;
+                        g.setFont(g.getFont().deriveFont((float) size));
+                        if (g.getFontMetrics().getHeight() >= step) {
+                            size--;
+                            g.setFont(g.getFont().deriveFont(size));
+                            break;
+                        }
+                    }
+                    g.setFont(g.getFont().deriveFont(size));
+                    g.drawString(bigDay, x + w - step - border.lr(), hh + (g.getFontMetrics().getHeight()) - g.getFontMetrics().getDescent());
+                    g.setFont(niceOne);
                 }
-                g.setFont(g.getFont().deriveFont(size));
-                g.drawString(bigDay, x + w - step - border.lr(), hh + (g.getFontMetrics().getHeight()) - g.getFontMetrics().getDescent());
-                g.setFont(niceOne);
             }
             {
                 Calendar c2 = new GregorianCalendar();
@@ -155,29 +158,30 @@ public class DateRangeRenderrer {
                 }
                 BufferedImage bi = MoonPhaseRenderer.getMoonGauge(c2.get(Calendar.YEAR), c2.get(Calendar.MONTH) + 1, c2.get(Calendar.DAY_OF_MONTH), ww / 2, hh / 4, alpha, clipMoon);
                 g.drawImage(bi, x + border.l + inRow * ww + ww / 2, y + border.t + row * hh + (2 * hh) / 3, null);
-
-                String bigDay = c2.get(Calendar.DAY_OF_MONTH)+"";
-                Color exC = g.getColor();
-                if (exC.equals(Color.black)){
-                    exC=Color.GRAY;
-                }
-                g.setColor(new Color(exC.getRed(), exC.getGreen(), exC.getBlue(),100));
-                Font niceOne = g.getFont();
-                int size=0;
-                while (true) {
-                    size++;
-                    g.setFont(g.getFont().deriveFont((float)size));
-                    Rectangle2D sizes = g.getFontMetrics().getStringBounds(bigDay, g);
-                    if(sizes.getHeight()>=hh || sizes.getWidth()>=ww){
-                        size--;
-                        g.setFont(g.getFont().deriveFont(size));
-                        break;
+                if (drawHugeNumber) {
+                    String bigDay = c2.get(Calendar.DAY_OF_MONTH) + "";
+                    Color exC = g.getColor();
+                    if (exC.equals(Color.black)) {
+                        exC = Color.GRAY;
                     }
+                    g.setColor(new Color(exC.getRed(), exC.getGreen(), exC.getBlue(), 100));
+                    Font niceOne = g.getFont();
+                    int size = 0;
+                    while (true) {
+                        size++;
+                        g.setFont(g.getFont().deriveFont((float) size));
+                        Rectangle2D sizes = g.getFontMetrics().getStringBounds(bigDay, g);
+                        if (sizes.getHeight() >= hh || sizes.getWidth() >= ww) {
+                            size--;
+                            g.setFont(g.getFont().deriveFont(size));
+                            break;
+                        }
+                    }
+                    g.setFont(g.getFont().deriveFont(size));
+                    Rectangle2D sizes = g.getFontMetrics().getStringBounds(bigDay, g);
+                    g.drawString(bigDay, (int) (x + border.l + inRow * ww + (ww - sizes.getWidth())), (int) (y + border.t + row * hh + sizes.getHeight()));
+                    g.setFont(niceOne);
                 }
-                g.setFont(g.getFont().deriveFont(size));
-                Rectangle2D sizes = g.getFontMetrics().getStringBounds(bigDay, g);
-                g.drawString(bigDay, (int) (x + border.l + inRow * ww+(ww-sizes.getWidth())), (int) (y + border.t + row * hh + sizes.getHeight()));
-                g.setFont(niceOne);
 
             }
         }
