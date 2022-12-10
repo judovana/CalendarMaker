@@ -3,6 +3,7 @@ package org.judovana.calendarmaker;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -83,7 +84,9 @@ public class DateRangeRenderrer {
                 BufferedImage bi = MoonPhaseRenderer.getMoonGauge(c2.get(Calendar.YEAR), c2.get(Calendar.MONTH) + 1, c2.get(Calendar.DAY_OF_MONTH), step, step, 255, clipMoon);
                 g.drawImage(bi, x + w - step - border.lr(), hh, null);
                 if (drawHugeNumber) {
-                    String bigDay = c2.get(Calendar.DAY_OF_MONTH)+"";
+                    //String bigDay = c2.get(Calendar.DAY_OF_MONTH)+"";
+                    NumberFormat numberFormat = NumberFormat.getNumberInstance();
+                    String bigDay = numberFormat.format(c2.get(Calendar.DAY_OF_MONTH));
                     Color exC = g.getColor();
                     if (exC.equals(Color.black)) {
                         exC = Color.GRAY;
@@ -164,7 +167,9 @@ public class DateRangeRenderrer {
                 BufferedImage bi = MoonPhaseRenderer.getMoonGauge(c2.get(Calendar.YEAR), c2.get(Calendar.MONTH) + 1, c2.get(Calendar.DAY_OF_MONTH), ww / 2, hh / 4, alpha, clipMoon);
                 g.drawImage(bi, x + border.l + inRow * ww + ww / 2, y + border.t + row * hh + (2 * hh) / 3, null);
                 if (drawHugeNumber) {
-                    String bigDay = c2.get(Calendar.DAY_OF_MONTH) + "";
+                    //String bigay = c2.get(Calendar.DAY_OF_MONTH) + "";
+                    NumberFormat numberFormat = NumberFormat.getNumberInstance();
+                    String bigDay = numberFormat.format(c2.get(Calendar.DAY_OF_MONTH));
                     Color exC = g.getColor();
                     if (exC.equals(Color.black)) {
                         exC = Color.GRAY;
