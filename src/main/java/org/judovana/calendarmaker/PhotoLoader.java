@@ -2,6 +2,7 @@ package org.judovana.calendarmaker;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.FileVisitOption;
 import java.nio.file.FileVisitResult;
 import java.nio.file.FileVisitor;
 import java.nio.file.Files;
@@ -33,7 +34,7 @@ public class PhotoLoader {
         if (all == null) {
             all = new ArrayList<>(1000);
             for (String s : paths) {
-                Files.walkFileTree(new File(s).toPath(), new FileVisitor<Path>() {
+                Files.walkFileTree(new File(s).toPath(), new TreeSet<>(Arrays.asList(FileVisitOption.FOLLOW_LINKS)), Integer.MAX_VALUE, new FileVisitor<Path>() {
                     @Override
                     public FileVisitResult preVisitDirectory(Path path, BasicFileAttributes basicFileAttributes) throws IOException {
                         return FileVisitResult.CONTINUE;
